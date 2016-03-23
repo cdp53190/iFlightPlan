@@ -1,0 +1,521 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EF4EF85C1CA34D9500FD897F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85B1CA34D9500FD897F /* main.m */; };
+		EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85E1CA34D9500FD897F /* AppDelegate.m */; };
+		EF4EF8621CA34D9500FD897F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8611CA34D9500FD897F /* ViewController.m */; };
+		EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF4EF8631CA34D9500FD897F /* Main.storyboard */; };
+		EF4EF8671CA34D9500FD897F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF4EF8661CA34D9500FD897F /* Assets.xcassets */; };
+		EF4EF86A1CA34D9500FD897F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF4EF8681CA34D9500FD897F /* LaunchScreen.storyboard */; };
+		EF4EF8751CA34D9600FD897F /* iFlightPlanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8741CA34D9600FD897F /* iFlightPlanTests.m */; };
+		EF4EF8801CA34D9600FD897F /* iFlightPlanUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF87F1CA34D9600FD897F /* iFlightPlanUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EF4EF8711CA34D9600FD897F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EF4EF84F1CA34D9500FD897F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EF4EF8561CA34D9500FD897F;
+			remoteInfo = iFlightPlan;
+		};
+		EF4EF87C1CA34D9600FD897F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EF4EF84F1CA34D9500FD897F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EF4EF8561CA34D9500FD897F;
+			remoteInfo = iFlightPlan;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EF4EF8571CA34D9500FD897F /* iFlightPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iFlightPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF4EF85B1CA34D9500FD897F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EF4EF85D1CA34D9500FD897F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		EF4EF85E1CA34D9500FD897F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		EF4EF8601CA34D9500FD897F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		EF4EF8611CA34D9500FD897F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		EF4EF8641CA34D9500FD897F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EF4EF8661CA34D9500FD897F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EF4EF8691CA34D9500FD897F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EF4EF86B1CA34D9500FD897F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EF4EF8701CA34D9600FD897F /* iFlightPlanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iFlightPlanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF4EF8741CA34D9600FD897F /* iFlightPlanTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iFlightPlanTests.m; sourceTree = "<group>"; };
+		EF4EF8761CA34D9600FD897F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EF4EF87B1CA34D9600FD897F /* iFlightPlanUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iFlightPlanUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF4EF87F1CA34D9600FD897F /* iFlightPlanUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iFlightPlanUITests.m; sourceTree = "<group>"; };
+		EF4EF8811CA34D9600FD897F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EF4EF8541CA34D9500FD897F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF4EF86D1CA34D9600FD897F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF4EF8781CA34D9600FD897F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EF4EF84E1CA34D9500FD897F = {
+			isa = PBXGroup;
+			children = (
+				EF4EF8591CA34D9500FD897F /* iFlightPlan */,
+				EF4EF8731CA34D9600FD897F /* iFlightPlanTests */,
+				EF4EF87E1CA34D9600FD897F /* iFlightPlanUITests */,
+				EF4EF8581CA34D9500FD897F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EF4EF8581CA34D9500FD897F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EF4EF8571CA34D9500FD897F /* iFlightPlan.app */,
+				EF4EF8701CA34D9600FD897F /* iFlightPlanTests.xctest */,
+				EF4EF87B1CA34D9600FD897F /* iFlightPlanUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EF4EF8591CA34D9500FD897F /* iFlightPlan */ = {
+			isa = PBXGroup;
+			children = (
+				EF4EF85D1CA34D9500FD897F /* AppDelegate.h */,
+				EF4EF85E1CA34D9500FD897F /* AppDelegate.m */,
+				EF4EF8601CA34D9500FD897F /* ViewController.h */,
+				EF4EF8611CA34D9500FD897F /* ViewController.m */,
+				EF4EF8631CA34D9500FD897F /* Main.storyboard */,
+				EF4EF8661CA34D9500FD897F /* Assets.xcassets */,
+				EF4EF8681CA34D9500FD897F /* LaunchScreen.storyboard */,
+				EF4EF86B1CA34D9500FD897F /* Info.plist */,
+				EF4EF85A1CA34D9500FD897F /* Supporting Files */,
+			);
+			path = iFlightPlan;
+			sourceTree = "<group>";
+		};
+		EF4EF85A1CA34D9500FD897F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EF4EF85B1CA34D9500FD897F /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EF4EF8731CA34D9600FD897F /* iFlightPlanTests */ = {
+			isa = PBXGroup;
+			children = (
+				EF4EF8741CA34D9600FD897F /* iFlightPlanTests.m */,
+				EF4EF8761CA34D9600FD897F /* Info.plist */,
+			);
+			path = iFlightPlanTests;
+			sourceTree = "<group>";
+		};
+		EF4EF87E1CA34D9600FD897F /* iFlightPlanUITests */ = {
+			isa = PBXGroup;
+			children = (
+				EF4EF87F1CA34D9600FD897F /* iFlightPlanUITests.m */,
+				EF4EF8811CA34D9600FD897F /* Info.plist */,
+			);
+			path = iFlightPlanUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EF4EF8561CA34D9500FD897F /* iFlightPlan */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF4EF8841CA34D9600FD897F /* Build configuration list for PBXNativeTarget "iFlightPlan" */;
+			buildPhases = (
+				EF4EF8531CA34D9500FD897F /* Sources */,
+				EF4EF8541CA34D9500FD897F /* Frameworks */,
+				EF4EF8551CA34D9500FD897F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iFlightPlan;
+			productName = iFlightPlan;
+			productReference = EF4EF8571CA34D9500FD897F /* iFlightPlan.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EF4EF86F1CA34D9600FD897F /* iFlightPlanTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF4EF8871CA34D9600FD897F /* Build configuration list for PBXNativeTarget "iFlightPlanTests" */;
+			buildPhases = (
+				EF4EF86C1CA34D9600FD897F /* Sources */,
+				EF4EF86D1CA34D9600FD897F /* Frameworks */,
+				EF4EF86E1CA34D9600FD897F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EF4EF8721CA34D9600FD897F /* PBXTargetDependency */,
+			);
+			name = iFlightPlanTests;
+			productName = iFlightPlanTests;
+			productReference = EF4EF8701CA34D9600FD897F /* iFlightPlanTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EF4EF87A1CA34D9600FD897F /* iFlightPlanUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF4EF88A1CA34D9600FD897F /* Build configuration list for PBXNativeTarget "iFlightPlanUITests" */;
+			buildPhases = (
+				EF4EF8771CA34D9600FD897F /* Sources */,
+				EF4EF8781CA34D9600FD897F /* Frameworks */,
+				EF4EF8791CA34D9600FD897F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EF4EF87D1CA34D9600FD897F /* PBXTargetDependency */,
+			);
+			name = iFlightPlanUITests;
+			productName = iFlightPlanUITests;
+			productReference = EF4EF87B1CA34D9600FD897F /* iFlightPlanUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EF4EF84F1CA34D9500FD897F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "Another Sky";
+				TargetAttributes = {
+					EF4EF8561CA34D9500FD897F = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					EF4EF86F1CA34D9600FD897F = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = EF4EF8561CA34D9500FD897F;
+					};
+					EF4EF87A1CA34D9600FD897F = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = EF4EF8561CA34D9500FD897F;
+					};
+				};
+			};
+			buildConfigurationList = EF4EF8521CA34D9500FD897F /* Build configuration list for PBXProject "iFlightPlan" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EF4EF84E1CA34D9500FD897F;
+			productRefGroup = EF4EF8581CA34D9500FD897F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EF4EF8561CA34D9500FD897F /* iFlightPlan */,
+				EF4EF86F1CA34D9600FD897F /* iFlightPlanTests */,
+				EF4EF87A1CA34D9600FD897F /* iFlightPlanUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EF4EF8551CA34D9500FD897F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF4EF86A1CA34D9500FD897F /* LaunchScreen.storyboard in Resources */,
+				EF4EF8671CA34D9500FD897F /* Assets.xcassets in Resources */,
+				EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF4EF86E1CA34D9600FD897F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF4EF8791CA34D9600FD897F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EF4EF8531CA34D9500FD897F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF4EF8621CA34D9500FD897F /* ViewController.m in Sources */,
+				EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */,
+				EF4EF85C1CA34D9500FD897F /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF4EF86C1CA34D9600FD897F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF4EF8751CA34D9600FD897F /* iFlightPlanTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF4EF8771CA34D9600FD897F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF4EF8801CA34D9600FD897F /* iFlightPlanUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EF4EF8721CA34D9600FD897F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EF4EF8561CA34D9500FD897F /* iFlightPlan */;
+			targetProxy = EF4EF8711CA34D9600FD897F /* PBXContainerItemProxy */;
+		};
+		EF4EF87D1CA34D9600FD897F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EF4EF8561CA34D9500FD897F /* iFlightPlan */;
+			targetProxy = EF4EF87C1CA34D9600FD897F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EF4EF8631CA34D9500FD897F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EF4EF8641CA34D9500FD897F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EF4EF8681CA34D9500FD897F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EF4EF8691CA34D9500FD897F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EF4EF8821CA34D9600FD897F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		EF4EF8831CA34D9600FD897F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EF4EF8851CA34D9600FD897F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = iFlightPlan/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlan;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		EF4EF8861CA34D9600FD897F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = iFlightPlan/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlan;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		EF4EF8881CA34D9600FD897F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = iFlightPlanTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlanTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iFlightPlan.app/iFlightPlan";
+			};
+			name = Debug;
+		};
+		EF4EF8891CA34D9600FD897F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = iFlightPlanTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlanTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iFlightPlan.app/iFlightPlan";
+			};
+			name = Release;
+		};
+		EF4EF88B1CA34D9600FD897F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iFlightPlanUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlanUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = iFlightPlan;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		EF4EF88C1CA34D9600FD897F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iFlightPlanUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlanUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = iFlightPlan;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EF4EF8521CA34D9500FD897F /* Build configuration list for PBXProject "iFlightPlan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF4EF8821CA34D9600FD897F /* Debug */,
+				EF4EF8831CA34D9600FD897F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EF4EF8841CA34D9600FD897F /* Build configuration list for PBXNativeTarget "iFlightPlan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF4EF8851CA34D9600FD897F /* Debug */,
+				EF4EF8861CA34D9600FD897F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		EF4EF8871CA34D9600FD897F /* Build configuration list for PBXNativeTarget "iFlightPlanTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF4EF8881CA34D9600FD897F /* Debug */,
+				EF4EF8891CA34D9600FD897F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		EF4EF88A1CA34D9600FD897F /* Build configuration list for PBXNativeTarget "iFlightPlanUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF4EF88B1CA34D9600FD897F /* Debug */,
+				EF4EF88C1CA34D9600FD897F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EF4EF84F1CA34D9500FD897F /* Project object */;
+}
