@@ -1,25 +1,126 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="aWr-8k-M3R">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="CGv-5c-m2x">
+            <objects>
+                <navigationController id="aWr-8k-M3R" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IT3-Fe-AUh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="mT5-9p-t8R" kind="relationship" relationship="rootViewController" id="kIQ-BG-bkS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A7j-Yo-j1x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1242" y="-560"/>
+        </scene>
+        <!--iFlightPlan-->
+        <scene sceneID="Uhu-u2-XpT">
+            <objects>
+                <tabBarController id="mT5-9p-t8R" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="iFlightPlan" id="NaQ-hv-Oez"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="10y-tt-lJL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Cre-Qw-YWk"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GLE-Ub-rd1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="191" y="-616"/>
+        </scene>
+        <!--Title View Controller-->
+        <scene sceneID="OJ7-9f-t9j">
+            <objects>
+                <viewController id="mXw-8F-qzl" customClass="TitleViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Hv4-Ga-hGf"/>
+                        <viewControllerLayoutGuide type="bottom" id="QRy-f2-bYA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rre-aD-f7F">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eOs-U1-kg3">
+                                <frame key="frameInset" minX="494" minY="390" width="158" height="135"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="プランモードに戻る"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Npp-JV-40N">
+                                <frame key="frameInset" minX="117" minY="390" width="229" height="135"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="保存されたプランを呼び出す"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UYa-N2-00A" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-648.4375" y="216.796875"/>
+        </scene>
+        <!--Item-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3bJ-nl-9CY">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                                <color key="separatorColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="6lv-55-sv7"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="WBh-2i-qFG"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IQA-Bq-61v" customClass="PlanHeaderView">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="oVz-dH-oTQ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3bJ-nl-9CY" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="0fJ-Pl-bje"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="3bJ-nl-9CY" secondAttribute="bottom" id="N9F-Js-LZt"/>
+                            <constraint firstItem="IQA-Bq-61v" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Vb6-LW-mdb"/>
+                            <constraint firstItem="3bJ-nl-9CY" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Y5d-Vl-Fgm"/>
+                            <constraint firstAttribute="trailing" secondItem="IQA-Bq-61v" secondAttribute="trailing" id="h8d-Fs-Y8q"/>
+                            <constraint firstItem="IQA-Bq-61v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="tyV-E7-dH4"/>
+                            <constraint firstAttribute="trailing" secondItem="3bJ-nl-9CY" secondAttribute="trailing" id="u1a-2y-Ac9"/>
+                        </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="tDm-zV-hnQ"/>
+                    <connections>
+                        <outlet property="headerHeightConstraint" destination="oVz-dH-oTQ" id="5cW-gv-G5A"/>
+                        <outlet property="headerView" destination="IQA-Bq-61v" id="42A-9A-1A6"/>
+                        <outlet property="planTableView" destination="3bJ-nl-9CY" id="ktA-Nk-B3c"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="2044.53125" y="-816.2109375"/>
         </scene>
     </scenes>
 </document>

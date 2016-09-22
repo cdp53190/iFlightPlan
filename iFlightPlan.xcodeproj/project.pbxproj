@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF0E0F5C1D8845B70085EB7F /* Memo in Resources */ = {isa = PBXBuildFile; fileRef = EF0E0F5B1D8845B70085EB7F /* Memo */; };
+		EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2116BD1CB1247A004F9F9A /* SunMoonCalc2.m */; };
+		EF2116C11CB2B34C004F9F9A /* SunMoonCalc2Data.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */; };
+		EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */; };
+		EF48F8C71CD55A7B004DC03A /* PlanTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF48F8C51CD55A7B004DC03A /* PlanTableViewCell.xib */; };
 		EF4EF85C1CA34D9500FD897F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85B1CA34D9500FD897F /* main.m */; };
 		EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85E1CA34D9500FD897F /* AppDelegate.m */; };
 		EF4EF8621CA34D9500FD897F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8611CA34D9500FD897F /* ViewController.m */; };
@@ -15,6 +20,11 @@
 		EF4EF86A1CA34D9500FD897F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF4EF8681CA34D9500FD897F /* LaunchScreen.storyboard */; };
 		EF4EF8751CA34D9600FD897F /* iFlightPlanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8741CA34D9600FD897F /* iFlightPlanTests.m */; };
 		EF4EF8801CA34D9600FD897F /* iFlightPlanUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF87F1CA34D9600FD897F /* iFlightPlanUITests.m */; };
+		EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8901CA34E1F00FD897F /* SunMoonCalc.m */; };
+		EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1461D92DDCA003A5903 /* TitleViewController.m */; };
+		EFE3F1501D93411B003A5903 /* PlanHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F14F1D93411B003A5903 /* PlanHeaderView.m */; };
+		EFE3F1561D934896003A5903 /* PDFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1551D934896003A5903 /* PDFReader.m */; };
+		EFE3F15B1D942D55003A5903 /* 292650.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EFE3F15A1D942D55003A5903 /* 292650.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +45,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EF0E0F5B1D8845B70085EB7F /* Memo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Memo; path = iFlightPlan/Memo; sourceTree = "<group>"; };
+		EF2116BC1CB1247A004F9F9A /* SunMoonCalc2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonCalc2.h; sourceTree = "<group>"; };
+		EF2116BD1CB1247A004F9F9A /* SunMoonCalc2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonCalc2.m; sourceTree = "<group>"; };
+		EF2116BF1CB2B34C004F9F9A /* SunMoonCalc2Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonCalc2Data.h; sourceTree = "<group>"; };
+		EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonCalc2Data.m; sourceTree = "<group>"; };
+		EF48F8C31CD55A7B004DC03A /* PlanTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanTableViewCell.h; sourceTree = "<group>"; };
+		EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanTableViewCell.m; sourceTree = "<group>"; };
+		EF48F8C51CD55A7B004DC03A /* PlanTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanTableViewCell.xib; sourceTree = "<group>"; };
 		EF4EF8571CA34D9500FD897F /* iFlightPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iFlightPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF4EF85B1CA34D9500FD897F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EF4EF85D1CA34D9500FD897F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -51,6 +69,16 @@
 		EF4EF87B1CA34D9600FD897F /* iFlightPlanUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iFlightPlanUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF4EF87F1CA34D9600FD897F /* iFlightPlanUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iFlightPlanUITests.m; sourceTree = "<group>"; };
 		EF4EF8811CA34D9600FD897F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EF4EF88F1CA34E1F00FD897F /* SunMoonCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonCalc.h; sourceTree = "<group>"; };
+		EF4EF8901CA34E1F00FD897F /* SunMoonCalc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonCalc.m; sourceTree = "<group>"; };
+		EFE3F1451D92DDCA003A5903 /* TitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleViewController.h; sourceTree = "<group>"; };
+		EFE3F1461D92DDCA003A5903 /* TitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleViewController.m; sourceTree = "<group>"; };
+		EFE3F14E1D93411B003A5903 /* PlanHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanHeaderView.h; sourceTree = "<group>"; };
+		EFE3F14F1D93411B003A5903 /* PlanHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanHeaderView.m; sourceTree = "<group>"; };
+		EFE3F1541D934896003A5903 /* PDFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFReader.h; sourceTree = "<group>"; };
+		EFE3F1551D934896003A5903 /* PDFReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFReader.m; sourceTree = "<group>"; };
+		EFE3F1581D934DAD003A5903 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		EFE3F15A1D942D55003A5903 /* 292650.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 292650.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,10 +109,12 @@
 		EF4EF84E1CA34D9500FD897F = {
 			isa = PBXGroup;
 			children = (
+				EF0E0F5B1D8845B70085EB7F /* Memo */,
 				EF4EF8591CA34D9500FD897F /* iFlightPlan */,
 				EF4EF8731CA34D9600FD897F /* iFlightPlanTests */,
 				EF4EF87E1CA34D9600FD897F /* iFlightPlanUITests */,
 				EF4EF8581CA34D9500FD897F /* Products */,
+				EFE3F1571D934DAD003A5903 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,6 +131,7 @@
 		EF4EF8591CA34D9500FD897F /* iFlightPlan */ = {
 			isa = PBXGroup;
 			children = (
+				EFE3F1511D934360003A5903 /* SunMoonCalc */,
 				EF4EF85D1CA34D9500FD897F /* AppDelegate.h */,
 				EF4EF85E1CA34D9500FD897F /* AppDelegate.m */,
 				EF4EF8601CA34D9500FD897F /* ViewController.h */,
@@ -110,6 +141,16 @@
 				EF4EF8681CA34D9500FD897F /* LaunchScreen.storyboard */,
 				EF4EF86B1CA34D9500FD897F /* Info.plist */,
 				EF4EF85A1CA34D9500FD897F /* Supporting Files */,
+				EF48F8C31CD55A7B004DC03A /* PlanTableViewCell.h */,
+				EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */,
+				EF48F8C51CD55A7B004DC03A /* PlanTableViewCell.xib */,
+				EFE3F1451D92DDCA003A5903 /* TitleViewController.h */,
+				EFE3F1461D92DDCA003A5903 /* TitleViewController.m */,
+				EFE3F14E1D93411B003A5903 /* PlanHeaderView.h */,
+				EFE3F14F1D93411B003A5903 /* PlanHeaderView.m */,
+				EFE3F1541D934896003A5903 /* PDFReader.h */,
+				EFE3F1551D934896003A5903 /* PDFReader.m */,
+				EFE3F15A1D942D55003A5903 /* 292650.pdf */,
 			);
 			path = iFlightPlan;
 			sourceTree = "<group>";
@@ -138,6 +179,27 @@
 				EF4EF8811CA34D9600FD897F /* Info.plist */,
 			);
 			path = iFlightPlanUITests;
+			sourceTree = "<group>";
+		};
+		EFE3F1511D934360003A5903 /* SunMoonCalc */ = {
+			isa = PBXGroup;
+			children = (
+				EF4EF88F1CA34E1F00FD897F /* SunMoonCalc.h */,
+				EF4EF8901CA34E1F00FD897F /* SunMoonCalc.m */,
+				EF2116BC1CB1247A004F9F9A /* SunMoonCalc2.h */,
+				EF2116BD1CB1247A004F9F9A /* SunMoonCalc2.m */,
+				EF2116BF1CB2B34C004F9F9A /* SunMoonCalc2Data.h */,
+				EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */,
+			);
+			name = SunMoonCalc;
+			sourceTree = "<group>";
+		};
+		EFE3F1571D934DAD003A5903 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EFE3F1581D934DAD003A5903 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,7 +264,7 @@
 		EF4EF84F1CA34D9500FD897F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Another Sky";
 				TargetAttributes = {
 					EF4EF8561CA34D9500FD897F = {
@@ -243,8 +305,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF48F8C71CD55A7B004DC03A /* PlanTableViewCell.xib in Resources */,
 				EF4EF86A1CA34D9500FD897F /* LaunchScreen.storyboard in Resources */,
+				EFE3F15B1D942D55003A5903 /* 292650.pdf in Resources */,
 				EF4EF8671CA34D9500FD897F /* Assets.xcassets in Resources */,
+				EF0E0F5C1D8845B70085EB7F /* Memo in Resources */,
 				EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,9 +335,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */,
+				EFE3F1561D934896003A5903 /* PDFReader.m in Sources */,
+				EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */,
 				EF4EF8621CA34D9500FD897F /* ViewController.m in Sources */,
 				EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */,
+				EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */,
+				EFE3F1501D93411B003A5903 /* PlanHeaderView.m in Sources */,
+				EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */,
 				EF4EF85C1CA34D9500FD897F /* main.m in Sources */,
+				EF2116C11CB2B34C004F9F9A /* SunMoonCalc2Data.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,8 +412,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -384,8 +458,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -498,6 +574,7 @@
 				EF4EF8861CA34D9600FD897F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EF4EF8871CA34D9600FD897F /* Build configuration list for PBXNativeTarget "iFlightPlanTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +583,7 @@
 				EF4EF8891CA34D9600FD897F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EF4EF88A1CA34D9600FD897F /* Build configuration list for PBXNativeTarget "iFlightPlanUITests" */ = {
 			isa = XCConfigurationList;
@@ -514,6 +592,7 @@
 				EF4EF88C1CA34D9600FD897F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
