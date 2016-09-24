@@ -21,61 +21,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    _planArray = [NSMutableArray arrayWithArray:@[@{@"Ewindtemp":@"",
-                                                    @"Awindtemp":@"",
-                                                    @"PFL":@"",
-                                                    @"AFL":@"",
-                                                    @"TC":@"000",
-                                                    @"MC":@"000",
-                                                    @"waypoint":@"RJBB",
-                                                    @"AWY":@"TOMOH1",
-                                                    @"FIR":@"",
-                                                    @"lat":@"N34261",
-                                                    @"lon":@"E135140",
-                                                    @"DST":@"000",
-                                                    @"ZTM":@"007",
-                                                    @"ETO":@"",
-                                                    @"ATO":@"",
-                                                    @"CTM":@"0000",
-                                                    @"Efuel":@"117.5",
-                                                    @"Afuel":@""},
-                                                  @{@"Ewindtemp":@"174/007 P22",
-                                                    @"Awindtemp":@"",
-                                                    @"PFL":@"CL",
-                                                    @"AFL":@"",
-                                                    @"TC":@"076",
-                                                    @"MC":@"083",
-                                                    @"waypoint":@"EEP",
-                                                    @"AWY":@"TOMOH1",
-                                                    @"FIR":@"",
-                                                    @"lat":@"N34262",
-                                                    @"lon":@"E135146",
-                                                    @"DST":@"002",
-                                                    @"ZTM":@"001",
-                                                    @"ETO":@"",
-                                                    @"ATO":@"",
-                                                    @"CTM":@"0001",
-                                                    @"Efuel":@"117.0",
-                                                    @"Afuel":@""},
-                                                  @{@"Ewindtemp":@"174/007 P22",
-                                                    @"Awindtemp":@"",
-                                                    @"PFL":@"CL",
-                                                    @"AFL":@"",
-                                                    @"TC":@"074",
-                                                    @"MC":@"082",
-                                                    @"waypoint":@"N34265||E135159",
-                                                    @"AWY":@"TOMOH1",
-                                                    @"FIR":@"",
-                                                    @"lat":@"N34265",
-                                                    @"lon":@"E135159",
-                                                    @"DST":@"001",
-                                                    @"ZTM":@"000",
-                                                    @"ETO":@"",
-                                                    @"ATO":@"",
-                                                    @"CTM":@"0001",
-                                                    @"Efuel":@"116.8",
-                                                    @"Afuel":@""},]];
     
+    //test
+    PDFReader *test = [[PDFReader alloc]init];
+    _planArray = [NSMutableArray arrayWithArray:[test test]];
+
     _columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.17},
                          @{@"title":@"FL",@"widthPercent":@0.04},
                          @{@"title":@"TC",@"widthPercent":@0.05},
@@ -133,11 +83,9 @@
     }
 
     // カスタムセルをテーブルビューにセット
-    UINib *nib = [UINib nibWithNibName:@"PlanTableViewCell" bundle:nil];
     cellIdentifier = @"customCell";
-    [_planTableView registerNib:nib forCellReuseIdentifier:cellIdentifier];
+    [_planTableView registerClass: [PlanTableViewCell class] forCellReuseIdentifier: cellIdentifier];
 
-    _planTableView.tableFooterView = [[UIView alloc] init];
     
     //ヘッダ描画
 
@@ -172,16 +120,16 @@
     _headerView.upperLabelTitleArray = [upperLabelTitleArray copy];
     _headerView.lowerLabelTitleArray = [lowerLabelTitleArray copy];
     
-    
 }
 
--(void)viewWillAppear:(BOOL)animated {
+
+-(void)viewDidAppear:(BOOL)animated {
     
+    [super viewDidAppear:animated];
     
-    
+    [_planTableView reloadData];
     
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -196,89 +144,83 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [_planArray count] + 1;
+    return [_planArray count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     PlanTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-
  
-    if(indexPath.row == 0) {
-        return cell;
-    }
-    
     NSMutableArray *widthPercentArray = [NSMutableArray new];
-    NSMutableArray *upperLabelTitleArray = [NSMutableArray new];
-    NSMutableArray *lowerLabelTitleArray = [NSMutableArray new];
-    
-    
+
+    int numberOfColumn = 1;
     for (NSDictionary *dic in _columnListArray) {
         
         [widthPercentArray addObject:dic[@"widthPercent"]];
     
         NSString *title = dic[@"title"];
+        UILabel *upperLabel = [cell viewWithTag:numberOfColumn];
+        UILabel *lowerLabel = [cell viewWithTag:numberOfColumn + 100];
         
         if([title isEqualToString:@"W/T"]) {
-            [upperLabelTitleArray addObject:_planArray[indexPath.row - 1][@"Ewindtemp"]];
-            [lowerLabelTitleArray addObject:_planArray[indexPath.row - 1][@"Awindtemp"]];
+            upperLabel.text =_planArray[indexPath.row][@"Ewindtemp"];
+            lowerLabel.text =_planArray[indexPath.row][@"Awindtemp"];
+
         } else if ([title isEqualToString:@"FL"]) {
-            [upperLabelTitleArray addObject:_planArray[indexPath.row - 1][@"PFL"]];
-            [lowerLabelTitleArray addObject:_planArray[indexPath.row - 1][@"AFL"]];
+            upperLabel.text =_planArray[indexPath.row][@"PFL"];
+            lowerLabel.text =_planArray[indexPath.row][@"AFL"];
         } else if ([title isEqualToString:@"Z/END"]) {
             
-            NSArray *waypointArray = [_planArray[indexPath.row - 1][@"waypoint"] componentsSeparatedByString:@"||"];
+            NSArray *waypointArray = [_planArray[indexPath.row][@"waypoint"] componentsSeparatedByString:@"||"];
             
             if (waypointArray.count == 1) {
-                [upperLabelTitleArray addObject:waypointArray[0]];
-                [lowerLabelTitleArray addObject:@""];
+                upperLabel.text = waypointArray[0];
+                lowerLabel.text =@"";
             } else {
-                [upperLabelTitleArray addObject:waypointArray[0]];
-                [lowerLabelTitleArray addObject:waypointArray[1]];
+                upperLabel.text =waypointArray[0];
+                lowerLabel.text =waypointArray[1];
             }
             
         } else if ([title isEqualToString:@"WPCOORD"]){
-            [upperLabelTitleArray addObject:_planArray[indexPath.row - 1][@"lat"]];
-            [lowerLabelTitleArray addObject:_planArray[indexPath.row - 1][@"lon"]];
-            
+            upperLabel.text =_planArray[indexPath.row][@"lat"];
+            lowerLabel.text =_planArray[indexPath.row][@"lon"];
         } else if ([title isEqualToString:@"FRMNG"]){
-            [upperLabelTitleArray addObject:_planArray[indexPath.row - 1][@"Efuel"]];
-            [lowerLabelTitleArray addObject:_planArray[indexPath.row - 1][@"Afuel"]];
-            
+            upperLabel.text =_planArray[indexPath.row][@"Efuel"];
+            lowerLabel.text =_planArray[indexPath.row][@"Afuel"];
         } else if([title isEqualToString:@"AWYFIR"]){
-            
-            [upperLabelTitleArray addObject:_planArray[indexPath.row - 1][@"AWY"]];
-            [lowerLabelTitleArray addObject:_planArray[indexPath.row - 1][@"FIR"]];
-            
+            upperLabel.text =_planArray[indexPath.row][@"AWY"];
+            lowerLabel.text =_planArray[indexPath.row][@"FIR"];
             
             
         } else {
-            [upperLabelTitleArray addObject:_planArray[indexPath.row - 1][title]];
-            [lowerLabelTitleArray addObject:@""];
+            upperLabel.text = _planArray[indexPath.row][title];
+            lowerLabel.text = @"";
             
         }
     
+        numberOfColumn++;
+        
     }
     
+    
     cell.widthPercentArray = [widthPercentArray copy];
-    cell.upperLabelTitleArray = [upperLabelTitleArray copy];
-    cell.lowerLabelTitleArray = [lowerLabelTitleArray copy];
     
-/*    if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+    if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [tableView setSeparatorInset:UIEdgeInsetsZero];
-    }*/
+    }
     
-/*    if ([tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+    if ([tableView respondsToSelector:@selector(setLayoutMargins:)]) {
         [tableView setLayoutMargins:UIEdgeInsetsZero];
-    }*/
+    }
     
     if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
         [cell setLayoutMargins:UIEdgeInsetsZero];
     }
-    
 
     
     return cell;
 }
+
+
 
 @end

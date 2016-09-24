@@ -8,15 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <CoreText/CoreText.h>
 
 @interface PDFReader : NSObject
 
 
--(void)test;
+-(NSArray *)test;
 
 // オペレータコールバック
 - (void)operatorTextScanned:(CGPDFScannerRef)scanner;
-
+- (void)operatorFontScanned:(CGPDFScannerRef)scanner;
 
 @end
 

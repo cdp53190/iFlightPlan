@@ -14,6 +14,8 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    
 
 }
 
@@ -23,12 +25,14 @@
     // Configure the view for the selected state
 }
 
+
+
 -(void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
     CGFloat Xichi = 0;
     CGFloat labelHeight = [PlanTableViewCell rowHeight] / 2 - 8;
-    NSInteger numberOfColumn = 0;
+    NSInteger numberOfColumn = 1;
 
     for (NSNumber *widthPercent in _widthPercentArray) {
         
@@ -47,15 +51,10 @@
         label2.font = [UIFont systemFontOfSize:20];
         label2.adjustsFontSizeToFitWidth = YES;
         label2.minimumScaleFactor = 0.5;
-        
-        if (numberOfColumn < _upperLabelTitleArray.count) {
-            label1.text = _upperLabelTitleArray[numberOfColumn];
-        }
-        
-        if (numberOfColumn < _lowerLabelTitleArray.count) {
-            label2.text = _lowerLabelTitleArray[numberOfColumn];
-        }
 
+        label1.tag = numberOfColumn;
+        label2.tag = numberOfColumn + 100;
+                
         [self.contentView addSubview:label1];
         [self.contentView addSubview:label2];
         

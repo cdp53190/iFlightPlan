@@ -13,6 +13,7 @@
 #import "SunMoonCalc2Data.h"
 #import "PlanTableViewCell.h"
 #import "PlanHeaderView.h"
+#import "PDFReader.h"
 
 
 @interface ViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>

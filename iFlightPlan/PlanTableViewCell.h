@@ -10,7 +10,7 @@
 
 @interface PlanTableViewCell : UITableViewCell
 
-@property NSArray *upperLabelTitleArray, *lowerLabelTitleArray, *widthPercentArray;
+@property NSArray *widthPercentArray;
 
 
 +(CGFloat)rowHeight;
