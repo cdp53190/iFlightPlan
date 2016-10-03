@@ -13,7 +13,7 @@
 @interface PDFReader : NSObject
 
 
--(NSArray *)test;
+-(void)testWithPathString:(NSString *)path;
 
 // オペレータコールバック
 - (void)operatorTextScanned:(CGPDFScannerRef)scanner;

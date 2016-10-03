@@ -42,4 +42,20 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+-(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    
+    if( [[url pathExtension] isEqualToString:@"pdf"] ){
+
+        PDFReader *pdfReader = [[PDFReader alloc]init];
+        
+        [pdfReader testWithPathString:[url absoluteString]];
+
+        
+    }
+    
+    
+    return true;
+    
+}
+
 @end

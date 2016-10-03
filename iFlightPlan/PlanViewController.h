@@ -14,9 +14,10 @@
 #import "PlanTableViewCell.h"
 #import "PlanHeaderView.h"
 #import "PDFReader.h"
+#import "PlanColumnView.h"
 
 
-@interface ViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface PlanViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerHeightConstraint;
 @property (weak, nonatomic) IBOutlet PlanHeaderView *headerView;
 

@@ -6,39 +6,45 @@
 //  Copyright © 2016年 Another Sky. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "PlanViewController.h"
 
-@interface ViewController ()
+@interface PlanViewController ()
 
 @end
 
-@implementation ViewController
+@implementation PlanViewController
 {
     NSString *cellIdentifier;
+    NSMutableArray *widthPercentArray;
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    
     //test
-    PDFReader *test = [[PDFReader alloc]init];
-    _planArray = [NSMutableArray arrayWithArray:[test test]];
+/*    PDFReader *test = [[PDFReader alloc]init];
+    [test testWithPathString:[[NSBundle mainBundle] pathForResource:@"292650" ofType:@"pdf"]];*/
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    _planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"planArray"]];
 
-    _columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.17},
+    _columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.15},
                          @{@"title":@"FL",@"widthPercent":@0.04},
                          @{@"title":@"TC",@"widthPercent":@0.05},
                          @{@"title":@"MC",@"widthPercent":@0.05},
                          @{@"title":@"Z/END",@"widthPercent":@0.10},
                          @{@"title":@"AWYFIR",@"widthPercent":@0.10},
                          @{@"title":@"WPCOORD",@"widthPercent":@0.10},
-                         @{@"title":@"DST",@"widthPercent":@0.04},
-                         @{@"title":@"ZTM",@"widthPercent":@0.04},
+                         @{@"title":@"DST",@"widthPercent":@0.05},
+                         @{@"title":@"ZTM",@"widthPercent":@0.05},
                          @{@"title":@"ETO",@"widthPercent":@0.10},
                          @{@"title":@"ATO",@"widthPercent":@0.10},
                          @{@"title":@"CTM",@"widthPercent":@0.05},
                          @{@"title":@"FRMNG",@"widthPercent":@0.06}];
+    
+    
     
     int year = 2016;
     int month = 4;
@@ -83,17 +89,15 @@
     }
 
     // カスタムセルをテーブルビューにセット
-    cellIdentifier = @"customCell";
+    cellIdentifier = @"PlanCell";
     [_planTableView registerClass: [PlanTableViewCell class] forCellReuseIdentifier: cellIdentifier];
 
     
     //ヘッダ描画
 
-    
-    
     _headerHeightConstraint.constant = [PlanTableViewCell rowHeight];
     
-    NSMutableArray *widthPercentArray = [NSMutableArray new];
+    widthPercentArray = [NSMutableArray new];
     NSMutableArray *upperLabelTitleArray = [NSMutableArray new];
     NSMutableArray *lowerLabelTitleArray = [NSMutableArray new];
     
@@ -120,16 +124,14 @@
     _headerView.upperLabelTitleArray = [upperLabelTitleArray copy];
     _headerView.lowerLabelTitleArray = [lowerLabelTitleArray copy];
     
+    [ud setObject:_columnListArray forKey:@"columnListArray"];
+    
+    [ud setObject:[widthPercentArray copy] forKey:@"widthPercentArray"];
+    [ud synchronize];
+    
 }
 
 
--(void)viewDidAppear:(BOOL)animated {
-    
-    [super viewDidAppear:animated];
-    
-    [_planTableView reloadData];
-    
-}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -150,60 +152,54 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     PlanTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
- 
-    NSMutableArray *widthPercentArray = [NSMutableArray new];
-
+    
     int numberOfColumn = 1;
     for (NSDictionary *dic in _columnListArray) {
         
         [widthPercentArray addObject:dic[@"widthPercent"]];
     
         NSString *title = dic[@"title"];
-        UILabel *upperLabel = [cell viewWithTag:numberOfColumn];
-        UILabel *lowerLabel = [cell viewWithTag:numberOfColumn + 100];
-        
+        PlanColumnView *columnView = [cell.contentView viewWithTag:numberOfColumn];
+
         if([title isEqualToString:@"W/T"]) {
-            upperLabel.text =_planArray[indexPath.row][@"Ewindtemp"];
-            lowerLabel.text =_planArray[indexPath.row][@"Awindtemp"];
+            columnView.upperLabel.text =_planArray[indexPath.row][@"Ewindtemp"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"Awindtemp"];
 
         } else if ([title isEqualToString:@"FL"]) {
-            upperLabel.text =_planArray[indexPath.row][@"PFL"];
-            lowerLabel.text =_planArray[indexPath.row][@"AFL"];
+            columnView.upperLabel.text =_planArray[indexPath.row][@"PFL"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"AFL"];
         } else if ([title isEqualToString:@"Z/END"]) {
             
             NSArray *waypointArray = [_planArray[indexPath.row][@"waypoint"] componentsSeparatedByString:@"||"];
             
             if (waypointArray.count == 1) {
-                upperLabel.text = waypointArray[0];
-                lowerLabel.text =@"";
+                columnView.upperLabel.text = waypointArray[0];
+                columnView.lowerLabel.text =@"";
             } else {
-                upperLabel.text =waypointArray[0];
-                lowerLabel.text =waypointArray[1];
+                columnView.upperLabel.text =waypointArray[0];
+                columnView.lowerLabel.text =waypointArray[1];
             }
             
         } else if ([title isEqualToString:@"WPCOORD"]){
-            upperLabel.text =_planArray[indexPath.row][@"lat"];
-            lowerLabel.text =_planArray[indexPath.row][@"lon"];
+            columnView.upperLabel.text =_planArray[indexPath.row][@"lat"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"lon"];
         } else if ([title isEqualToString:@"FRMNG"]){
-            upperLabel.text =_planArray[indexPath.row][@"Efuel"];
-            lowerLabel.text =_planArray[indexPath.row][@"Afuel"];
+            columnView.upperLabel.text =_planArray[indexPath.row][@"Efuel"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"Afuel"];
         } else if([title isEqualToString:@"AWYFIR"]){
-            upperLabel.text =_planArray[indexPath.row][@"AWY"];
-            lowerLabel.text =_planArray[indexPath.row][@"FIR"];
+            columnView.upperLabel.text =_planArray[indexPath.row][@"AWY"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"FIR"];
             
             
         } else {
-            upperLabel.text = _planArray[indexPath.row][title];
-            lowerLabel.text = @"";
+            columnView.upperLabel.text = _planArray[indexPath.row][title];
+            columnView.lowerLabel.text = @"";
             
         }
     
         numberOfColumn++;
         
     }
-    
-    
-    cell.widthPercentArray = [widthPercentArray copy];
     
     if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [tableView setSeparatorInset:UIEdgeInsetsZero];

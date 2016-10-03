@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PlanColumnView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="125"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Sz8-OZ-7BK">
+                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6lh-3N-n73">
+                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IAp-Ef-36J">
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="vDA-jj-NBR"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="6lh-3N-n73" firstAttribute="height" secondItem="Sz8-OZ-7BK" secondAttribute="height" id="4SX-AF-m60"/>
+                <constraint firstItem="IAp-Ef-36J" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="6G9-xm-Df8"/>
+                <constraint firstItem="Sz8-OZ-7BK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="4" id="7f7-bv-Log"/>
+                <constraint firstAttribute="bottom" secondItem="IAp-Ef-36J" secondAttribute="bottom" id="7vN-pb-1Pb"/>
+                <constraint firstItem="Sz8-OZ-7BK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="4" id="Bd4-ho-ZHg"/>
+                <constraint firstItem="6lh-3N-n73" firstAttribute="top" secondItem="Sz8-OZ-7BK" secondAttribute="bottom" constant="4" id="Fo5-1n-2hW"/>
+                <constraint firstItem="6lh-3N-n73" firstAttribute="top" secondItem="Sz8-OZ-7BK" secondAttribute="bottom" constant="4" id="Pfc-EM-zQI"/>
+                <constraint firstAttribute="trailing" secondItem="6lh-3N-n73" secondAttribute="trailing" constant="4" id="coC-bp-N3g"/>
+                <constraint firstAttribute="trailing" secondItem="Sz8-OZ-7BK" secondAttribute="trailing" constant="4" id="epy-4M-Bdg"/>
+                <constraint firstItem="6lh-3N-n73" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="4" id="lhE-Hk-LUS"/>
+                <constraint firstAttribute="bottom" secondItem="6lh-3N-n73" secondAttribute="bottom" constant="4" id="wR7-ts-JTE"/>
+                <constraint firstAttribute="trailing" secondItem="IAp-Ef-36J" secondAttribute="trailing" id="zgu-F7-mCM"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="lineView" destination="IAp-Ef-36J" id="A0Y-xo-KHn"/>
+                <outlet property="lowerLabel" destination="6lh-3N-n73" id="13t-S7-ZEf"/>
+                <outlet property="upperLabel" destination="Sz8-OZ-7BK" id="HbL-3U-BJS"/>
+            </connections>
+            <point key="canvasLocation" x="78.5" y="-168.5"/>
+        </view>
+    </objects>
+</document>

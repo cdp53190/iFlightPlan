@@ -8,14 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		EF0E0F5C1D8845B70085EB7F /* Memo in Resources */ = {isa = PBXBuildFile; fileRef = EF0E0F5B1D8845B70085EB7F /* Memo */; };
+		EF0E72FF1DA026E1000BC8F4 /* 297241.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF0E72F91DA026E1000BC8F4 /* 297241.pdf */; };
+		EF0E73001DA026E1000BC8F4 /* 297063.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF0E72FA1DA026E1000BC8F4 /* 297063.pdf */; };
+		EF0E73011DA026E1000BC8F4 /* 274630.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF0E72FB1DA026E1000BC8F4 /* 274630.pdf */; };
+		EF0E73021DA026E1000BC8F4 /* 217564.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF0E72FC1DA026E1000BC8F4 /* 217564.pdf */; };
+		EF0E73031DA026E1000BC8F4 /* 197809.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF0E72FD1DA026E1000BC8F4 /* 197809.pdf */; };
+		EF0E73041DA026E1000BC8F4 /* 184825.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF0E72FE1DA026E1000BC8F4 /* 184825.pdf */; };
 		EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2116BD1CB1247A004F9F9A /* SunMoonCalc2.m */; };
 		EF2116C11CB2B34C004F9F9A /* SunMoonCalc2Data.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */; };
+		EF2526A01D9D788900B5E392 /* PlanColumnView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF25269F1D9D788900B5E392 /* PlanColumnView.xib */; };
+		EF2D0DBF1D9FAC030099B505 /* PlanColumnView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2D0DBE1D9FAC030099B505 /* PlanColumnView.m */; };
 		EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF31A0FE1D95928100F8048D /* SummeryViewController.m */; };
-		EF31A14A1D969B9E00F8048D /* PlanTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF31A1481D969B9E00F8048D /* PlanTableViewCell.xib */; };
 		EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */; };
 		EF4EF85C1CA34D9500FD897F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85B1CA34D9500FD897F /* main.m */; };
 		EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85E1CA34D9500FD897F /* AppDelegate.m */; };
-		EF4EF8621CA34D9500FD897F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8611CA34D9500FD897F /* ViewController.m */; };
+		EF4EF8621CA34D9500FD897F /* PlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8611CA34D9500FD897F /* PlanViewController.m */; };
 		EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF4EF8631CA34D9500FD897F /* Main.storyboard */; };
 		EF4EF8671CA34D9500FD897F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF4EF8661CA34D9500FD897F /* Assets.xcassets */; };
 		EF4EF86A1CA34D9500FD897F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF4EF8681CA34D9500FD897F /* LaunchScreen.storyboard */; };
@@ -47,21 +54,29 @@
 
 /* Begin PBXFileReference section */
 		EF0E0F5B1D8845B70085EB7F /* Memo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Memo; path = iFlightPlan/Memo; sourceTree = "<group>"; };
+		EF0E72F91DA026E1000BC8F4 /* 297241.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 297241.pdf; sourceTree = "<group>"; };
+		EF0E72FA1DA026E1000BC8F4 /* 297063.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 297063.pdf; sourceTree = "<group>"; };
+		EF0E72FB1DA026E1000BC8F4 /* 274630.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 274630.pdf; sourceTree = "<group>"; };
+		EF0E72FC1DA026E1000BC8F4 /* 217564.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 217564.pdf; sourceTree = "<group>"; };
+		EF0E72FD1DA026E1000BC8F4 /* 197809.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 197809.pdf; sourceTree = "<group>"; };
+		EF0E72FE1DA026E1000BC8F4 /* 184825.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 184825.pdf; sourceTree = "<group>"; };
 		EF2116BC1CB1247A004F9F9A /* SunMoonCalc2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonCalc2.h; sourceTree = "<group>"; };
 		EF2116BD1CB1247A004F9F9A /* SunMoonCalc2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonCalc2.m; sourceTree = "<group>"; };
 		EF2116BF1CB2B34C004F9F9A /* SunMoonCalc2Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonCalc2Data.h; sourceTree = "<group>"; };
 		EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonCalc2Data.m; sourceTree = "<group>"; };
+		EF25269F1D9D788900B5E392 /* PlanColumnView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanColumnView.xib; sourceTree = "<group>"; };
+		EF2D0DBD1D9FAC030099B505 /* PlanColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanColumnView.h; sourceTree = "<group>"; };
+		EF2D0DBE1D9FAC030099B505 /* PlanColumnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanColumnView.m; sourceTree = "<group>"; };
 		EF31A0FD1D95928100F8048D /* SummeryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SummeryViewController.h; sourceTree = "<group>"; };
 		EF31A0FE1D95928100F8048D /* SummeryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SummeryViewController.m; sourceTree = "<group>"; };
-		EF31A1481D969B9E00F8048D /* PlanTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanTableViewCell.xib; sourceTree = "<group>"; };
 		EF48F8C31CD55A7B004DC03A /* PlanTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanTableViewCell.h; sourceTree = "<group>"; };
 		EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanTableViewCell.m; sourceTree = "<group>"; };
 		EF4EF8571CA34D9500FD897F /* iFlightPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iFlightPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF4EF85B1CA34D9500FD897F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EF4EF85D1CA34D9500FD897F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EF4EF85E1CA34D9500FD897F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		EF4EF8601CA34D9500FD897F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		EF4EF8611CA34D9500FD897F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		EF4EF8601CA34D9500FD897F /* PlanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlanViewController.h; sourceTree = "<group>"; };
+		EF4EF8611CA34D9500FD897F /* PlanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlanViewController.m; sourceTree = "<group>"; };
 		EF4EF8641CA34D9500FD897F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EF4EF8661CA34D9500FD897F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EF4EF8691CA34D9500FD897F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -109,6 +124,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EF0E73051DA026EA000BC8F4 /* test plan */ = {
+			isa = PBXGroup;
+			children = (
+				EF0E72F91DA026E1000BC8F4 /* 297241.pdf */,
+				EF0E72FA1DA026E1000BC8F4 /* 297063.pdf */,
+				EF0E72FB1DA026E1000BC8F4 /* 274630.pdf */,
+				EF0E72FC1DA026E1000BC8F4 /* 217564.pdf */,
+				EF0E72FD1DA026E1000BC8F4 /* 197809.pdf */,
+				EF0E72FE1DA026E1000BC8F4 /* 184825.pdf */,
+				EFE3F15A1D942D55003A5903 /* 292650.pdf */,
+			);
+			name = "test plan";
+			sourceTree = "<group>";
+		};
 		EF31A0FC1D95922300F8048D /* Plan */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,7 +145,9 @@
 				EFE3F14F1D93411B003A5903 /* PlanHeaderView.m */,
 				EF48F8C31CD55A7B004DC03A /* PlanTableViewCell.h */,
 				EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */,
-				EF31A1481D969B9E00F8048D /* PlanTableViewCell.xib */,
+				EF25269F1D9D788900B5E392 /* PlanColumnView.xib */,
+				EF2D0DBD1D9FAC030099B505 /* PlanColumnView.h */,
+				EF2D0DBE1D9FAC030099B505 /* PlanColumnView.m */,
 			);
 			name = Plan;
 			sourceTree = "<group>";
@@ -150,8 +181,8 @@
 				EFE3F1511D934360003A5903 /* SunMoonCalc */,
 				EF4EF85D1CA34D9500FD897F /* AppDelegate.h */,
 				EF4EF85E1CA34D9500FD897F /* AppDelegate.m */,
-				EF4EF8601CA34D9500FD897F /* ViewController.h */,
-				EF4EF8611CA34D9500FD897F /* ViewController.m */,
+				EF4EF8601CA34D9500FD897F /* PlanViewController.h */,
+				EF4EF8611CA34D9500FD897F /* PlanViewController.m */,
 				EF4EF8631CA34D9500FD897F /* Main.storyboard */,
 				EF4EF8661CA34D9500FD897F /* Assets.xcassets */,
 				EF4EF8681CA34D9500FD897F /* LaunchScreen.storyboard */,
@@ -161,7 +192,7 @@
 				EFE3F1461D92DDCA003A5903 /* TitleViewController.m */,
 				EFE3F1541D934896003A5903 /* PDFReader.h */,
 				EFE3F1551D934896003A5903 /* PDFReader.m */,
-				EFE3F15A1D942D55003A5903 /* 292650.pdf */,
+				EF0E73051DA026EA000BC8F4 /* test plan */,
 				EF31A0FD1D95928100F8048D /* SummeryViewController.h */,
 				EF31A0FE1D95928100F8048D /* SummeryViewController.m */,
 			);
@@ -320,11 +351,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF4EF86A1CA34D9500FD897F /* LaunchScreen.storyboard in Resources */,
+				EF0E73031DA026E1000BC8F4 /* 197809.pdf in Resources */,
+				EF2526A01D9D788900B5E392 /* PlanColumnView.xib in Resources */,
+				EF0E72FF1DA026E1000BC8F4 /* 297241.pdf in Resources */,
 				EFE3F15B1D942D55003A5903 /* 292650.pdf in Resources */,
 				EF4EF8671CA34D9500FD897F /* Assets.xcassets in Resources */,
+				EF0E73041DA026E1000BC8F4 /* 184825.pdf in Resources */,
+				EF0E73021DA026E1000BC8F4 /* 217564.pdf in Resources */,
+				EF0E73001DA026E1000BC8F4 /* 297063.pdf in Resources */,
 				EF0E0F5C1D8845B70085EB7F /* Memo in Resources */,
 				EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */,
-				EF31A14A1D969B9E00F8048D /* PlanTableViewCell.xib in Resources */,
+				EF0E73011DA026E1000BC8F4 /* 274630.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,10 +389,11 @@
 				EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */,
 				EFE3F1561D934896003A5903 /* PDFReader.m in Sources */,
 				EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */,
-				EF4EF8621CA34D9500FD897F /* ViewController.m in Sources */,
+				EF4EF8621CA34D9500FD897F /* PlanViewController.m in Sources */,
 				EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */,
 				EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */,
 				EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */,
+				EF2D0DBF1D9FAC030099B505 /* PlanColumnView.m in Sources */,
 				EFE3F1501D93411B003A5903 /* PlanHeaderView.m in Sources */,
 				EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */,
 				EF4EF85C1CA34D9500FD897F /* main.m in Sources */,

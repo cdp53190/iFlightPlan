@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PlanColumnView.h"
 
 @interface PlanTableViewCell : UITableViewCell
 
-@property NSArray *widthPercentArray;
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier widthPercentArray:(NSArray *)widthPercentArray;
 
 
 +(CGFloat)rowHeight;

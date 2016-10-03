@@ -14,8 +14,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    
-    
 
 }
 
@@ -25,68 +23,124 @@
     // Configure the view for the selected state
 }
 
-
-
--(void)drawRect:(CGRect)rect {
-    [super drawRect:rect];
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
-    CGFloat Xichi = 0;
-    CGFloat labelHeight = [PlanTableViewCell rowHeight] / 2 - 8;
-    NSInteger numberOfColumn = 1;
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+    
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        
+        NSArray *widthPercentArray = [ud objectForKey:@"widthPercentArray"];
+        
+        NSInteger numberOfColumn = 1;
+        
+        for (NSNumber *widthPercent in widthPercentArray) {
+            
+            
+            UINib *nib = [UINib nibWithNibName:@"PlanColumnView" bundle:nil];
+            PlanColumnView *columnView = [nib instantiateWithOwner:self options:nil][0];
+            
+            [columnView setTag:numberOfColumn];
+            
+            [columnView setTranslatesAutoresizingMaskIntoConstraints:NO];
+            
+            if (numberOfColumn == widthPercentArray.count) {
+                [columnView.lineView setHidden:YES];
+            }
+            
+            [self.contentView addSubview:columnView];
+            
+            NSLayoutConstraint *layoutTop = [NSLayoutConstraint constraintWithItem:columnView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.contentView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0
+                                                                          constant:0.0];
 
-    for (NSNumber *widthPercent in _widthPercentArray) {
-        
-        
-        CGFloat actWidth = self.frame.size.width * widthPercent.doubleValue;
-        
-        UILabel *label1, *label2;
-        
-        label1 = [[UILabel alloc]initWithFrame:CGRectMake(Xichi + 4, 4, actWidth - 8.0, labelHeight)];
-        label2 = [[UILabel alloc]initWithFrame:CGRectMake(Xichi + 4, labelHeight + 12, actWidth - 8, labelHeight)];
-        
-        label1.font = [UIFont systemFontOfSize:20];
-        label1.adjustsFontSizeToFitWidth = YES;
-        label1.minimumScaleFactor = 0.5;
-        
-        label2.font = [UIFont systemFontOfSize:20];
-        label2.adjustsFontSizeToFitWidth = YES;
-        label2.minimumScaleFactor = 0.5;
-
-        label1.tag = numberOfColumn;
-        label2.tag = numberOfColumn + 100;
+            NSLayoutConstraint *layoutLeft;
+            
+            if (numberOfColumn == 1) {
                 
-        [self.contentView addSubview:label1];
-        [self.contentView addSubview:label2];
-        
-        Xichi += actWidth;
+                layoutLeft = [NSLayoutConstraint constraintWithItem:columnView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.contentView
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0
+                                                           constant:0.0];
 
-        if (Xichi != self.frame.size.width){
-        
-            // create bezierPath instance
-            UIBezierPath *aPath = [UIBezierPath bezierPath];
+            } else {
+                                
+                layoutLeft = [NSLayoutConstraint constraintWithItem:columnView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:[self.contentView viewWithTag:numberOfColumn - 1]
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1.0
+                                                           constant:0.0];
+
+            }
+
+            NSLayoutConstraint *layoutBottom = [NSLayoutConstraint constraintWithItem:columnView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:self.contentView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                           multiplier:1.0
+                                                                             constant:0.0];
+
+            NSLayoutConstraint *layoutWidth = [NSLayoutConstraint constraintWithItem:columnView
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.contentView
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                          multiplier:widthPercent.doubleValue
+                                                                            constant:0.0];
+
+
             
-            // set render color and style
-            [[UIColor blackColor] setStroke];
-            aPath.lineWidth = 0.8;
+            NSArray *layoutConstraints = @[layoutTop,
+                                           layoutBottom,
+                                           layoutLeft,
+                                           layoutWidth];
             
-            // set start point
-            [aPath moveToPoint:CGPointMake(Xichi, 0)];
+
+            [self.contentView addConstraints:layoutConstraints];
             
-            //draw line
-            [aPath addLineToPoint:CGPointMake(Xichi, [PlanTableViewCell rowHeight])];
+            numberOfColumn++;
             
-            //rendering
-            [aPath stroke];
+            
         }
-        numberOfColumn++;
+        
 
+        
+        
+        
+        
+        
         
     }
     
+    return self;
+}
+
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier widthPercentArray:(NSArray *)widthPercentArray {
+    
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        
+        
+        
+    }
+    
+    return self;
+}
+
+-(void)drawRect:(CGRect)rect {
+    [super drawRect:rect];
 
 }
 
 +(CGFloat)rowHeight {
-    return 60;
+    return 50;
 }
 @end

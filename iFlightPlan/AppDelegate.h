@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PDFReader.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
