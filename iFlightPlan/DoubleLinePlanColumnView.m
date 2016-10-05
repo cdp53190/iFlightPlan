@@ -6,9 +6,9 @@
 //  Copyright © 2016年 Another Sky. All rights reserved.
 //
 
-#import "PlanColumnView.h"
+#import "DoubleLinePlanColumnView.h"
 
-@implementation PlanColumnView
+@implementation DoubleLinePlanColumnView
 
 /*
 // Only override drawRect: if you perform custom drawing.

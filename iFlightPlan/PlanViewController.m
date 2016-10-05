@@ -14,7 +14,6 @@
 
 @implementation PlanViewController
 {
-    NSString *cellIdentifier;
     NSMutableArray *widthPercentArray;
 }
 
@@ -24,28 +23,13 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     //test
-/*    PDFReader *test = [[PDFReader alloc]init];
-    [test testWithPathString:[[NSBundle mainBundle] pathForResource:@"292650" ofType:@"pdf"]];*/
-    
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    _planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"planArray"]];
+    //PDFReader *test = [[PDFReader alloc]init];
+    //[test testWithPathString:[[NSBundle mainBundle] pathForResource:@"314662" ofType:@"pdf"]];
 
-    _columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.15},
-                         @{@"title":@"FL",@"widthPercent":@0.04},
-                         @{@"title":@"TC",@"widthPercent":@0.05},
-                         @{@"title":@"MC",@"widthPercent":@0.05},
-                         @{@"title":@"Z/END",@"widthPercent":@0.10},
-                         @{@"title":@"AWYFIR",@"widthPercent":@0.10},
-                         @{@"title":@"WPCOORD",@"widthPercent":@0.10},
-                         @{@"title":@"DST",@"widthPercent":@0.05},
-                         @{@"title":@"ZTM",@"widthPercent":@0.05},
-                         @{@"title":@"ETO",@"widthPercent":@0.10},
-                         @{@"title":@"ATO",@"widthPercent":@0.10},
-                         @{@"title":@"CTM",@"widthPercent":@0.05},
-                         @{@"title":@"FRMNG",@"widthPercent":@0.06}];
     
-    
-    
+
+
+    /*
     int year = 2016;
     int month = 4;
     int day = 5;
@@ -86,48 +70,174 @@
     
         latitude +=99.9;
         
-    }
+    }*/
 
     // カスタムセルをテーブルビューにセット
-    cellIdentifier = @"PlanCell";
-    [_planTableView registerClass: [PlanTableViewCell class] forCellReuseIdentifier: cellIdentifier];
+    [_planTableView registerClass: [PlanTableViewCell class] forCellReuseIdentifier: _cellIdentifier];
 
     
-    //ヘッダ描画
-
+    //ヘッダ描画&widthPercentArrayセット
+    
     _headerHeightConstraint.constant = [PlanTableViewCell rowHeight];
     
     widthPercentArray = [NSMutableArray new];
-    NSMutableArray *upperLabelTitleArray = [NSMutableArray new];
-    NSMutableArray *lowerLabelTitleArray = [NSMutableArray new];
+
     
+    NSInteger numberOfColumn = 1;    
     for (NSDictionary *dic in _columnListArray) {
 
+        UIView *columnView;
+        
+        if ([_cellIdentifier isEqualToString:@"NAVLOG"]) {
+            
+            UINib *nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
+            columnView = [nib instantiateWithOwner:self options:nil][0];
+            
+            if (numberOfColumn == widthPercentArray.count) {
+                [((DoubleLinePlanColumnView *)columnView).lineView setHidden:YES];
+            }
+            
+            NSString *title = dic[@"title"];
+            
+            if ([title isEqualToString:@"AWYFIR"]) {
+                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"AWY";
+                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"FIR";
+            } else if ([title isEqualToString:@"WPCOORD"]) {
+                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"WP";
+                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"COORD";
+            } else {
+                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = title;
+                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"";
+            }
+            
+        }
+        
+        [columnView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+
+        
+        [columnView setTag:numberOfColumn];
+
+        
+        [_headerView addSubview:columnView];
+        
+        NSLayoutConstraint *layoutTop = [NSLayoutConstraint constraintWithItem:columnView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:_headerView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0
+                                                                      constant:0.0];
+        
+        NSLayoutConstraint *layoutLeft;
+        
+        if (numberOfColumn == 1) {
+            
+            layoutLeft = [NSLayoutConstraint constraintWithItem:columnView
+                                                      attribute:NSLayoutAttributeLeft
+                                                      relatedBy:NSLayoutRelationEqual
+                                                         toItem:_headerView
+                                                      attribute:NSLayoutAttributeLeft
+                                                     multiplier:1.0
+                                                       constant:0.0];
+            
+        } else {
+            
+            layoutLeft = [NSLayoutConstraint constraintWithItem:columnView
+                                                      attribute:NSLayoutAttributeLeft
+                                                      relatedBy:NSLayoutRelationEqual
+                                                         toItem:[_headerView viewWithTag:numberOfColumn - 1]
+                                                      attribute:NSLayoutAttributeRight
+                                                     multiplier:1.0
+                                                       constant:0.0];
+            
+        }
+        
+        NSLayoutConstraint *layoutBottom = [NSLayoutConstraint constraintWithItem:columnView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:_headerView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0
+                                                                         constant:0.0];
+        
+        NSLayoutConstraint *layoutWidth = [NSLayoutConstraint constraintWithItem:columnView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:_headerView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                      multiplier:((NSNumber *)dic[@"widthPercent"]).doubleValue
+                                                                        constant:0.0];
+        
+        
+        
+        NSArray *layoutConstraints = @[layoutTop,
+                                       layoutBottom,
+                                       layoutLeft,
+                                       layoutWidth];
+        
+        
+        [_headerView addConstraints:layoutConstraints];
+        
         [widthPercentArray addObject:dic[@"widthPercent"]];
         
-        NSString *title = dic[@"title"];
-        
-        if ([title isEqualToString:@"AWYFIR"]) {
-            [upperLabelTitleArray addObject:@"AWY"];
-            [lowerLabelTitleArray addObject:@"FIR"];
-        } else if ([title isEqualToString:@"WPCOORD"]) {
-            [upperLabelTitleArray addObject:@"WP"];
-            [lowerLabelTitleArray addObject:@"COORD"];
-        } else {
-            [upperLabelTitleArray addObject:title];
-            [lowerLabelTitleArray addObject:@""];
-        }
+        numberOfColumn++;
 
     }
     
-    _headerView.widthPercentArray = [widthPercentArray copy];
-    _headerView.upperLabelTitleArray = [upperLabelTitleArray copy];
-    _headerView.lowerLabelTitleArray = [lowerLabelTitleArray copy];
+    UIView *lineView = [[UIView alloc] init];
     
-    [ud setObject:_columnListArray forKey:@"columnListArray"];
+    lineView.backgroundColor = [UIColor blackColor];
     
-    [ud setObject:[widthPercentArray copy] forKey:@"widthPercentArray"];
-    [ud synchronize];
+    [lineView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [_headerView addSubview:lineView];
+    
+    
+    NSLayoutConstraint *layoutLeft = [NSLayoutConstraint constraintWithItem:lineView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:_headerView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1.0
+                                                                   constant:0.0];
+    
+    NSLayoutConstraint *layoutRight = [NSLayoutConstraint constraintWithItem:lineView
+                                                                   attribute:NSLayoutAttributeRight
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:_headerView
+                                                                   attribute:NSLayoutAttributeRight
+                                                                  multiplier:1.0
+                                                                    constant:0.0];
+    
+    NSLayoutConstraint *layoutBottom = [NSLayoutConstraint constraintWithItem:lineView
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:_headerView
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                   multiplier:1.0
+                                                                     constant:0.0];
+    
+    NSLayoutConstraint *layoutHeight = [NSLayoutConstraint constraintWithItem:lineView
+                                                                    attribute:NSLayoutAttributeHeight
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:nil
+                                                                    attribute:NSLayoutAttributeNotAnAttribute
+                                                                   multiplier:1.0
+                                                                     constant:1.0];
+    
+    NSArray *layoutConstraints = @[layoutLeft,
+                                   layoutRight,
+                                   layoutBottom,
+                                   layoutHeight];
+    
+    
+    
+    [_headerView addConstraints:layoutConstraints];
+
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setObject:widthPercentArray forKey:@"widthPercentArray"];
+    
     
 }
 
@@ -151,51 +261,57 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    PlanTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    PlanTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:_cellIdentifier];
+    
+    cell.widthPercentArray = widthPercentArray;
     
     int numberOfColumn = 1;
     for (NSDictionary *dic in _columnListArray) {
-        
-        [widthPercentArray addObject:dic[@"widthPercent"]];
     
         NSString *title = dic[@"title"];
-        PlanColumnView *columnView = [cell.contentView viewWithTag:numberOfColumn];
-
-        if([title isEqualToString:@"W/T"]) {
-            columnView.upperLabel.text =_planArray[indexPath.row][@"Ewindtemp"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"Awindtemp"];
-
-        } else if ([title isEqualToString:@"FL"]) {
-            columnView.upperLabel.text =_planArray[indexPath.row][@"PFL"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"AFL"];
-        } else if ([title isEqualToString:@"Z/END"]) {
+        
+        if ([_cellIdentifier isEqualToString:@"NAVLOG"]) {
             
-            NSArray *waypointArray = [_planArray[indexPath.row][@"waypoint"] componentsSeparatedByString:@"||"];
+            DoubleLinePlanColumnView *columnView = [cell.contentView viewWithTag:numberOfColumn];
             
-            if (waypointArray.count == 1) {
-                columnView.upperLabel.text = waypointArray[0];
-                columnView.lowerLabel.text =@"";
+            if([title isEqualToString:@"W/T"]) {
+                columnView.upperLabel.text =_planArray[indexPath.row][@"Ewindtemp"];
+                columnView.lowerLabel.text =_planArray[indexPath.row][@"Awindtemp"];
+                
+            } else if ([title isEqualToString:@"FL"]) {
+                columnView.upperLabel.text =_planArray[indexPath.row][@"PFL"];
+                columnView.lowerLabel.text =_planArray[indexPath.row][@"AFL"];
+            } else if ([title isEqualToString:@"Z/END"]) {
+                
+                NSArray *waypointArray = [_planArray[indexPath.row][@"waypoint"] componentsSeparatedByString:@"||"];
+                
+                if (waypointArray.count == 1) {
+                    columnView.upperLabel.text = waypointArray[0];
+                    columnView.lowerLabel.text =@"";
+                } else {
+                    columnView.upperLabel.text =waypointArray[0];
+                    columnView.lowerLabel.text =waypointArray[1];
+                }
+                
+            } else if ([title isEqualToString:@"WPCOORD"]){
+                columnView.upperLabel.text =_planArray[indexPath.row][@"lat"];
+                columnView.lowerLabel.text =_planArray[indexPath.row][@"lon"];
+            } else if ([title isEqualToString:@"FRMNG"]){
+                columnView.upperLabel.text =_planArray[indexPath.row][@"Efuel"];
+                columnView.lowerLabel.text =_planArray[indexPath.row][@"Afuel"];
+            } else if([title isEqualToString:@"AWYFIR"]){
+                columnView.upperLabel.text =_planArray[indexPath.row][@"AWY"];
+                columnView.lowerLabel.text =_planArray[indexPath.row][@"FIR"];
+                
+                
             } else {
-                columnView.upperLabel.text =waypointArray[0];
-                columnView.lowerLabel.text =waypointArray[1];
+                columnView.upperLabel.text = _planArray[indexPath.row][title];
+                columnView.lowerLabel.text = @"";
+                
             }
-            
-        } else if ([title isEqualToString:@"WPCOORD"]){
-            columnView.upperLabel.text =_planArray[indexPath.row][@"lat"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"lon"];
-        } else if ([title isEqualToString:@"FRMNG"]){
-            columnView.upperLabel.text =_planArray[indexPath.row][@"Efuel"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"Afuel"];
-        } else if([title isEqualToString:@"AWYFIR"]){
-            columnView.upperLabel.text =_planArray[indexPath.row][@"AWY"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"FIR"];
-            
-            
-        } else {
-            columnView.upperLabel.text = _planArray[indexPath.row][title];
-            columnView.lowerLabel.text = @"";
-            
+
         }
+        
     
         numberOfColumn++;
         
@@ -216,6 +332,7 @@
     
     return cell;
 }
+
 
 
 

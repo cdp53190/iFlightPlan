@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PlanColumnView : UIView
+@interface DoubleLinePlanColumnView : UIView
 @property (weak, nonatomic) IBOutlet UILabel *upperLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lowerLabel;
 @property (weak, nonatomic) IBOutlet UIView *lineView;

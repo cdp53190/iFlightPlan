@@ -23,7 +23,7 @@
 
 @synthesize year,month,day,hour,minute,lat,lon,alt;
 
-#pragma mark - Function
+#pragma mark - C Function
 
 static double sind(double d) {return sin(d * M_PI/180);}
 static double cosd(double d) {return cos(d * M_PI/180);}

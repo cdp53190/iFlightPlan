@@ -27,25 +27,31 @@
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
     
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        
-        NSArray *widthPercentArray = [ud objectForKey:@"widthPercentArray"];
+        _widthPercentArray = [[NSUserDefaults standardUserDefaults]objectForKey:@"widthPercentArray"];
         
         NSInteger numberOfColumn = 1;
         
-        for (NSNumber *widthPercent in widthPercentArray) {
+        for (NSNumber *widthPercent in _widthPercentArray) {
             
+            UIView *columnView;
             
-            UINib *nib = [UINib nibWithNibName:@"PlanColumnView" bundle:nil];
-            PlanColumnView *columnView = [nib instantiateWithOwner:self options:nil][0];
-            
+            if ([reuseIdentifier isEqualToString:@"NAVLOG"]) {
+                UINib *nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
+                columnView = [nib instantiateWithOwner:self options:nil][0];
+                
+                if (numberOfColumn == _widthPercentArray.count) {
+                    [((DoubleLinePlanColumnView *)columnView).lineView setHidden:YES];
+                }
+            } else if (1) {
+                
+            }
+        
+
+
             [columnView setTag:numberOfColumn];
             
             [columnView setTranslatesAutoresizingMaskIntoConstraints:NO];
             
-            if (numberOfColumn == widthPercentArray.count) {
-                [columnView.lineView setHidden:YES];
-            }
             
             [self.contentView addSubview:columnView];
             
@@ -56,7 +62,7 @@
                                                                          attribute:NSLayoutAttributeTop
                                                                         multiplier:1.0
                                                                           constant:0.0];
-
+            
             NSLayoutConstraint *layoutLeft;
             
             if (numberOfColumn == 1) {
@@ -68,9 +74,9 @@
                                                           attribute:NSLayoutAttributeLeft
                                                          multiplier:1.0
                                                            constant:0.0];
-
+                
             } else {
-                                
+                
                 layoutLeft = [NSLayoutConstraint constraintWithItem:columnView
                                                           attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
@@ -78,9 +84,9 @@
                                                           attribute:NSLayoutAttributeRight
                                                          multiplier:1.0
                                                            constant:0.0];
-
+                
             }
-
+            
             NSLayoutConstraint *layoutBottom = [NSLayoutConstraint constraintWithItem:columnView
                                                                             attribute:NSLayoutAttributeBottom
                                                                             relatedBy:NSLayoutRelationEqual
@@ -88,7 +94,7 @@
                                                                             attribute:NSLayoutAttributeBottom
                                                                            multiplier:1.0
                                                                              constant:0.0];
-
+            
             NSLayoutConstraint *layoutWidth = [NSLayoutConstraint constraintWithItem:columnView
                                                                            attribute:NSLayoutAttributeWidth
                                                                            relatedBy:NSLayoutRelationEqual
@@ -96,22 +102,21 @@
                                                                            attribute:NSLayoutAttributeWidth
                                                                           multiplier:widthPercent.doubleValue
                                                                             constant:0.0];
-
-
+            
+            
             
             NSArray *layoutConstraints = @[layoutTop,
                                            layoutBottom,
                                            layoutLeft,
                                            layoutWidth];
             
-
+            
             [self.contentView addConstraints:layoutConstraints];
             
             numberOfColumn++;
             
             
         }
-        
 
         
         
@@ -122,22 +127,6 @@
     }
     
     return self;
-}
-
--(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier widthPercentArray:(NSArray *)widthPercentArray {
-    
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        
-        
-        
-    }
-    
-    return self;
-}
-
--(void)drawRect:(CGRect)rect {
-    [super drawRect:rect];
-
 }
 
 +(CGFloat)rowHeight {
