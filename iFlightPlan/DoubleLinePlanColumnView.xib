@@ -51,6 +51,7 @@
             <connections>
                 <outlet property="lineView" destination="IAp-Ef-36J" id="A0Y-xo-KHn"/>
                 <outlet property="lowerLabel" destination="6lh-3N-n73" id="13t-S7-ZEf"/>
+                <outlet property="multiplierOfLabelsHeight" destination="4SX-AF-m60" id="ayR-Bb-kVL"/>
                 <outlet property="upperLabel" destination="Sz8-OZ-7BK" id="HbL-3U-BJS"/>
             </connections>
             <point key="canvasLocation" x="78.5" y="-168.5"/>

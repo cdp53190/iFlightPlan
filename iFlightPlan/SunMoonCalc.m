@@ -13,28 +13,29 @@
 #import "SunMoonCalc.h"
 
 @implementation SunMoonCalc
+@synthesize yeard,monthd,dayd,hourd,minuted,lat,lon,alt;
 
--(instancetype)initWithYear:(int)year
-                      month:(int)month
-                        day:(int)day
-                       hour:(int)hour
-                     minute:(int)minute//UTC
-                   latitude:(double)lat//N:+,S:-
-                  longitude:(double)lon//E:+,W:-
-                   altitude:(int)alt {
+-(instancetype)initWithYear:(int)aYear
+                      month:(int)aMonth
+                        day:(int)aDay
+                       hour:(int)aHour
+                     minute:(int)aMinute//UTC
+                   latitude:(double)aLat//N:+,S:-
+                  longitude:(double)aLon//E:+,W:-
+                   altitude:(int)aAlt {
     
     self = [super init];
     
     if (self) {
 
-        _year = (double)year;
-        _month = (double)month;
-        _day = (double)day;
-        _hour = (double)hour;
-        _minute = (double)minute;
-        _lat = lat;
-        _lon = lon;
-        _alt = (double)alt;
+        yeard = (double)aYear;
+        monthd = (double)aMonth;
+        dayd = (double)aDay;
+        hourd = (double)aHour;
+        minuted = (double)aMinute;
+        lat = aLat;
+        lon = aLon;
+        alt = (double)aAlt;
         
     }
     
@@ -214,32 +215,32 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 
 -(void)calcSun{
     
-    int time = _hour * 60 + _minute;
+    int time = hourd * 60 + minuted;
     
-    double t = [SunMoonCalc juliusYearWithYear:_year
-                                         Month:_month
-                                           Day:_day
+    double t = [SunMoonCalc juliusYearWithYear:yeard
+                                         Month:monthd
+                                           Day:dayd
                                         Minute:time];//ユリウス時
     
     double th = [SunMoonCalc siderealHourWithJuliusYear:t
                                                  Minute:time
-                                              longitude:_lon];//恒星時
+                                              longitude:lon];//恒星時
     
     double ds = [SunMoonCalc solarDistanceAUAtJuliusYear:t] ;//太陽距離
     double alp = [SunMoonCalc solarDeclinationAtJuliusYear:t] ;//赤経
     double dlt = [SunMoonCalc solarRightAscensionAtJuliusYear:t] ;//赤緯
         
-    _heightDeg = [SunMoonCalc solarAltitudeWithLatitude:_lat
+    _heightDeg = [SunMoonCalc solarAltitudeWithLatitude:lat
                                         siderealHour:th
                                     solarDeclination:alp
                                       rightAscension:dlt];//高度計算（視差等なし）
-    _directionDeg = [SunMoonCalc solarDirectionWithLatitude:_lat
+    _directionDeg = [SunMoonCalc solarDirectionWithLatitude:lat
                                             siderealHour:th
                                         solarDeclination:alp
                                           rightAscension:dlt];//方向計算
     
     double tt = 0.00244281888889 / ds;//赤道地平偏差(Π) 8.794148 / 3600
-    double e = 0.03533333333333 * sqrt(_alt) ;//みかけの地平線E 2.12 / 60
+    double e = 0.03533333333333 * sqrt(alt) ;//みかけの地平線E 2.12 / 60
     double s = 0.26699444444445 / ds ;//視半径S (16.0 / 60.0 + 1.18 / 3600.0 )
     double r = 0.58555555555555 ; //大気差（日の出日の入り時のみ）R35 8
     
@@ -275,7 +276,7 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     
     double l = 218.3161 + 4812.67881 * time
     + 6.2887 * sind(134.961 + 4771.9886 * time +
-                    0.0040 * sind(119.5 + 1.33 * time)
+                      0.0040 * sind(119.5 + 1.33 * time)
                     + 0.0020 * sind(55.0 + 19.34 * time)
                     + 0.0006 * sind(71.0 +  0.2  * time)
                     + 0.0006 * sind(54.0 + 19.3  * time))
@@ -454,14 +455,14 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 
 -(void)calcMoon {
     
-    double t = [SunMoonCalc juliusYearWithYear:_year
-                                         Month:_month
-                                           Day:_day
-                                        Minute:_minute];//ユリウス時
+    double t = [SunMoonCalc juliusYearWithYear:yeard
+                                         Month:monthd
+                                           Day:dayd
+                                        Minute:minuted];//ユリウス時
     
     double th = [SunMoonCalc siderealHourWithJuliusYear:t
-                                                 Minute:_minute
-                                              longitude:_lon];//恒星時
+                                                 Minute:minuted
+                                              longitude:lon];//恒星時
     double csLat = [SunMoonCalc moonCelestialLatitudeAtJuliusYear:t];//月の黄緯
     double csLon = [SunMoonCalc moonCelestialLongitudeAtJuliusYear:t];//月の黄経
     
@@ -472,18 +473,18 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     double alp = [[redArray objectAtIndex:1] doubleValue]; ;//赤経
     double dlt = [[redArray objectAtIndex:0] doubleValue];//赤緯
     
-    _heightDeg = [SunMoonCalc solarAltitudeWithLatitude:_lat
+    _heightDeg = [SunMoonCalc solarAltitudeWithLatitude:lat
                                         siderealHour:th
                                     solarDeclination:alp
                                       rightAscension:dlt];//高度計算（視差等なし。地球中心からの高度）
-    _directionDeg = [SunMoonCalc solarDirectionWithLatitude:_lat
+    _directionDeg = [SunMoonCalc solarDirectionWithLatitude:lat
                                             siderealHour:th
                                         solarDeclination:alp
                                           rightAscension:dlt];//方向計算
     
     double tt = [SunMoonCalc moonShisaAtJuliusYear:t];//赤道地平偏差(Π)
     
-    double e = 0.03533333333333 * sqrt(_alt) ;//みかけの地平線E
+    double e = 0.03533333333333 * sqrt(alt) ;//みかけの地平線E
     double r = 0.58555555555555 ; //大気差（地平線に近い時のみ）R
     
     double heightMoonOnHorizon = -r - e + tt;

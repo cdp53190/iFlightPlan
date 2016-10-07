@@ -18,7 +18,11 @@
 		EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2116BD1CB1247A004F9F9A /* SunMoonCalc2.m */; };
 		EF2116C11CB2B34C004F9F9A /* SunMoonCalc2Data.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */; };
 		EF226E821DA363760068C4AF /* 314662.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF226E811DA363760068C4AF /* 314662.pdf */; };
-		EF226E851DA3AE000068C4AF /* SunMoonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E841DA3AE000068C4AF /* SunMoonViewController.m */; };
+		EF226E891DA51E130068C4AF /* SingleLinePlanColumnView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E881DA51E130068C4AF /* SingleLinePlanColumnView.m */; };
+		EF226E8B1DA51E750068C4AF /* SingleLinePlanColumnView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF226E8A1DA51E750068C4AF /* SingleLinePlanColumnView.xib */; };
+		EF226E8E1DA547FD0068C4AF /* CourseCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E8D1DA547FD0068C4AF /* CourseCalc.m */; };
+		EF226E911DA6A0F10068C4AF /* SunMoon.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E901DA6A0F10068C4AF /* SunMoon.m */; };
+		EF226E941DA8043C0068C4AF /* SelectTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E931DA8043C0068C4AF /* SelectTimeViewController.m */; };
 		EF2526A01D9D788900B5E392 /* DoubleLinePlanColumnView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF25269F1D9D788900B5E392 /* DoubleLinePlanColumnView.xib */; };
 		EF2D0DBF1D9FAC030099B505 /* DoubleLinePlanColumnView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */; };
 		EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF31A0FE1D95928100F8048D /* SummeryViewController.m */; };
@@ -69,8 +73,15 @@
 		EF2116BF1CB2B34C004F9F9A /* SunMoonCalc2Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonCalc2Data.h; sourceTree = "<group>"; };
 		EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonCalc2Data.m; sourceTree = "<group>"; };
 		EF226E811DA363760068C4AF /* 314662.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 314662.pdf; sourceTree = "<group>"; };
-		EF226E831DA3AE000068C4AF /* SunMoonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonViewController.h; sourceTree = "<group>"; };
-		EF226E841DA3AE000068C4AF /* SunMoonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonViewController.m; sourceTree = "<group>"; };
+		EF226E871DA51E130068C4AF /* SingleLinePlanColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleLinePlanColumnView.h; sourceTree = "<group>"; };
+		EF226E881DA51E130068C4AF /* SingleLinePlanColumnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleLinePlanColumnView.m; sourceTree = "<group>"; };
+		EF226E8A1DA51E750068C4AF /* SingleLinePlanColumnView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SingleLinePlanColumnView.xib; sourceTree = "<group>"; };
+		EF226E8C1DA547FD0068C4AF /* CourseCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseCalc.h; sourceTree = "<group>"; };
+		EF226E8D1DA547FD0068C4AF /* CourseCalc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseCalc.m; sourceTree = "<group>"; };
+		EF226E8F1DA6A0F10068C4AF /* SunMoon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoon.h; sourceTree = "<group>"; };
+		EF226E901DA6A0F10068C4AF /* SunMoon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoon.m; sourceTree = "<group>"; };
+		EF226E921DA8043C0068C4AF /* SelectTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectTimeViewController.h; sourceTree = "<group>"; };
+		EF226E931DA8043C0068C4AF /* SelectTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectTimeViewController.m; sourceTree = "<group>"; };
 		EF25269F1D9D788900B5E392 /* DoubleLinePlanColumnView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoubleLinePlanColumnView.xib; sourceTree = "<group>"; };
 		EF2D0DBD1D9FAC030099B505 /* DoubleLinePlanColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleLinePlanColumnView.h; sourceTree = "<group>"; };
 		EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoubleLinePlanColumnView.m; sourceTree = "<group>"; };
@@ -144,15 +155,6 @@
 			name = "test plan";
 			sourceTree = "<group>";
 		};
-		EF226E861DA3AE180068C4AF /* SunMoon */ = {
-			isa = PBXGroup;
-			children = (
-				EF226E831DA3AE000068C4AF /* SunMoonViewController.h */,
-				EF226E841DA3AE000068C4AF /* SunMoonViewController.m */,
-			);
-			name = SunMoon;
-			sourceTree = "<group>";
-		};
 		EF31A0FC1D95922300F8048D /* Plan */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +162,9 @@
 				EF4EF8611CA34D9500FD897F /* PlanViewController.m */,
 				EF48F8C31CD55A7B004DC03A /* PlanTableViewCell.h */,
 				EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */,
+				EF226E8A1DA51E750068C4AF /* SingleLinePlanColumnView.xib */,
+				EF226E871DA51E130068C4AF /* SingleLinePlanColumnView.h */,
+				EF226E881DA51E130068C4AF /* SingleLinePlanColumnView.m */,
 				EF25269F1D9D788900B5E392 /* DoubleLinePlanColumnView.xib */,
 				EF2D0DBD1D9FAC030099B505 /* DoubleLinePlanColumnView.h */,
 				EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */,
@@ -192,9 +197,8 @@
 		EF4EF8591CA34D9500FD897F /* iFlightPlan */ = {
 			isa = PBXGroup;
 			children = (
-				EF226E861DA3AE180068C4AF /* SunMoon */,
 				EF31A0FC1D95922300F8048D /* Plan */,
-				EFE3F1511D934360003A5903 /* SunMoonCalc */,
+				EFE3F1511D934360003A5903 /* SunMoon */,
 				EF4EF85D1CA34D9500FD897F /* AppDelegate.h */,
 				EF4EF85E1CA34D9500FD897F /* AppDelegate.m */,
 				EF4EF8631CA34D9500FD897F /* Main.storyboard */,
@@ -211,6 +215,10 @@
 				EF31A0FE1D95928100F8048D /* SummeryViewController.m */,
 				EF0E73061DA2790A000BC8F4 /* MainTabBarController.h */,
 				EF0E73071DA2790A000BC8F4 /* MainTabBarController.m */,
+				EF226E8C1DA547FD0068C4AF /* CourseCalc.h */,
+				EF226E8D1DA547FD0068C4AF /* CourseCalc.m */,
+				EF226E921DA8043C0068C4AF /* SelectTimeViewController.h */,
+				EF226E931DA8043C0068C4AF /* SelectTimeViewController.m */,
 			);
 			path = iFlightPlan;
 			sourceTree = "<group>";
@@ -241,9 +249,11 @@
 			path = iFlightPlanUITests;
 			sourceTree = "<group>";
 		};
-		EFE3F1511D934360003A5903 /* SunMoonCalc */ = {
+		EFE3F1511D934360003A5903 /* SunMoon */ = {
 			isa = PBXGroup;
 			children = (
+				EF226E8F1DA6A0F10068C4AF /* SunMoon.h */,
+				EF226E901DA6A0F10068C4AF /* SunMoon.m */,
 				EF4EF88F1CA34E1F00FD897F /* SunMoonCalc.h */,
 				EF4EF8901CA34E1F00FD897F /* SunMoonCalc.m */,
 				EF2116BC1CB1247A004F9F9A /* SunMoonCalc2.h */,
@@ -251,7 +261,7 @@
 				EF2116BF1CB2B34C004F9F9A /* SunMoonCalc2Data.h */,
 				EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */,
 			);
-			name = SunMoonCalc;
+			name = SunMoon;
 			sourceTree = "<group>";
 		};
 		EFE3F1571D934DAD003A5903 /* Frameworks */ = {
@@ -377,6 +387,7 @@
 				EF0E73001DA026E1000BC8F4 /* 297063.pdf in Resources */,
 				EF0E0F5C1D8845B70085EB7F /* Memo in Resources */,
 				EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */,
+				EF226E8B1DA51E750068C4AF /* SingleLinePlanColumnView.xib in Resources */,
 				EF0E73011DA026E1000BC8F4 /* 274630.pdf in Resources */,
 				EF226E821DA363760068C4AF /* 314662.pdf in Resources */,
 			);
@@ -406,16 +417,19 @@
 				EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */,
 				EF0E73081DA2790A000BC8F4 /* MainTabBarController.m in Sources */,
 				EFE3F1561D934896003A5903 /* PDFReader.m in Sources */,
+				EF226E941DA8043C0068C4AF /* SelectTimeViewController.m in Sources */,
+				EF226E8E1DA547FD0068C4AF /* CourseCalc.m in Sources */,
 				EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */,
 				EF4EF8621CA34D9500FD897F /* PlanViewController.m in Sources */,
 				EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */,
 				EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */,
 				EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */,
 				EF2D0DBF1D9FAC030099B505 /* DoubleLinePlanColumnView.m in Sources */,
-				EF226E851DA3AE000068C4AF /* SunMoonViewController.m in Sources */,
+				EF226E891DA51E130068C4AF /* SingleLinePlanColumnView.m in Sources */,
 				EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */,
 				EF4EF85C1CA34D9500FD897F /* main.m in Sources */,
 				EF2116C11CB2B34C004F9F9A /* SunMoonCalc2Data.m in Sources */,
+				EF226E911DA6A0F10068C4AF /* SunMoon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

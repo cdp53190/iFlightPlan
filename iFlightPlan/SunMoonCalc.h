@@ -16,20 +16,21 @@
 
 @interface SunMoonCalc : NSObject
 
-@property double year,month,day,hour,minute;
+
+@property double yeard,monthd,dayd,hourd,minuted;
 @property double lat,lon,alt, heightDeg, directionDeg;
 @property NSString *status;
 
 -(void)calcSun;
 -(void)calcMoon;
 
--(instancetype)initWithYear:(int)year
-                      month:(int)month
-                        day:(int)day
-                       hour:(int)hour
-                     minute:(int)minute//UTC
-                   latitude:(double)lat//N:+,S:-
-                  longitude:(double)lon//E:+,W:-
-                   altitude:(int)alt;//m
+-(instancetype)initWithYear:(int)aYear
+                      month:(int)aMonth
+                        day:(int)aDay
+                       hour:(int)aHour
+                     minute:(int)aMinute//UTC
+                   latitude:(double)aLat//N:+,S:-
+                  longitude:(double)aLon//E:+,W:-
+                   altitude:(int)aAlt;//m
 
 @end

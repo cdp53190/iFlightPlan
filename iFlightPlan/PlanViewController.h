@@ -8,18 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-#import "SunMoonCalc.h"
-#import "SunMoonCalc2.h"
-#import "SunMoonCalc2Data.h"
 #import "PlanTableViewCell.h"
+#import "SingleLinePlanColumnView.h"
 #import "DoubleLinePlanColumnView.h"
 #import "PDFReader.h"
 
-@interface PlanViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface PlanViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UINavigationBarDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @property (weak, nonatomic) IBOutlet UITableView *planTableView;
+
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
 @property NSArray *columnListArray;
 

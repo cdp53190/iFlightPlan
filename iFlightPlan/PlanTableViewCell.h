@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SingleLinePlanColumnView.h"
 #import "DoubleLinePlanColumnView.h"
+
 
 @interface PlanTableViewCell : UITableViewCell
 
-@property NSArray *widthPercentArray;
 
-+(CGFloat)rowHeight;
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier columnListArray:(NSArray *)columnListArray;
 
 @end

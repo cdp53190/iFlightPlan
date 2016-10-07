@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
+#import "CourseCalc.h"
+#import "SunMoon.h"
 
 @interface PDFReader : NSObject
 

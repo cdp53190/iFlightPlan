@@ -17,9 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
 
-    
     [self loadPlan];
 
     
@@ -45,16 +43,13 @@
 
 -(void)loadPlan {
     
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] objectForKey:@"dataDic"];
-    if (dic) {
-        self.navigationItem.title = dic[@"Flight Number"];
-    }
-    
     PlanViewController *planVC = self.viewControllers[0];
     PlanViewController *divertPlanVC = self.viewControllers[1];
+    PlanViewController *sunMoonPlanVC = self.viewControllers[2];
     
     planVC.cellIdentifier = @"NAVLOG";
     divertPlanVC.cellIdentifier = @"NAVLOG";
+    sunMoonPlanVC.cellIdentifier = @"SunMoon";
     
     NSArray *columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.15},
                                  @{@"title":@"FL",@"widthPercent":@0.05},
@@ -74,15 +69,53 @@
     planVC.columnListArray = columnListArray;
     divertPlanVC.columnListArray = columnListArray;
     
-    [planVC.planTableView reloadData];
-    [divertPlanVC.planTableView reloadData];
+    columnListArray = @[@{@"title":@"CTM",@"widthPercent":@0.065},
+                        @{@"title":@"TIME",@"widthPercent":@0.065},
+                        @{@"title":@"LAT",@"widthPercent":@0.085},
+                        @{@"title":@"LON",@"widthPercent":@0.095},
+                        @{@"title":@"WPT",@"widthPercent":@0.16},
+                        @{@"title":@"FL",@"widthPercent":@0.06},
+                        @{@"title":@"SunDIR",@"widthPercent":@0.075},
+                        @{@"title":@"SunALT",@"widthPercent":@0.075},
+                        @{@"title":@"SunSTATUS",@"widthPercent":@0.09},
+                        @{@"title":@"MoonDIR",@"widthPercent":@0.075},
+                        @{@"title":@"MoonALT",@"widthPercent":@0.075},
+                        @{@"title":@"MoonSTATUS",@"widthPercent":@0.08}];
+    
+    sunMoonPlanVC.columnListArray = columnListArray;
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     planVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"planArray"]];
     divertPlanVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"divertPlanArray"]];
+    sunMoonPlanVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"sunMoonPlanArray"]];
+
+    NSDictionary *dic = [ud objectForKey:@"dataDic"];
     
+    planVC.navigationItem.title = dic[@"Flight Number"];
+    divertPlanVC.navigationItem.title = dic[@"Flight Number"];
+    sunMoonPlanVC.navigationItem.title = dic[@"Flight Number"];
+    
+    [planVC.planTableView reloadData];
+    [divertPlanVC.planTableView reloadData];
+    [sunMoonPlanVC.planTableView reloadData];
 
 }
+/*
+-(void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
+    
+    if(self.selectedIndex == 2){
+        self.navigationController.navigationItem;
+        UIBarButtonItem *btn =
+        [[UIBarButtonItem alloc]
+         initWithTitle:@"ぼたん"  // ボタンタイトル名を指定
+         style:UIBarButtonItemStylePlain  // スタイルを指定（※下記表参照）
+         target:self  // デリゲートのターゲットを指定
+         action:@selector(hoge)  // ボタンが押されたときに呼ばれるメソッドを指定
+         ];
+        
+    }
+    
+}*/
 
 /*
 #pragma mark - Navigation

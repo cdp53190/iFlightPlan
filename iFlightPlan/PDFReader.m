@@ -156,16 +156,22 @@ unichar unicharWithGlyph(
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:dataDic forKey:@"dataDic"];
     [userDefaults synchronize];
-    
-    if(1) {
-        
-        NSNotification *n = [NSNotification notificationWithName:@"planReload" object:nil];
-        [[NSNotificationCenter defaultCenter] postNotification:n];
-    }
 
+    //1分ごとのcourseArray作り
+    NSArray *courseArray = [CourseCalc makeCourseArray];
+    [userDefaults setObject:courseArray forKey:@"courseArray"];
+    [userDefaults synchronize];
+
+    //sunMoonPlanArray作り
+    NSArray *sunMoonPlanArray = [SunMoon makeInitialSunMoonPlanArray];
+    [userDefaults setObject:sunMoonPlanArray forKey:@"sunMoonPlanArray"];
+    [userDefaults synchronize];
     
     //NSLog(@"%@",bufferString);
     
+    NSNotification *n = [NSNotification notificationWithName:@"planReload" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:n];
+
 }
 
 - (void)operatorTextScanned:(CGPDFScannerRef)scanner
@@ -201,6 +207,10 @@ unichar unicharWithGlyph(
     if (string && ![string isEqualToString:@""]) {
         [self makeDataWithString:string];
     }
+    
+
+    
+    
 }
 
 - (void)operatorFontScanned:(CGPDFScannerRef)scanner

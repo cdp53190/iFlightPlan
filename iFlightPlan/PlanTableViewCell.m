@@ -23,15 +23,14 @@
     // Configure the view for the selected state
 }
 
--(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier columnListArray:(NSArray *)columnListArray{
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
     
-        _widthPercentArray = [[NSUserDefaults standardUserDefaults]objectForKey:@"widthPercentArray"];
         
         NSInteger numberOfColumn = 1;
         
-        for (NSNumber *widthPercent in _widthPercentArray) {
+        for (NSDictionary *dic in columnListArray) {
             
             UIView *columnView;
             
@@ -39,10 +38,17 @@
                 UINib *nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
                 columnView = [nib instantiateWithOwner:self options:nil][0];
                 
-                if (numberOfColumn == _widthPercentArray.count) {
+                if (numberOfColumn == columnListArray.count) {
                     [((DoubleLinePlanColumnView *)columnView).lineView setHidden:YES];
                 }
-            } else if (1) {
+            } else if ([reuseIdentifier isEqualToString:@"SunMoon"]) {
+
+                UINib *nib = [UINib nibWithNibName:@"SingleLinePlanColumnView" bundle:nil];
+                columnView = [nib instantiateWithOwner:self options:nil][0];
+                
+                if (numberOfColumn == columnListArray.count) {
+                    [((SingleLinePlanColumnView *)columnView).lineView setHidden:YES];
+                }
                 
             }
         
@@ -100,7 +106,7 @@
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:self.contentView
                                                                            attribute:NSLayoutAttributeWidth
-                                                                          multiplier:widthPercent.doubleValue
+                                                                          multiplier:((NSNumber *)dic[@"widthPercent"]).doubleValue
                                                                             constant:0.0];
             
             
@@ -119,7 +125,56 @@
         }
 
         
+        UIView *lineView = [[UIView alloc] init];
         
+        lineView.backgroundColor = [UIColor blackColor];
+        
+        [lineView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [self.contentView addSubview:lineView];
+        
+        
+        NSLayoutConstraint *layoutLeft = [NSLayoutConstraint constraintWithItem:lineView
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.contentView
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                     multiplier:1.0
+                                                                       constant:0.0];
+        
+        NSLayoutConstraint *layoutRight = [NSLayoutConstraint constraintWithItem:lineView
+                                                                       attribute:NSLayoutAttributeRight
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.contentView
+                                                                       attribute:NSLayoutAttributeRight
+                                                                      multiplier:1.0
+                                                                        constant:0.0];
+        
+        NSLayoutConstraint *layoutBottom = [NSLayoutConstraint constraintWithItem:lineView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.contentView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0
+                                                                         constant:0.0];
+        
+        NSLayoutConstraint *layoutHeight = [NSLayoutConstraint constraintWithItem:lineView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0
+                                                                         constant:1.0];
+        
+        NSArray *layoutConstraints = @[layoutLeft,
+                                       layoutRight,
+                                       layoutBottom,
+                                       layoutHeight];
+        
+        
+        
+        [self.contentView addConstraints:layoutConstraints];
+
         
         
         
@@ -129,7 +184,4 @@
     return self;
 }
 
-+(CGFloat)rowHeight {
-    return 50;
-}
 @end

@@ -17,8 +17,8 @@
 
 @interface SunMoonCalc2 : NSObject
 
-@property  double year,month,day,hour,minute;
-@property  double lat,lon,alt, heightDeg, directionDeg;
+@property double yeard,monthd,dayd,hourd,minuted;
+@property double lat,lon,alt, heightDeg, directionDeg;
 @property NSString *status;
 
 -(void)calcSun;

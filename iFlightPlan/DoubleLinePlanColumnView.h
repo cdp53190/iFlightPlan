@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface DoubleLinePlanColumnView : UIView
+
 @property (weak, nonatomic) IBOutlet UILabel *upperLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lowerLabel;
 @property (weak, nonatomic) IBOutlet UIView *lineView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *multiplierOfLabelsHeight;
+
+
+@property NSArray *columnListArray;
 
 @end

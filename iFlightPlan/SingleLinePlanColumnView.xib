@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SingleLinePlanColumnView">
+            <rect key="frame" x="0.0" y="0.0" width="468" height="85"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="73D-a5-CoB">
+                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SYd-dt-gbL">
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="WDl-ca-QCb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="SYd-dt-gbL" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="3Ut-PU-mcF"/>
+                <constraint firstItem="73D-a5-CoB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="4" id="5oq-4Q-zwO"/>
+                <constraint firstAttribute="bottom" secondItem="SYd-dt-gbL" secondAttribute="bottom" id="EsD-kM-y1S"/>
+                <constraint firstItem="73D-a5-CoB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="4" id="H91-4P-gYK"/>
+                <constraint firstAttribute="trailing" secondItem="73D-a5-CoB" secondAttribute="trailing" constant="4" id="Ozf-VW-FnH"/>
+                <constraint firstAttribute="bottom" secondItem="73D-a5-CoB" secondAttribute="bottom" constant="4" id="Qjf-1b-M2W"/>
+                <constraint firstAttribute="trailing" secondItem="SYd-dt-gbL" secondAttribute="trailing" id="cfv-De-lNN"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="label" destination="73D-a5-CoB" id="hoA-Wg-QgZ"/>
+                <outlet property="lineView" destination="SYd-dt-gbL" id="WZe-E5-4SI"/>
+            </connections>
+            <point key="canvasLocation" x="81" y="345.5"/>
+        </view>
+    </objects>
+</document>

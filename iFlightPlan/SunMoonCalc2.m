@@ -21,7 +21,7 @@
     NSArray *RArray;
 }
 
-@synthesize year,month,day,hour,minute,lat,lon,alt;
+@synthesize yeard,monthd,dayd,hourd,minuted,lat,lon,alt;
 
 #pragma mark - C Function
 
@@ -46,12 +46,12 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     self = [super init];
     
     if (self) {
-        
-        year = (double)aYear;
-        month = (double)aMonth;
-        day = (double)aDay;
-        hour = (double)aHour;
-        minute = (double)aMinute;
+
+        yeard = (double)aYear;
+        monthd = (double)aMonth;
+        dayd = (double)aDay;
+        hourd = (double)aHour;
+        minuted = (double)aMinute;
         lat = aLat;
         lon = aLon;
         alt = (double)aAlt;
@@ -104,11 +104,11 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 
     double t = [self timeParameterWithDeltaT];
     
-    if (t < aForSun || t > bForSun || calcdYearForSun != year) {
+    if (t < aForSun || t > bForSun || calcdYearForSun != yeard) {
         
-        calcdYearForSun = year;
+        calcdYearForSun = yeard;
         
-        NSDictionary *constDic = [SunMoonCalc2Data dictionaryOfConstantArrayOfSunByYear:(int)year tWithDeltaT:t];
+        NSDictionary *constDic = [SunMoonCalc2Data dictionaryOfConstantArrayOfSunByYear:(int)yeard tWithDeltaT:t];
         
         RAArrayForSun = constDic[@"RAArray"];
         DecArrayForSun = constDic[@"DecArray"];
@@ -143,11 +143,11 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 
     double t = [self timeParameterWithoutDeltaT];
     
-    if (t < aForR || t > bForR || calcdYearForR != year) {
+    if (t < aForR || t > bForR || calcdYearForR != yeard) {
         
-        calcdYearForR = year;
+        calcdYearForR = yeard;
         
-        NSDictionary *constDicForR = [SunMoonCalc2Data dictionaryOfRbyYear:year tWithoutDeltaT:t];
+        NSDictionary *constDicForR = [SunMoonCalc2Data dictionaryOfRbyYear:yeard tWithoutDeltaT:t];
         
         RArray = constDicForR[@"RArray"];
 
@@ -169,7 +169,7 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     }
     
     
-    double hourAngle = R - RA + hour + minute / 60;
+    double hourAngle = R - RA + hourd + minuted / 60;
     
     return hourAngle * 360 / 24 + lon;
 
@@ -178,14 +178,14 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 //観測当日の年月日から通日Tを求める（1/1を１日目とする）
 -(double)dayFromNewyear{
     
-    int p = month - 1;
-    int y = floor((year / 4) - floor(year / 4) + 0.77);
-    int q = floor((month + 7) / 10);
+    int p = monthd - 1;
+    int y = floor((yeard / 4) - floor(yeard / 4) + 0.77);
+    int q = floor((monthd + 7) / 10);
     int s = floor(p * 0.55 - 0.33);
     
 //    NSLog(@"dayFromNewyear:%f",30 * p + q * (s - y) + p * (1 - q) + day);
     
-    return 30 * p + q * (s - y) + p * (1 - q) + day;
+    return 30 * p + q * (s - y) + p * (1 - q) + dayd;
     
 }
 
@@ -193,7 +193,7 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 -(double)timeOfDay{
     
 //    NSLog(@"timeOfDay:%f",hour / 24 + minute / 1440);
-    return hour / 24 + minute / 1440;
+    return hourd / 24 + minuted / 1440;
     
 }
 
@@ -202,13 +202,13 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     
     double deltaT;
     
-    switch ((int)year) {
+    switch ((int)yeard) {
         case 2016:
             deltaT = 68;
             break;
             
         default:
-            deltaT = 68 + year - 2016;
+            deltaT = 68 + yeard - 2016;
             break;
     }
     
@@ -277,7 +277,7 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     double r = 0.58555555555555 ; //大気差（地平線に近い時のみ）R
     
     double heightMoonOnHorizon = -r - e + HP;
-    
+
     //status check
     
     if(_heightDeg < heightMoonOnHorizon) {
@@ -292,11 +292,11 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     
     double t = [self timeParameterWithDeltaT];
     
-    if (t < aForMoon || t > bForMoon || calcdYearForMoon != year) {
+    if (t < aForMoon || t > bForMoon || calcdYearForMoon != yeard) {
         
-        calcdYearForMoon = year;
+        calcdYearForMoon = yeard;
         
-        NSDictionary *constDic = [SunMoonCalc2Data dictionaryOfConstantArrayOfMoonByYear:(int)year tWithDeltaT:t];
+        NSDictionary *constDic = [SunMoonCalc2Data dictionaryOfConstantArrayOfMoonByYear:(int)yeard tWithDeltaT:t];
         
         RAArrayForMoon = constDic[@"RAArray"];
         DecArrayForMoon = constDic[@"DecArray"];
