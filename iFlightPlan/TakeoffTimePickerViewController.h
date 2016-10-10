@@ -1,5 +1,5 @@
 //
-//  SelectTimeViewController.h
+//  TakeoffTimePickerViewController.h
 //  iFlightPlan
 //
 //  Created by Seiji Mitsuda on 2016/10/08.
@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PlanViewController.h"
 
-@interface SelectTimeViewController : UIViewController
+@interface TakeoffTimePickerViewController : UIViewController
 
-@property IBOutlet UINavigationItem *navigationItem;
 @property IBOutlet UIDatePicker *datePicker;
 
 @end

@@ -35,8 +35,14 @@
             UIView *columnView;
             
             if ([reuseIdentifier isEqualToString:@"NAVLOG"]) {
-                UINib *nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
+                UINib *nib;
+                if ([dic[@"title"] isEqualToString:@"ETO"] || [dic[@"title"] isEqualToString:@"ATO"]) {
+                    nib = [UINib nibWithNibName:@"ETOATOColumnView" bundle:nil];
+                } else {
+                    nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
+                }
                 columnView = [nib instantiateWithOwner:self options:nil][0];
+                ((DoubleLinePlanColumnView *)columnView).columnTitle = dic[@"title"];
                 
                 if (numberOfColumn == columnListArray.count) {
                     [((DoubleLinePlanColumnView *)columnView).lineView setHidden:YES];

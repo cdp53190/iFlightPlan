@@ -1,22 +1,22 @@
 //
-//  SelectTimeViewController.m
+//  TimeEntryViewController.m
 //  iFlightPlan
 //
-//  Created by Seiji Mitsuda on 2016/10/08.
+//  Created by Seiji Mitsuda on 2016/10/10.
 //  Copyright © 2016年 Another Sky. All rights reserved.
 //
 
-#import "SelectTimeViewController.h"
+#import "TimeEntryViewController.h"
 
-@interface SelectTimeViewController ()
+@interface TimeEntryViewController ()
 
 @end
 
-@implementation SelectTimeViewController
+@implementation TimeEntryViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning {

@@ -736,7 +736,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Fuel To ALTN"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
             dataDic[stage] = string;
-            stage = @"MAX LDGWT";
+            stage = @"MAX L/DWT";
         }
 
         return;
@@ -1143,7 +1143,7 @@ unichar unicharWithGlyph(
             return;
         }
         
-        if ([string isEqualToString:@"ITEMS CONFIRMED BEFORE SIGN,"]) {
+        if ([string isEqualToString:@"ITEMS CONFIRMED BEFORE SIGN,"] || [string hasPrefix:dataDic[@"Flight Number"]]) {
             dataDic[stage] = [bufferString copy];
             bufferString = [NSMutableString new];
 

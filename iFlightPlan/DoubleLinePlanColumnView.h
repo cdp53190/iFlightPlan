@@ -13,9 +13,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *upperLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lowerLabel;
 @property (weak, nonatomic) IBOutlet UIView *lineView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *multiplierOfLabelsHeight;
-
+@property (weak, nonatomic) IBOutlet UILabel *subTitleLabel;
 
 @property NSArray *columnListArray;
+@property NSString *columnTitle;
 
 @end

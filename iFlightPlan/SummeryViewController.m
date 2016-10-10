@@ -13,15 +13,17 @@
 @end
 
 @implementation SummeryViewController
+{
+    SELCALPlayer *selcalPlayer;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    selcalPlayer = [[SELCALPlayer alloc] init];
     
-    
-    
-    
+
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -30,8 +32,11 @@
     NSDictionary *dic = [userDefaults objectForKey:@"dataDic"];
     
     _mainTextView.text = [NSString stringWithFormat:@"%@",dic];
+
     
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -47,5 +52,22 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
+
+- (IBAction)pushSELCAL:(UIButton *)sender {
+    
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults]objectForKey:@"dataDic"];
+    
+    [selcalPlayer playWithSELCALString:dic[@"SELCAL"]];
+    
+}
+
+- (void)pushRoute:(UIButton *)sender {
+    
+    RouteCopy *routeCopy = [[RouteCopy alloc]init];
+    [routeCopy copyRoute];
+    
+}
 
 @end

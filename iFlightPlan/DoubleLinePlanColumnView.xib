@@ -36,7 +36,6 @@
                 <constraint firstItem="Sz8-OZ-7BK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="4" id="7f7-bv-Log"/>
                 <constraint firstAttribute="bottom" secondItem="IAp-Ef-36J" secondAttribute="bottom" id="7vN-pb-1Pb"/>
                 <constraint firstItem="Sz8-OZ-7BK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="4" id="Bd4-ho-ZHg"/>
-                <constraint firstItem="6lh-3N-n73" firstAttribute="top" secondItem="Sz8-OZ-7BK" secondAttribute="bottom" constant="4" id="Fo5-1n-2hW"/>
                 <constraint firstItem="6lh-3N-n73" firstAttribute="top" secondItem="Sz8-OZ-7BK" secondAttribute="bottom" constant="4" id="Pfc-EM-zQI"/>
                 <constraint firstAttribute="trailing" secondItem="6lh-3N-n73" secondAttribute="trailing" constant="4" id="coC-bp-N3g"/>
                 <constraint firstAttribute="trailing" secondItem="Sz8-OZ-7BK" secondAttribute="trailing" constant="4" id="epy-4M-Bdg"/>
@@ -51,7 +50,6 @@
             <connections>
                 <outlet property="lineView" destination="IAp-Ef-36J" id="A0Y-xo-KHn"/>
                 <outlet property="lowerLabel" destination="6lh-3N-n73" id="13t-S7-ZEf"/>
-                <outlet property="multiplierOfLabelsHeight" destination="4SX-AF-m60" id="ayR-Bb-kVL"/>
                 <outlet property="upperLabel" destination="Sz8-OZ-7BK" id="HbL-3U-BJS"/>
             </connections>
             <point key="canvasLocation" x="78.5" y="-168.5"/>

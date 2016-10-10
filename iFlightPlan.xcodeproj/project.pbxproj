@@ -22,7 +22,8 @@
 		EF226E8B1DA51E750068C4AF /* SingleLinePlanColumnView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF226E8A1DA51E750068C4AF /* SingleLinePlanColumnView.xib */; };
 		EF226E8E1DA547FD0068C4AF /* CourseCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E8D1DA547FD0068C4AF /* CourseCalc.m */; };
 		EF226E911DA6A0F10068C4AF /* SunMoon.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E901DA6A0F10068C4AF /* SunMoon.m */; };
-		EF226E941DA8043C0068C4AF /* SelectTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E931DA8043C0068C4AF /* SelectTimeViewController.m */; };
+		EF226E991DA80F430068C4AF /* TakeoffTimePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF226E981DA80F430068C4AF /* TakeoffTimePickerViewController.m */; };
+		EF226E9E1DA898670068C4AF /* ETOATOColumnView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF226E9D1DA898670068C4AF /* ETOATOColumnView.xib */; };
 		EF2526A01D9D788900B5E392 /* DoubleLinePlanColumnView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF25269F1D9D788900B5E392 /* DoubleLinePlanColumnView.xib */; };
 		EF2D0DBF1D9FAC030099B505 /* DoubleLinePlanColumnView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */; };
 		EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF31A0FE1D95928100F8048D /* SummeryViewController.m */; };
@@ -36,9 +37,17 @@
 		EF4EF8751CA34D9600FD897F /* iFlightPlanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8741CA34D9600FD897F /* iFlightPlanTests.m */; };
 		EF4EF8801CA34D9600FD897F /* iFlightPlanUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF87F1CA34D9600FD897F /* iFlightPlanUITests.m */; };
 		EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8901CA34E1F00FD897F /* SunMoonCalc.m */; };
+		EF80668C1DAB8EDB008A4BCB /* RouteCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = EF80668B1DAB8EDB008A4BCB /* RouteCopy.m */; };
+		EF8066921DABB072008A4BCB /* TimeEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8066901DABB072008A4BCB /* TimeEntryViewController.m */; };
+		EF8066931DABB072008A4BCB /* TimeEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */; };
+		EFB107C01DAA4A7F009AC5B2 /* SELCALPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */; };
 		EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1461D92DDCA003A5903 /* TitleViewController.m */; };
 		EFE3F1561D934896003A5903 /* PDFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1551D934896003A5903 /* PDFReader.m */; };
 		EFE3F15B1D942D55003A5903 /* 292650.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EFE3F15A1D942D55003A5903 /* 292650.pdf */; };
+		EFEB157E1DAA68310086712E /* libTheAmazingAudioEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEB15771DAA67D80086712E /* libTheAmazingAudioEngine.a */; };
+		EFEB157F1DAA68480086712E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFB107C11DAA5ADD009AC5B2 /* AudioToolbox.framework */; };
+		EFEB15811DAA68570086712E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEB15801DAA68570086712E /* AVFoundation.framework */; };
+		EFEB15831DAA68610086712E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEB15821DAA68610086712E /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +64,34 @@
 			proxyType = 1;
 			remoteGlobalIDString = EF4EF8561CA34D9500FD897F;
 			remoteInfo = iFlightPlan;
+		};
+		EFEB15761DAA67D80086712E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C215CEC1523A7D500D36CAD;
+			remoteInfo = TheAmazingAudioEngine;
+		};
+		EFEB15781DAA67D80086712E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7A5687101B54610900243427;
+			remoteInfo = "TheAmazingAudioEngine OS X";
+		};
+		EFEB157A1DAA67D80086712E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 17BB5B401BECD101007A2892;
+			remoteInfo = "TheAmazingAudioEngine tvOS";
+		};
+		EFEB157C1DAA68220086712E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C215CEB1523A7D500D36CAD;
+			remoteInfo = TheAmazingAudioEngine;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -80,8 +117,9 @@
 		EF226E8D1DA547FD0068C4AF /* CourseCalc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseCalc.m; sourceTree = "<group>"; };
 		EF226E8F1DA6A0F10068C4AF /* SunMoon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoon.h; sourceTree = "<group>"; };
 		EF226E901DA6A0F10068C4AF /* SunMoon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoon.m; sourceTree = "<group>"; };
-		EF226E921DA8043C0068C4AF /* SelectTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectTimeViewController.h; sourceTree = "<group>"; };
-		EF226E931DA8043C0068C4AF /* SelectTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectTimeViewController.m; sourceTree = "<group>"; };
+		EF226E971DA80F430068C4AF /* TakeoffTimePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TakeoffTimePickerViewController.h; sourceTree = "<group>"; };
+		EF226E981DA80F430068C4AF /* TakeoffTimePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TakeoffTimePickerViewController.m; sourceTree = "<group>"; };
+		EF226E9D1DA898670068C4AF /* ETOATOColumnView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ETOATOColumnView.xib; sourceTree = "<group>"; };
 		EF25269F1D9D788900B5E392 /* DoubleLinePlanColumnView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoubleLinePlanColumnView.xib; sourceTree = "<group>"; };
 		EF2D0DBD1D9FAC030099B505 /* DoubleLinePlanColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleLinePlanColumnView.h; sourceTree = "<group>"; };
 		EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoubleLinePlanColumnView.m; sourceTree = "<group>"; };
@@ -107,12 +145,23 @@
 		EF4EF8811CA34D9600FD897F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF4EF88F1CA34E1F00FD897F /* SunMoonCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonCalc.h; sourceTree = "<group>"; };
 		EF4EF8901CA34E1F00FD897F /* SunMoonCalc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonCalc.m; sourceTree = "<group>"; };
+		EF80668A1DAB8EDB008A4BCB /* RouteCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteCopy.h; sourceTree = "<group>"; };
+		EF80668B1DAB8EDB008A4BCB /* RouteCopy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteCopy.m; sourceTree = "<group>"; };
+		EF80668F1DABB072008A4BCB /* TimeEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewController.h; sourceTree = "<group>"; };
+		EF8066901DABB072008A4BCB /* TimeEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryViewController.m; sourceTree = "<group>"; };
+		EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryViewController.xib; sourceTree = "<group>"; };
+		EFB107BE1DAA4A7F009AC5B2 /* SELCALPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELCALPlayer.h; sourceTree = "<group>"; };
+		EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELCALPlayer.m; sourceTree = "<group>"; };
+		EFB107C11DAA5ADD009AC5B2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		EFE3F1451D92DDCA003A5903 /* TitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleViewController.h; sourceTree = "<group>"; };
 		EFE3F1461D92DDCA003A5903 /* TitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleViewController.m; sourceTree = "<group>"; };
 		EFE3F1541D934896003A5903 /* PDFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFReader.h; sourceTree = "<group>"; };
 		EFE3F1551D934896003A5903 /* PDFReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFReader.m; sourceTree = "<group>"; };
 		EFE3F1581D934DAD003A5903 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		EFE3F15A1D942D55003A5903 /* 292650.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 292650.pdf; sourceTree = "<group>"; };
+		EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TheAmazingAudioEngine.xcodeproj; path = TheAmazingAudioEngine/TheAmazingAudioEngine.xcodeproj; sourceTree = "<group>"; };
+		EFEB15801DAA68570086712E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		EFEB15821DAA68610086712E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +169,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFEB15831DAA68610086712E /* Accelerate.framework in Frameworks */,
+				EFEB15811DAA68570086712E /* AVFoundation.framework in Frameworks */,
+				EFEB157F1DAA68480086712E /* AudioToolbox.framework in Frameworks */,
+				EFEB157E1DAA68310086712E /* libTheAmazingAudioEngine.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +218,7 @@
 				EF226E8A1DA51E750068C4AF /* SingleLinePlanColumnView.xib */,
 				EF226E871DA51E130068C4AF /* SingleLinePlanColumnView.h */,
 				EF226E881DA51E130068C4AF /* SingleLinePlanColumnView.m */,
+				EF226E9D1DA898670068C4AF /* ETOATOColumnView.xib */,
 				EF25269F1D9D788900B5E392 /* DoubleLinePlanColumnView.xib */,
 				EF2D0DBD1D9FAC030099B505 /* DoubleLinePlanColumnView.h */,
 				EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */,
@@ -217,8 +271,16 @@
 				EF0E73071DA2790A000BC8F4 /* MainTabBarController.m */,
 				EF226E8C1DA547FD0068C4AF /* CourseCalc.h */,
 				EF226E8D1DA547FD0068C4AF /* CourseCalc.m */,
-				EF226E921DA8043C0068C4AF /* SelectTimeViewController.h */,
-				EF226E931DA8043C0068C4AF /* SelectTimeViewController.m */,
+				EF226E971DA80F430068C4AF /* TakeoffTimePickerViewController.h */,
+				EF226E981DA80F430068C4AF /* TakeoffTimePickerViewController.m */,
+				EFB107BE1DAA4A7F009AC5B2 /* SELCALPlayer.h */,
+				EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */,
+				EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */,
+				EF80668A1DAB8EDB008A4BCB /* RouteCopy.h */,
+				EF80668B1DAB8EDB008A4BCB /* RouteCopy.m */,
+				EF80668F1DABB072008A4BCB /* TimeEntryViewController.h */,
+				EF8066901DABB072008A4BCB /* TimeEntryViewController.m */,
+				EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */,
 			);
 			path = iFlightPlan;
 			sourceTree = "<group>";
@@ -267,9 +329,22 @@
 		EFE3F1571D934DAD003A5903 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EFEB15821DAA68610086712E /* Accelerate.framework */,
+				EFEB15801DAA68570086712E /* AVFoundation.framework */,
+				EFB107C11DAA5ADD009AC5B2 /* AudioToolbox.framework */,
 				EFE3F1581D934DAD003A5903 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EFEB15711DAA67D80086712E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EFEB15771DAA67D80086712E /* libTheAmazingAudioEngine.a */,
+				EFEB15791DAA67D80086712E /* libTheAmazingAudioEngine OS X.a */,
+				EFEB157B1DAA67D80086712E /* libTheAmazingAudioEngine tvOS.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,6 +361,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				EFEB157D1DAA68220086712E /* PBXTargetDependency */,
 			);
 			name = iFlightPlan;
 			productName = iFlightPlan;
@@ -362,6 +438,12 @@
 			mainGroup = EF4EF84E1CA34D9500FD897F;
 			productRefGroup = EF4EF8581CA34D9500FD897F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = EFEB15711DAA67D80086712E /* Products */;
+					ProjectRef = EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				EF4EF8561CA34D9500FD897F /* iFlightPlan */,
@@ -370,6 +452,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		EFEB15771DAA67D80086712E /* libTheAmazingAudioEngine.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTheAmazingAudioEngine.a;
+			remoteRef = EFEB15761DAA67D80086712E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EFEB15791DAA67D80086712E /* libTheAmazingAudioEngine OS X.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libTheAmazingAudioEngine OS X.a";
+			remoteRef = EFEB15781DAA67D80086712E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EFEB157B1DAA67D80086712E /* libTheAmazingAudioEngine tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libTheAmazingAudioEngine tvOS.a";
+			remoteRef = EFEB157A1DAA67D80086712E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EF4EF8551CA34D9500FD897F /* Resources */ = {
@@ -386,7 +492,9 @@
 				EF0E73021DA026E1000BC8F4 /* 217564.pdf in Resources */,
 				EF0E73001DA026E1000BC8F4 /* 297063.pdf in Resources */,
 				EF0E0F5C1D8845B70085EB7F /* Memo in Resources */,
+				EF226E9E1DA898670068C4AF /* ETOATOColumnView.xib in Resources */,
 				EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */,
+				EF8066931DABB072008A4BCB /* TimeEntryViewController.xib in Resources */,
 				EF226E8B1DA51E750068C4AF /* SingleLinePlanColumnView.xib in Resources */,
 				EF0E73011DA026E1000BC8F4 /* 274630.pdf in Resources */,
 				EF226E821DA363760068C4AF /* 314662.pdf in Resources */,
@@ -416,20 +524,23 @@
 			files = (
 				EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */,
 				EF0E73081DA2790A000BC8F4 /* MainTabBarController.m in Sources */,
+				EFB107C01DAA4A7F009AC5B2 /* SELCALPlayer.m in Sources */,
 				EFE3F1561D934896003A5903 /* PDFReader.m in Sources */,
-				EF226E941DA8043C0068C4AF /* SelectTimeViewController.m in Sources */,
 				EF226E8E1DA547FD0068C4AF /* CourseCalc.m in Sources */,
 				EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */,
 				EF4EF8621CA34D9500FD897F /* PlanViewController.m in Sources */,
 				EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */,
 				EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */,
+				EF226E991DA80F430068C4AF /* TakeoffTimePickerViewController.m in Sources */,
 				EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */,
 				EF2D0DBF1D9FAC030099B505 /* DoubleLinePlanColumnView.m in Sources */,
+				EF80668C1DAB8EDB008A4BCB /* RouteCopy.m in Sources */,
 				EF226E891DA51E130068C4AF /* SingleLinePlanColumnView.m in Sources */,
 				EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */,
 				EF4EF85C1CA34D9500FD897F /* main.m in Sources */,
 				EF2116C11CB2B34C004F9F9A /* SunMoonCalc2Data.m in Sources */,
 				EF226E911DA6A0F10068C4AF /* SunMoon.m in Sources */,
+				EF8066921DABB072008A4BCB /* TimeEntryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +572,11 @@
 			isa = PBXTargetDependency;
 			target = EF4EF8561CA34D9500FD897F /* iFlightPlan */;
 			targetProxy = EF4EF87C1CA34D9600FD897F /* PBXContainerItemProxy */;
+		};
+		EFEB157D1DAA68220086712E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TheAmazingAudioEngine;
+			targetProxy = EFEB157C1DAA68220086712E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -522,6 +638,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "TheAmazingAudioEngine/TheAmazingAudioEngine/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -562,6 +679,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "TheAmazingAudioEngine/TheAmazingAudioEngine/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;

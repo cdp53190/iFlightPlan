@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SELCALPlayer.h"
+#import "RouteCopy.h"
 
 @interface SummeryViewController : UIViewController
 
-
 @property IBOutlet UITextView *mainTextView;
+
+- (IBAction)pushSELCAL:(UIButton *)sender;
+- (IBAction)pushRoute:(UIButton *)sender;
+
+
 
 @end

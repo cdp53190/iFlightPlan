@@ -33,17 +33,7 @@
     if ([_cellIdentifier isEqualToString:@"NAVLOG"]) {
         _headerHeightConstraint.constant = 50;
     } else if ([_cellIdentifier isEqualToString:@"SunMoon"]){
-        _headerHeightConstraint.constant = 50;
-        
-        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithTitle:@"Set T/O Time"
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:self
-                                                               action:@selector(setTakeOffTime)
-         ];
-
-        _navigationItem.leftBarButtonItem = btn;
-
-        
+        _headerHeightConstraint.constant = 50;        
     }
     
     _navigationItem.title = [[NSUserDefaults standardUserDefaults] objectForKey:@"dataDic"][@"Flight Number"];
@@ -125,6 +115,22 @@
                 columnView.lowerLabel.text =_planArray[indexPath.row][@"FIR"];
                 
                 
+            } else if([title isEqualToString:@"ETO"]){
+                columnView.upperLabel.text = @"";
+                columnView.lowerLabel.text = @"";
+                if (indexPath.row == 0) {
+                    columnView.subTitleLabel.text = @"B/O";
+                } else {
+                    columnView.subTitleLabel.text = @"";
+                }
+            } else if([title isEqualToString:@"ATO"]){
+                columnView.upperLabel.text = @"";
+                columnView.lowerLabel.text = @"";
+                if (indexPath.row == 0) {
+                    columnView.subTitleLabel.text = @"T/O";
+                } else {
+                    columnView.subTitleLabel.text = @"";
+                }
             } else {
                 columnView.upperLabel.text = _planArray[indexPath.row][title];
                 columnView.lowerLabel.text = @"";
@@ -371,27 +377,39 @@
     
 }
 
--(void)setTakeOffTime {
-    
-    if (_planArray == nil) {
-        return;
-    }
 
-    NSArray *sunMoonArray = [SunMoon makeSunMoonPlanArrayWithTakeOffYear:2016
-                                                                   month:4
-                                                                     day:5
-                                                                    hour:10
-                                                                  minute:15];
-    
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    [ud setObject:sunMoonArray forKey:@"sunMoonPlanArray"];
-    [ud synchronize];
-    
-    _planArray = [sunMoonArray mutableCopy];
-    
-    
-    [_planTableView reloadData];
-    
+
+- (IBAction)unwindSegue:(UIStoryboardSegue *)segue
+{
+    if ([segue.identifier isEqualToString:@"doneSegue"] && _planArray != nil) {
+
+        NSArray *sunMoonArray = [SunMoon makeSunMoonPlanArrayWithTakeOffYear:_takeoffYear
+                                                                       month:_takeoffMonth
+                                                                         day:_takeoffDay
+                                                                        hour:_takeoffHour
+                                                                      minute:_takeoffMinute];
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        [ud setObject:sunMoonArray forKey:@"sunMoonPlanArray"];
+        [ud synchronize];
+        
+        _planArray = [sunMoonArray mutableCopy];
+        [_planTableView reloadData];
+
+        UIBarButtonItem *btn =
+        [[UIBarButtonItem alloc]
+         initWithTitle:@"Moon Phase:XXday(s)"  // ボタンタイトル名を指定
+         style:UIBarButtonItemStylePlain  // スタイルを指定（※下記表参照）
+         target:nil  // デリゲートのターゲットを指定
+         action:nil  // ボタンが押されたときに呼ばれるメソッドを指定
+         ];
+
+        btn.tintColor = [UIColor blackColor];
+        
+        _navigationItem.rightBarButtonItem = btn;
+        
+    }
 }
+
 
 @end

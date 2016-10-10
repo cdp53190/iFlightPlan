@@ -10,6 +10,23 @@
 
 @implementation DoubleLinePlanColumnView
 
+
+
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
+    
+    if ([_columnTitle isEqualToString:@"ETO"]) {
+        NSLog(@"ETO");
+        return;
+    }
+    
+    if ([_columnTitle isEqualToString:@"ATO"]) {
+        NSLog(@"ATO");
+        return;
+    }
+    
+    
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

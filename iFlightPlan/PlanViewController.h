@@ -12,6 +12,7 @@
 #import "SingleLinePlanColumnView.h"
 #import "DoubleLinePlanColumnView.h"
 #import "PDFReader.h"
+#import "SELCALPlayer.h"
 
 @interface PlanViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UINavigationBarDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerHeightConstraint;
@@ -28,6 +29,8 @@
 @property NSMutableArray *planArray;
 
 @property NSString *cellIdentifier;
+
+@property int takeoffYear, takeoffMonth, takeoffDay, takeoffHour, takeoffMinute;
 
 @end
 

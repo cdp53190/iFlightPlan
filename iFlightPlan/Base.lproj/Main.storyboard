@@ -26,6 +26,22 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="43r-mu-CFr">
+                                <frame key="frameInset" minX="43" minY="61" width="82" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="SELCAL"/>
+                                <connections>
+                                    <action selector="pushSELCAL:" destination="G1y-Vo-ggr" eventType="touchUpInside" id="Mng-qH-HZa"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LRB-6e-86I">
+                                <frame key="frameInset" minX="133" minY="61" width="107" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Route Copy"/>
+                                <connections>
+                                    <action selector="pushRoute:" destination="G1y-Vo-ggr" eventType="touchUpInside" id="oAx-BB-Q3C"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -36,7 +52,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tHC-gB-gwz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1281" y="844"/>
+            <point key="canvasLocation" x="1280.46875" y="843.75"/>
         </scene>
         <!--MainTabBar-->
         <scene sceneID="Uhu-u2-XpT">
@@ -253,7 +269,15 @@
                             </view>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nr8-52-lRz">
                                 <items>
-                                    <navigationItem title="Title" id="tez-3i-VWw"/>
+                                    <navigationItem title="Title" id="tez-3i-VWw">
+                                        <barButtonItem key="leftBarButtonItem" title="Set T/O Time" id="Vtw-IH-0QM">
+                                            <connections>
+                                                <segue destination="zyY-Bh-kha" kind="popoverPresentation" popoverAnchorBarButtonItem="Vtw-IH-0QM" id="bSw-oZ-YT7">
+                                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                                </segue>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
@@ -278,39 +302,26 @@
                         <outlet property="navigationBar" destination="nr8-52-lRz" id="aGd-kj-LAV"/>
                         <outlet property="navigationItem" destination="tez-3i-VWw" id="c1d-X6-VA2"/>
                         <outlet property="planTableView" destination="dRk-wF-ujn" id="v5K-vk-ffs"/>
-                        <segue destination="Mze-SI-7zQ" kind="popoverPresentation" identifier="showDatePickerSegue" popoverAnchorView="nr8-52-lRz" id="IL8-oz-2w0">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="URI-zR-eM4" sceneMemberID="firstResponder"/>
+                <exit id="A9l-Ls-Vaa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1251.5625" y="88.4765625"/>
         </scene>
-        <!--Select Time View Controller-->
-        <scene sceneID="0NZ-dt-M5L">
+        <!--Takeoff Time Picker View Controller-->
+        <scene sceneID="Ppc-Tt-RJK">
             <objects>
-                <viewController id="Mze-SI-7zQ" customClass="SelectTimeViewController" sceneMemberID="viewController">
+                <viewController id="zyY-Bh-kha" customClass="TakeoffTimePickerViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="rco-ec-Afv"/>
-                        <viewControllerLayoutGuide type="bottom" id="ZG8-wb-htW"/>
+                        <viewControllerLayoutGuide type="top" id="oMf-ON-HIV"/>
+                        <viewControllerLayoutGuide type="bottom" id="sgs-XU-qFg"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="RgC-lC-CaK">
-                        <rect key="frame" x="0.0" y="0.0" width="760" height="400"/>
+                    <view key="view" contentMode="scaleToFill" id="Ikq-0k-lh0">
+                        <rect key="frame" x="0.0" y="0.0" width="1500" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oLx-ih-irx">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="zYR-tP-m4I"/>
-                                </constraints>
-                                <items>
-                                    <navigationItem title="Title" id="nBX-Yw-0Gf">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Rd1-OP-xIg"/>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="hC0-6y-Xa2"/>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="vfR-C0-3UQ">
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="cO3-Rt-phF">
                                 <date key="date" timeIntervalSinceReferenceDate="497550742.380849">
                                     <!--2016-10-07 16:32:22 +0000-->
                                 </date>
@@ -321,27 +332,50 @@
                                     <!--2016-12-31 11:00:00 +0000-->
                                 </date>
                             </datePicker>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSp-Ft-snS">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="3o0-zZ-mOU"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Title" id="3BJ-oq-eu6">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="jWO-OQ-dWv">
+                                            <connections>
+                                                <segue destination="A9l-Ls-Vaa" kind="unwind" identifier="cancelSegue" unwindAction="unwindSegue:" id="u4a-zM-0I8"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="ojK-Vy-5oP">
+                                            <connections>
+                                                <segue destination="A9l-Ls-Vaa" kind="unwind" identifier="doneSegue" unwindAction="unwindSegue:" id="khl-uV-EFk"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="vfR-C0-3UQ" firstAttribute="leading" secondItem="RgC-lC-CaK" secondAttribute="leading" id="3KP-og-cyD"/>
-                            <constraint firstItem="oLx-ih-irx" firstAttribute="top" secondItem="RgC-lC-CaK" secondAttribute="top" id="3t3-KP-BRu"/>
-                            <constraint firstAttribute="trailing" secondItem="vfR-C0-3UQ" secondAttribute="trailing" id="CvS-va-rdO"/>
-                            <constraint firstAttribute="bottom" secondItem="vfR-C0-3UQ" secondAttribute="bottom" id="Dqi-RX-ARH"/>
-                            <constraint firstAttribute="trailing" secondItem="oLx-ih-irx" secondAttribute="trailing" id="FQM-kV-Cnb"/>
-                            <constraint firstItem="oLx-ih-irx" firstAttribute="leading" secondItem="RgC-lC-CaK" secondAttribute="leading" id="Ipe-lF-efF"/>
-                            <constraint firstItem="vfR-C0-3UQ" firstAttribute="top" secondItem="oLx-ih-irx" secondAttribute="bottom" id="JjC-57-Bys"/>
+                            <constraint firstItem="cO3-Rt-phF" firstAttribute="top" secondItem="iSp-Ft-snS" secondAttribute="bottom" id="AkK-0I-7Cz"/>
+                            <constraint firstItem="iSp-Ft-snS" firstAttribute="top" secondItem="Ikq-0k-lh0" secondAttribute="top" id="G29-5h-QTz"/>
+                            <constraint firstItem="cO3-Rt-phF" firstAttribute="top" secondItem="iSp-Ft-snS" secondAttribute="bottom" id="NRg-Md-N0t"/>
+                            <constraint firstItem="cO3-Rt-phF" firstAttribute="leading" secondItem="Ikq-0k-lh0" secondAttribute="leading" id="foD-jt-e2G"/>
+                            <constraint firstAttribute="trailing" secondItem="cO3-Rt-phF" secondAttribute="trailing" id="jgi-sg-rGl"/>
+                            <constraint firstAttribute="bottom" secondItem="cO3-Rt-phF" secondAttribute="bottom" id="lnd-3N-EnR"/>
+                            <constraint firstItem="iSp-Ft-snS" firstAttribute="leading" secondItem="Ikq-0k-lh0" secondAttribute="leading" id="sDd-RI-np6"/>
+                            <constraint firstAttribute="trailing" secondItem="iSp-Ft-snS" secondAttribute="trailing" id="y7R-Ti-BXL"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="760" height="400"/>
+                    <size key="freeformSize" width="1500" height="400"/>
+                    <connections>
+                        <outlet property="datePicker" destination="cO3-Rt-phF" id="w66-1u-Ri2"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="AXO-01-Yzc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Wk-kS-8Yo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2014.84375" y="111.91406249999999"/>
+            <point key="canvasLocation" x="2241" y="112"/>
         </scene>
     </scenes>
 </document>
