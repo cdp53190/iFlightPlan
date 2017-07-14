@@ -43,12 +43,12 @@
     
 }
 
-static double sind(double d) {return sin(d * M_PI/180);}
-static double cosd(double d) {return cos(d * M_PI/180);}
-static double tand(double d) {return tan(d * M_PI/180);}
-static double asind(double x) {return asin(x) * 180 / M_PI;}
+static double sind(double d) {return sin(d * M_PI/180.0);}
+static double cosd(double d) {return cos(d * M_PI/180.0);}
+static double tand(double d) {return tan(d * M_PI/180.0);}
+static double asind(double x) {return asin(x) * 180.0 / M_PI;}
 //static double acosd(double x) {return acos(x) * 180 / M_PI;}
-static double atand(double x) {return atan(x) * 180 / M_PI;}
+static double atand(double x) {return atan(x) * 180.0 / M_PI;}
 
 // calculate Julius year (year from 2000/1/1, for variable "t") jy
 +(double) juliusYearWithYear:(double)year
@@ -66,7 +66,7 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     double k = 365.0 * year + 30.0 * month + day - 33.5 + floor(3.0 * (month + 1.0) / 5.0)
     + floor(year / 4.0) - floor(year / 100.0) + floor(year / 400.0);
     k += minute / 60.0 / 24.0 ; // plus time
-    k += (65 + year) / 86400.0 ; // plus delta T
+    k += (65.0 + year) / 86400.0 ; // plus delta T
     
 //    NSLog(@"JuliusYear:%f\n",k / 365.25);
     
@@ -215,7 +215,7 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 
 -(void)calcSun{
     
-    int time = hourd * 60 + minuted;
+    double time = hourd * 60 + minuted;
     
     double t = [SunMoonCalc juliusYearWithYear:yeard
                                          Month:monthd
@@ -231,23 +231,24 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     double dlt = [SunMoonCalc solarRightAscensionAtJuliusYear:t] ;//赤緯
         
     _heightDeg = [SunMoonCalc solarAltitudeWithLatitude:lat
-                                        siderealHour:th
-                                    solarDeclination:alp
-                                      rightAscension:dlt];//高度計算（視差等なし）
+                                           siderealHour:th
+                                       solarDeclination:alp
+                                         rightAscension:dlt];//高度計算（視差等なし）
     _directionDeg = [SunMoonCalc solarDirectionWithLatitude:lat
                                             siderealHour:th
                                         solarDeclination:alp
                                           rightAscension:dlt];//方向計算
     
-    double tt = 0.00244281888889 / ds;//赤道地平偏差(Π) 8.794148 / 3600
-    double e = 0.03533333333333 * sqrt(alt) ;//みかけの地平線E 2.12 / 60
+    double shisa = 0.00244281888889 / ds;//赤道地平視差(Π) 8.794148 / 3600。
+    
+    double e = 0.03533333333333 * sqrt(alt * .3048) ;//みかけの地平線E 2.12 / 60
     double s = 0.26699444444445 / ds ;//視半径S (16.0 / 60.0 + 1.18 / 3600.0 )
     double r = 0.58555555555555 ; //大気差（日の出日の入り時のみ）R35 8
     
-    double t1 = -18.0 - e + tt;
-    double t2 = -12.0 - e + tt;
-    double t3 = -6.0 - e + tt;
-    double t4 = -s - e - r + tt;
+    double t1 = -18.0 - e + shisa;
+    double t2 = -12.0 - e + shisa;
+    double t3 = -6.0 - e + shisa;
+    double t4 = -s - e - r + shisa;
     
     //status check
     
@@ -430,9 +431,9 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 
 //(汎用)黄緯、黄経から、赤緯、赤経に変換する。(p131)
 
-+(NSArray *)convertToRightAscensionDeclinationByJuliusYear:(double)time
-                                         CelestialLatitude:(double)csLat
-                                        CelestialLongitude:(double)csLon {
++(NSArray *)arrayOfRightAscensionDeclinationByJuliusYear:(double)time
+                                         EclipticLatitude:(double)csLat
+                                        EclipticLongitude:(double)csLon {
     
     double ep = 23.439291 - 0.000130042 * time ;//黄道偏角ε(p74)
     double u = cosd(csLat) * cosd(csLon);
@@ -451,24 +452,55 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     
 }
 
+//赤経赤緯から黄経黄緯に変換
++(NSArray *)arrayOfEclipticLatitudeLongitudeByRightAscension:(double)aRA
+                                                 declination:(double)aDec
+                                                     epsilon:(double)ep {
+    
+    double RADeg = aRA * 360.0 / 24.0;
+    
+    double ecLon = 0.0;
+    
+    double dc = sind(aDec) * sind(ep) + cosd(aDec) * sind(RADeg) * cosd(ep);
+    double dm = cosd(aDec) * cosd(RADeg);
+    
+    if (dm == 0.0) {
+        double sr = sind(RADeg);
+        if (sr > 0.0) {ecLon = 90.0;}
+        if (sr == 0.0) {ecLon = 0.0;}
+        if (sr < 0.0) {ecLon = -90.0;}
+    } else {
+        ecLon = atand(dc / dm);
+        if (dm < 0.0) { ecLon += 180.0;}
+    }
+    if(ecLon < 0.0) {ecLon += 360.0 ;}
+    
+    double ecLat = asind(sind(aDec) * cosd(ep) - cosd(aDec) * sind(RADeg) * sind(ep));
+    
+    return @[[NSNumber numberWithDouble:ecLat], [NSNumber numberWithDouble:ecLon]];
+    
+}
+
 
 
 -(void)calcMoon {
     
+    double time = hourd * 60.0 + minuted;
+    
     double t = [SunMoonCalc juliusYearWithYear:yeard
                                          Month:monthd
                                            Day:dayd
-                                        Minute:minuted];//ユリウス時
+                                        Minute:time];//ユリウス時
     
     double th = [SunMoonCalc siderealHourWithJuliusYear:t
-                                                 Minute:minuted
+                                                 Minute:time
                                               longitude:lon];//恒星時
     double csLat = [SunMoonCalc moonCelestialLatitudeAtJuliusYear:t];//月の黄緯
     double csLon = [SunMoonCalc moonCelestialLongitudeAtJuliusYear:t];//月の黄経
     
-    NSArray *redArray = [SunMoonCalc convertToRightAscensionDeclinationByJuliusYear:t
-                                                                      CelestialLatitude:csLat
-                                                                     CelestialLongitude:csLon];//赤緯、赤経に変換
+    NSArray *redArray = [SunMoonCalc arrayOfRightAscensionDeclinationByJuliusYear:t
+                                                                      EclipticLatitude:csLat
+                                                                     EclipticLongitude:csLon];//赤緯、赤経に変換
     
     double alp = [[redArray objectAtIndex:1] doubleValue]; ;//赤経
     double dlt = [[redArray objectAtIndex:0] doubleValue];//赤緯
@@ -476,18 +508,18 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     _heightDeg = [SunMoonCalc solarAltitudeWithLatitude:lat
                                         siderealHour:th
                                     solarDeclination:alp
-                                      rightAscension:dlt];//高度計算（視差等なし。地球中心からの高度）
+                                      rightAscension:dlt]
+                - [SunMoonCalc moonShisaAtJuliusYear:t];//赤道地平偏差(Π)。高度計算（視差等なし）
+    
     _directionDeg = [SunMoonCalc solarDirectionWithLatitude:lat
                                             siderealHour:th
                                         solarDeclination:alp
                                           rightAscension:dlt];//方向計算
     
-    double tt = [SunMoonCalc moonShisaAtJuliusYear:t];//赤道地平偏差(Π)
-    
-    double e = 0.03533333333333 * sqrt(alt) ;//みかけの地平線E
+    double e = 0.03533333333333 * sqrt(alt * .3048) ;//みかけの地平線E
     double r = 0.58555555555555 ; //大気差（地平線に近い時のみ）R
     
-    double heightMoonOnHorizon = -r - e + tt;
+    double heightMoonOnHorizon = -r - e;
     
     //status check
     
@@ -500,6 +532,49 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     
     
 }
+
+
+-(double) moonPhase {
+    
+    double deltaRamda,oldDeltaRamda;
+    double moonPhase = 0.0;
+    
+    oldDeltaRamda = 9999.9;
+    
+    do {
+
+        //tの計算
+        double time = hourd * 60.0 + minuted;
+        
+        double t = [SunMoonCalc juliusYearWithYear:yeard
+                                             Month:monthd
+                                               Day:dayd
+                                            Minute:time];//ユリウス時
+
+        //太陽黄経
+        double csSun = [SunMoonCalc solarCelestialLongitudeAtJuliusYear:t];
+        
+        
+        //月赤緯赤経
+        double csMoon = [SunMoonCalc moonCelestialLongitudeAtJuliusYear:t];
+        
+        deltaRamda = csMoon - csSun;
+        
+        if (deltaRamda < 0.0) {deltaRamda += 360.0;}
+        
+        if (ABS(deltaRamda) > ABS(oldDeltaRamda)) {deltaRamda -= 360.0;}
+        
+        double g = deltaRamda / 12.1908;
+        moonPhase += g;
+        minuted -= g * 24.0 * 60.0;
+        
+        oldDeltaRamda = deltaRamda;
+        
+    } while (deltaRamda > 0.05 || deltaRamda < 0.0);
+    
+    return moonPhase;
+}
+
 
 @end
 

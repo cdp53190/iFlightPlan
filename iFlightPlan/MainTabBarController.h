@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "PlanViewController.h"
+#import "SunMoonViewController.h"
+
 @interface MainTabBarController : UITabBarController
+
+-(void)loadPlan;
 
 @end

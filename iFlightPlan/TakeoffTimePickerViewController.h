@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PlanViewController.h"
+#import "SunMoonViewController.h"
 
 @interface TakeoffTimePickerViewController : UIViewController
 
 @property IBOutlet UIDatePicker *datePicker;
+@property IBOutlet UIDatePicker *timePicker;
 
 @end

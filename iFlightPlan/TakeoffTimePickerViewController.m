@@ -16,7 +16,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    _datePicker.calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    _timePicker.calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601];
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    [formatter setDateFormat:@"yyyyMMddHHmm"];
+    
+    
+    NSDate *takeOffDate = [formatter dateFromString:[NSString stringWithFormat:@"%04d%02d%02d%02d%02d",
+                                                     [[ud objectForKey:@"sunMoonTakeoffYear"] intValue],
+                                                     [[ud objectForKey:@"sunMoonTakeoffMonth"] intValue],
+                                                     [[ud objectForKey:@"sunMoonTakeoffDay"] intValue],
+                                                     [[ud objectForKey:@"sunMoonTakeoffHour"] intValue],
+                                                     [[ud objectForKey:@"sunMoonTakeoffMinute"] intValue]]];
+    
+    
+/*    NSDate *now = [NSDate dateWithTimeIntervalSinceNow: -[[NSTimeZone systemTimeZone] secondsFromGMT]];
+        _datePicker.date = now;
+        _timePicker.date = now;
+*/
+    _datePicker.date = takeOffDate;
+    _timePicker.date = takeOffDate;
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,9 +62,9 @@
 
     if ([segue.identifier isEqualToString:@"doneSegue"]) {
         
-        PlanViewController *sunMoonVC = segue.destinationViewController;
+        SunMoonViewController *sunMoonVC = segue.destinationViewController;
         
-        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         NSUInteger flags;
         NSDateComponents *comps;
         
@@ -48,6 +75,8 @@
         sunMoonVC.takeoffYear = (int)comps.year;
         sunMoonVC.takeoffMonth = (int)comps.month;
         sunMoonVC.takeoffDay = (int)comps.day;
+        
+        comps = [calendar components:flags fromDate:_timePicker.date];
         sunMoonVC.takeoffHour = (int)comps.hour;
         sunMoonVC.takeoffMinute = (int)comps.minute;
         

@@ -28,6 +28,7 @@
 		EF2D0DBF1D9FAC030099B505 /* DoubleLinePlanColumnView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */; };
 		EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF31A0FE1D95928100F8048D /* SummeryViewController.m */; };
 		EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */; };
+		EF4A03261DB6C0D900787698 /* ATCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4A03251DB6C0D900787698 /* ATCViewController.m */; };
 		EF4EF85C1CA34D9500FD897F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85B1CA34D9500FD897F /* main.m */; };
 		EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85E1CA34D9500FD897F /* AppDelegate.m */; };
 		EF4EF8621CA34D9500FD897F /* PlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8611CA34D9500FD897F /* PlanViewController.m */; };
@@ -40,6 +41,8 @@
 		EF80668C1DAB8EDB008A4BCB /* RouteCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = EF80668B1DAB8EDB008A4BCB /* RouteCopy.m */; };
 		EF8066921DABB072008A4BCB /* TimeEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8066901DABB072008A4BCB /* TimeEntryViewController.m */; };
 		EF8066931DABB072008A4BCB /* TimeEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */; };
+		EF8066951DAFBF44008A4BCB /* FuelEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8066941DAFBF44008A4BCB /* FuelEntryViewController.xib */; };
+		EF8066981DAFBF69008A4BCB /* FuelEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8066971DAFBF69008A4BCB /* FuelEntryViewController.m */; };
 		EFB107C01DAA4A7F009AC5B2 /* SELCALPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */; };
 		EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1461D92DDCA003A5903 /* TitleViewController.m */; };
 		EFE3F1561D934896003A5903 /* PDFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1551D934896003A5903 /* PDFReader.m */; };
@@ -48,6 +51,7 @@
 		EFEB157F1DAA68480086712E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFB107C11DAA5ADD009AC5B2 /* AudioToolbox.framework */; };
 		EFEB15811DAA68570086712E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEB15801DAA68570086712E /* AVFoundation.framework */; };
 		EFEB15831DAA68610086712E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEB15821DAA68610086712E /* Accelerate.framework */; };
+		EFF6EC541E86F6D800B66A4A /* SunMoonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFF6EC531E86F6D800B66A4A /* SunMoonViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +131,8 @@
 		EF31A0FE1D95928100F8048D /* SummeryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SummeryViewController.m; sourceTree = "<group>"; };
 		EF48F8C31CD55A7B004DC03A /* PlanTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanTableViewCell.h; sourceTree = "<group>"; };
 		EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanTableViewCell.m; sourceTree = "<group>"; };
+		EF4A03241DB6C0D900787698 /* ATCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATCViewController.h; sourceTree = "<group>"; };
+		EF4A03251DB6C0D900787698 /* ATCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATCViewController.m; sourceTree = "<group>"; };
 		EF4EF8571CA34D9500FD897F /* iFlightPlan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iFlightPlan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF4EF85B1CA34D9500FD897F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EF4EF85D1CA34D9500FD897F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -150,6 +156,9 @@
 		EF80668F1DABB072008A4BCB /* TimeEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewController.h; sourceTree = "<group>"; };
 		EF8066901DABB072008A4BCB /* TimeEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryViewController.m; sourceTree = "<group>"; };
 		EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryViewController.xib; sourceTree = "<group>"; };
+		EF8066941DAFBF44008A4BCB /* FuelEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FuelEntryViewController.xib; sourceTree = "<group>"; };
+		EF8066961DAFBF69008A4BCB /* FuelEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuelEntryViewController.h; sourceTree = "<group>"; };
+		EF8066971DAFBF69008A4BCB /* FuelEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuelEntryViewController.m; sourceTree = "<group>"; };
 		EFB107BE1DAA4A7F009AC5B2 /* SELCALPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELCALPlayer.h; sourceTree = "<group>"; };
 		EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELCALPlayer.m; sourceTree = "<group>"; };
 		EFB107C11DAA5ADD009AC5B2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -162,6 +171,8 @@
 		EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TheAmazingAudioEngine.xcodeproj; path = TheAmazingAudioEngine/TheAmazingAudioEngine.xcodeproj; sourceTree = "<group>"; };
 		EFEB15801DAA68570086712E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EFEB15821DAA68610086712E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		EFF6EC521E86F6D800B66A4A /* SunMoonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonViewController.h; sourceTree = "<group>"; };
+		EFF6EC531E86F6D800B66A4A /* SunMoonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +237,15 @@
 			name = Plan;
 			sourceTree = "<group>";
 		};
+		EF4A031E1DB6BED700787698 /* ATC */ = {
+			isa = PBXGroup;
+			children = (
+				EF4A03241DB6C0D900787698 /* ATCViewController.h */,
+				EF4A03251DB6C0D900787698 /* ATCViewController.m */,
+			);
+			name = ATC;
+			sourceTree = "<group>";
+		};
 		EF4EF84E1CA34D9500FD897F = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +271,7 @@
 		EF4EF8591CA34D9500FD897F /* iFlightPlan */ = {
 			isa = PBXGroup;
 			children = (
+				EF4A031E1DB6BED700787698 /* ATC */,
 				EF31A0FC1D95922300F8048D /* Plan */,
 				EFE3F1511D934360003A5903 /* SunMoon */,
 				EF4EF85D1CA34D9500FD897F /* AppDelegate.h */,
@@ -271,16 +292,12 @@
 				EF0E73071DA2790A000BC8F4 /* MainTabBarController.m */,
 				EF226E8C1DA547FD0068C4AF /* CourseCalc.h */,
 				EF226E8D1DA547FD0068C4AF /* CourseCalc.m */,
-				EF226E971DA80F430068C4AF /* TakeoffTimePickerViewController.h */,
-				EF226E981DA80F430068C4AF /* TakeoffTimePickerViewController.m */,
 				EFB107BE1DAA4A7F009AC5B2 /* SELCALPlayer.h */,
 				EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */,
 				EFEB15701DAA67D80086712E /* TheAmazingAudioEngine.xcodeproj */,
+				EF7826401E77E18200B3728C /* EntryControllers */,
 				EF80668A1DAB8EDB008A4BCB /* RouteCopy.h */,
 				EF80668B1DAB8EDB008A4BCB /* RouteCopy.m */,
-				EF80668F1DABB072008A4BCB /* TimeEntryViewController.h */,
-				EF8066901DABB072008A4BCB /* TimeEntryViewController.m */,
-				EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */,
 			);
 			path = iFlightPlan;
 			sourceTree = "<group>";
@@ -311,6 +328,21 @@
 			path = iFlightPlanUITests;
 			sourceTree = "<group>";
 		};
+		EF7826401E77E18200B3728C /* EntryControllers */ = {
+			isa = PBXGroup;
+			children = (
+				EF226E971DA80F430068C4AF /* TakeoffTimePickerViewController.h */,
+				EF226E981DA80F430068C4AF /* TakeoffTimePickerViewController.m */,
+				EF8066961DAFBF69008A4BCB /* FuelEntryViewController.h */,
+				EF8066971DAFBF69008A4BCB /* FuelEntryViewController.m */,
+				EF8066941DAFBF44008A4BCB /* FuelEntryViewController.xib */,
+				EF80668F1DABB072008A4BCB /* TimeEntryViewController.h */,
+				EF8066901DABB072008A4BCB /* TimeEntryViewController.m */,
+				EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */,
+			);
+			name = EntryControllers;
+			sourceTree = "<group>";
+		};
 		EFE3F1511D934360003A5903 /* SunMoon */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,6 +354,8 @@
 				EF2116BD1CB1247A004F9F9A /* SunMoonCalc2.m */,
 				EF2116BF1CB2B34C004F9F9A /* SunMoonCalc2Data.h */,
 				EF2116C01CB2B34C004F9F9A /* SunMoonCalc2Data.m */,
+				EFF6EC521E86F6D800B66A4A /* SunMoonViewController.h */,
+				EFF6EC531E86F6D800B66A4A /* SunMoonViewController.m */,
 			);
 			name = SunMoon;
 			sourceTree = "<group>";
@@ -495,6 +529,7 @@
 				EF226E9E1DA898670068C4AF /* ETOATOColumnView.xib in Resources */,
 				EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */,
 				EF8066931DABB072008A4BCB /* TimeEntryViewController.xib in Resources */,
+				EF8066951DAFBF44008A4BCB /* FuelEntryViewController.xib in Resources */,
 				EF226E8B1DA51E750068C4AF /* SingleLinePlanColumnView.xib in Resources */,
 				EF0E73011DA026E1000BC8F4 /* 274630.pdf in Resources */,
 				EF226E821DA363760068C4AF /* 314662.pdf in Resources */,
@@ -522,10 +557,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFF6EC541E86F6D800B66A4A /* SunMoonViewController.m in Sources */,
 				EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */,
 				EF0E73081DA2790A000BC8F4 /* MainTabBarController.m in Sources */,
 				EFB107C01DAA4A7F009AC5B2 /* SELCALPlayer.m in Sources */,
 				EFE3F1561D934896003A5903 /* PDFReader.m in Sources */,
+				EF4A03261DB6C0D900787698 /* ATCViewController.m in Sources */,
 				EF226E8E1DA547FD0068C4AF /* CourseCalc.m in Sources */,
 				EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */,
 				EF4EF8621CA34D9500FD897F /* PlanViewController.m in Sources */,
@@ -535,6 +572,7 @@
 				EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */,
 				EF2D0DBF1D9FAC030099B505 /* DoubleLinePlanColumnView.m in Sources */,
 				EF80668C1DAB8EDB008A4BCB /* RouteCopy.m in Sources */,
+				EF8066981DAFBF69008A4BCB /* FuelEntryViewController.m in Sources */,
 				EF226E891DA51E130068C4AF /* SingleLinePlanColumnView.m in Sources */,
 				EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */,
 				EF4EF85C1CA34D9500FD897F /* main.m in Sources */,
@@ -694,6 +732,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 54H8SCQ8AA;
 				INFOPLIST_FILE = iFlightPlan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -706,6 +745,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 54H8SCQ8AA;
 				INFOPLIST_FILE = iFlightPlan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlan;
 				PRODUCT_NAME = "$(TARGET_NAME)";

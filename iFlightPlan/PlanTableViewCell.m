@@ -9,7 +9,9 @@
 #import "PlanTableViewCell.h"
 
 @implementation PlanTableViewCell
-
+{
+    NSArray *aColumnListArray;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -23,26 +25,42 @@
     // Configure the view for the selected state
 }
 
--(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier columnListArray:(NSArray *)columnListArray{
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier columnListArray:(NSArray *)columnListArray viewController:(UIViewController *)viewController rowNumber:(NSInteger)rowNumber{
+    
+    aColumnListArray = columnListArray;
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-    
         
         NSInteger numberOfColumn = 1;
         
-        for (NSDictionary *dic in columnListArray) {
+        for (NSDictionary *dic in aColumnListArray) {
             
             UIView *columnView;
             
-            if ([reuseIdentifier isEqualToString:@"NAVLOG"]) {
+            if ([reuseIdentifier hasSuffix:@"NAVLOG"]) {
                 UINib *nib;
-                if ([dic[@"title"] isEqualToString:@"ETO"] || [dic[@"title"] isEqualToString:@"ATO"]) {
+                NSString *title = dic[@"title"];
+                if ([title hasPrefix:@"ETO"] || [title isEqualToString:@"ATO"]) {
                     nib = [UINib nibWithNibName:@"ETOATOColumnView" bundle:nil];
+                    columnView = [nib instantiateWithOwner:self options:nil][0];
+                    
+                    ((DoubleLinePlanColumnView *)columnView).rowNo = rowNumber;
+                    
+                    ((DoubleLinePlanColumnView *)columnView).delegate = (PlanViewController *)viewController;
+                } else if ([title isEqualToString:@"FRMNG"]){
+                    nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
+                    columnView = [nib instantiateWithOwner:self options:nil][0];
+                    
+                    ((DoubleLinePlanColumnView *)columnView).rowNo = rowNumber;
+                    ((DoubleLinePlanColumnView *)columnView).delegate = (PlanViewController *)viewController;
+                    
                 } else {
                     nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
+                    columnView = [nib instantiateWithOwner:self options:nil][0];
+
                 }
-                columnView = [nib instantiateWithOwner:self options:nil][0];
-                ((DoubleLinePlanColumnView *)columnView).columnTitle = dic[@"title"];
+
+                ((DoubleLinePlanColumnView *)columnView).columnTitle = title;
                 
                 if (numberOfColumn == columnListArray.count) {
                     [((DoubleLinePlanColumnView *)columnView).lineView setHidden:YES];
@@ -188,6 +206,20 @@
     }
     
     return self;
+}
+
+
+
+-(void)setRowNumber:(int)rowNo {
+    
+    NSInteger arrayCount = aColumnListArray.count;
+    
+    for (int i = 0; i < arrayCount; i++ ) {
+        if ([aColumnListArray[i][@"title"] isEqualToString:@"ATO"] || [aColumnListArray[i][@"title"] hasPrefix:@"ETO"] || [aColumnListArray[i][@"title"] isEqualToString:@"FRMNG"]) {
+            ((DoubleLinePlanColumnView *)[self.contentView viewWithTag:i + 1]).rowNo = rowNo;
+        }
+    }
+    
 }
 
 @end

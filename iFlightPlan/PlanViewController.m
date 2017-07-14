@@ -12,34 +12,50 @@
 
 @end
 
+
 @implementation PlanViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _navigationBar.delegate = self;
-    // Do any additional setup after loading the view, typically from a nib.
     
-    //test
-    //PDFReader *test = [[PDFReader alloc]init];
-    //[test testWithPathString:[[NSBundle mainBundle] pathForResource:@"314662" ofType:@"pdf"]];
-
-    
-
-
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(planReload) name:@"planReload" object:nil];
     
     //ヘッダ描画
     [self makeHeaderView];
     
-    if ([_cellIdentifier isEqualToString:@"NAVLOG"]) {
-        _headerHeightConstraint.constant = 50;
-    } else if ([_cellIdentifier isEqualToString:@"SunMoon"]){
-        _headerHeightConstraint.constant = 50;        
+    _headerHeightConstraint.constant = 50;
+    
+    
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    
+    [super viewWillAppear:animated];
+
+
+    [self planReload];
+    
+}
+
+-(void)planReload {
+
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    _navigationItem.title = [ud objectForKey:@"dataDic"][@"Flight Number"];
+
+    NSString *planArrayName;
+    if ([_cellIdentifier isEqualToString:@"MainNAVLOG"]) {
+        planArrayName = @"planArray";
+    } else if([_cellIdentifier isEqualToString:@"DivertNAVLOG"]) {
+        planArrayName = @"divertPlanArray";
     }
     
-    _navigationItem.title = [[NSUserDefaults standardUserDefaults] objectForKey:@"dataDic"][@"Flight Number"];
     
+    _planArray = [NSMutableArray arrayWithArray:[ud objectForKey:planArrayName]];
     
-    
+    [_planTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,12 +68,6 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if ([_cellIdentifier isEqualToString:@"NAVLOG"]) {
-        return 50;
-    } else if ([_cellIdentifier isEqualToString:@"SunMoon"]) {
-        return 25;
-    }
     
     return 50;
 }
@@ -73,90 +83,98 @@
     if (!cell) {
         cell = [[PlanTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:_cellIdentifier
-                                       columnListArray:_columnListArray];
+                                       columnListArray:_columnListArray
+                                        viewController:self
+                                             rowNumber:indexPath.row];
+    } else {
+        [(PlanTableViewCell *)cell setRowNumber:(int)indexPath.row];
     }
     
     int numberOfColumn = 1;
+
+    
     for (NSDictionary *dic in _columnListArray) {
     
         NSString *title = dic[@"title"];
         
-        if ([_cellIdentifier isEqualToString:@"NAVLOG"]) {
+        
+        DoubleLinePlanColumnView *columnView = [cell.contentView viewWithTag:numberOfColumn];
+        
+        if([title isEqualToString:@"W/T"]) {
+            columnView.upperLabel.text =_planArray[indexPath.row][@"Ewindtemp"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"Awindtemp"];
             
-            DoubleLinePlanColumnView *columnView = [cell.contentView viewWithTag:numberOfColumn];
+        } else if ([title isEqualToString:@"FL"]) {
+            columnView.upperLabel.text =_planArray[indexPath.row][@"PFL"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"AFL"];
+        } else if ([title isEqualToString:@"Z/END"]) {
             
-            if([title isEqualToString:@"W/T"]) {
-                columnView.upperLabel.text =_planArray[indexPath.row][@"Ewindtemp"];
-                columnView.lowerLabel.text =_planArray[indexPath.row][@"Awindtemp"];
-                
-            } else if ([title isEqualToString:@"FL"]) {
-                columnView.upperLabel.text =_planArray[indexPath.row][@"PFL"];
-                columnView.lowerLabel.text =_planArray[indexPath.row][@"AFL"];
-            } else if ([title isEqualToString:@"Z/END"]) {
-                
-                NSArray *waypointArray = [_planArray[indexPath.row][@"waypoint"] componentsSeparatedByString:@"||"];
-                
-                if (waypointArray.count == 1) {
-                    columnView.upperLabel.text = waypointArray[0];
-                    columnView.lowerLabel.text =@"";
-                } else {
-                    columnView.upperLabel.text =waypointArray[0];
-                    columnView.lowerLabel.text =waypointArray[1];
-                }
-                
-            } else if ([title isEqualToString:@"WPCOORD"]){
-                columnView.upperLabel.text =_planArray[indexPath.row][@"lat"];
-                columnView.lowerLabel.text =_planArray[indexPath.row][@"lon"];
-            } else if ([title isEqualToString:@"FRMNG"]){
-                columnView.upperLabel.text =_planArray[indexPath.row][@"Efuel"];
-                columnView.lowerLabel.text =_planArray[indexPath.row][@"Afuel"];
-            } else if([title isEqualToString:@"AWYFIR"]){
-                columnView.upperLabel.text =_planArray[indexPath.row][@"AWY"];
-                columnView.lowerLabel.text =_planArray[indexPath.row][@"FIR"];
-                
-                
-            } else if([title isEqualToString:@"ETO"]){
+            NSArray *waypointArray = [_planArray[indexPath.row][@"waypoint"] componentsSeparatedByString:@"||"];
+            
+            if (waypointArray.count == 1) {
+                columnView.upperLabel.text = waypointArray[0];
+                columnView.lowerLabel.text =@"";
+            } else {
+                columnView.upperLabel.text =waypointArray[0];
+                columnView.lowerLabel.text =waypointArray[1];
+            }
+            
+        } else if ([title isEqualToString:@"WPCOORD"]){
+            columnView.upperLabel.text =_planArray[indexPath.row][@"lat"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"lon"];
+        } else if ([title isEqualToString:@"FRMNG"]){
+            columnView.upperLabel.text =_planArray[indexPath.row][@"Efuel"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"Afuel"];
+        } else if([title isEqualToString:@"AWYFIR"]){
+            columnView.upperLabel.text =_planArray[indexPath.row][@"AWY"];
+            columnView.lowerLabel.text =_planArray[indexPath.row][@"FIR"];
+            
+            
+        } else if([title hasPrefix:@"ETO"]){
+            NSString *time = _planArray[indexPath.row][title];
+            if (time.length == 4) {
+                columnView.upperLabel.text = [time substringToIndex:2];
+                columnView.lowerLabel.text = [time substringFromIndex:2];
+            } else {
                 columnView.upperLabel.text = @"";
                 columnView.lowerLabel.text = @"";
-                if (indexPath.row == 0) {
-                    columnView.subTitleLabel.text = @"B/O";
-                } else {
-                    columnView.subTitleLabel.text = @"";
-                }
-            } else if([title isEqualToString:@"ATO"]){
+            }
+            
+            if (indexPath.row == 0 && [title isEqualToString:@"ETO2"]) {
+                columnView.subTitleLabel.text = @"B/O";
+                columnView.subTitleLabel.textColor = [UIColor blueColor];
+                columnView.subTitleLabel.hidden = FALSE;
+            } else {
+                columnView.subTitleLabel.text = @"";
+            }
+            
+            columnView.lowerLabel.textAlignment = NSTextAlignmentCenter;
+            
+        } else if([title isEqualToString:@"ATO"]){
+            NSString *time = _planArray[indexPath.row][title];
+            if (time.length == 4) {
+                columnView.upperLabel.text = [time substringToIndex:2];
+                columnView.lowerLabel.text = [time substringFromIndex:2];
+            } else {
                 columnView.upperLabel.text = @"";
                 columnView.lowerLabel.text = @"";
-                if (indexPath.row == 0) {
-                    columnView.subTitleLabel.text = @"T/O";
-                } else {
-                    columnView.subTitleLabel.text = @"";
-                }
-            } else {
-                columnView.upperLabel.text = _planArray[indexPath.row][title];
-                columnView.lowerLabel.text = @"";
-                
             }
-
-        } else if([_cellIdentifier isEqualToString:@"SunMoon"]) {
             
-            SingleLinePlanColumnView *columnView = [cell.contentView viewWithTag:numberOfColumn];
-            
-            if ([title isEqualToString:@"CTM"]) {
-                columnView.label.text = _planArray[indexPath.row][@"CTMString"];
-            } else if ([title isEqualToString:@"TIME"]) {
-                columnView.label.text = _planArray[indexPath.row][@"TIMEString"];
-            } else if ([title isEqualToString:@"LAT"]) {
-                columnView.label.text = _planArray[indexPath.row][@"latString"];
-            } else if ([title isEqualToString:@"LON"]) {
-                columnView.label.text = _planArray[indexPath.row][@"lonString"];
-            } else if ([title isEqualToString:@"FL"]) {
-                columnView.label.text = _planArray[indexPath.row][@"FLString"];
+            if (indexPath.row == 0) {
+                columnView.subTitleLabel.text = @"T/O";
+                columnView.subTitleLabel.textColor = [UIColor blueColor];
+                columnView.subTitleLabel.hidden = FALSE;
             } else {
-                columnView.label.text = _planArray[indexPath.row][title];
+                columnView.subTitleLabel.text = @"";
             }
+            
+            columnView.lowerLabel.textAlignment = NSTextAlignmentCenter;
+            
+        } else {
+            columnView.upperLabel.text = _planArray[indexPath.row][title];
+            columnView.lowerLabel.text = @"";
             
         }
-        
     
         numberOfColumn++;
         
@@ -174,7 +192,6 @@
     if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
         [cell setLayoutMargins:UIEdgeInsetsZero];
     }
-
     
     return cell;
 }
@@ -187,62 +204,24 @@
         
         UIView *columnView;
         
-        if ([_cellIdentifier isEqualToString:@"NAVLOG"]) {
-            
-            UINib *nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
-            columnView = [nib instantiateWithOwner:self options:nil][0];
-            
-            if (numberOfColumn == _columnListArray.count) {
-                [((DoubleLinePlanColumnView *)columnView).lineView setHidden:YES];
-            }
-            
-            NSString *title = dic[@"title"];
-            
-            if ([title isEqualToString:@"AWYFIR"]) {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"AWY";
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"FIR";
-            } else if ([title isEqualToString:@"WPCOORD"]) {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"WP";
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"COORD";
-            } else {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = title;
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"";
-            }
-            
-        } else if ([_cellIdentifier isEqualToString:@"SunMoon"]) {
-            
-            UINib *nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
-            columnView = [nib instantiateWithOwner:self options:nil][0];
-            
-            if (numberOfColumn == _columnListArray.count) {
-                [((SingleLinePlanColumnView *)columnView).lineView setHidden:YES];
-            }
-            
-            NSString *title = dic[@"title"];
-            if ([title isEqualToString:@"SunDIR"]) {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"Sun DIR";
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @" (deg)";
-            } else if ([title isEqualToString:@"SunALT"]) {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"Sun ALT";
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @" (deg)";
-            } else if ([title isEqualToString:@"SunSTATUS"]) {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"Sun";
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"STATUS";
-            } else if ([title isEqualToString:@"MoonDIR"]) {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"MoonDIR";
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @" (deg)";
-            } else if ([title isEqualToString:@"MoonALT"]) {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"MoonALT";
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @" (deg)";
-            } else if ([title isEqualToString:@"MoonSTATUS"]) {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"Moon";
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"STATUS";
-            } else {
-                ((DoubleLinePlanColumnView *)columnView).upperLabel.text = title;
-                ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"";
-            }
-            
-            
+        UINib *nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
+        columnView = [nib instantiateWithOwner:self options:nil][0];
+        
+        if (numberOfColumn == _columnListArray.count) {
+            [((DoubleLinePlanColumnView *)columnView).lineView setHidden:YES];
+        }
+        
+        NSString *title = dic[@"title"];
+        
+        if ([title isEqualToString:@"AWYFIR"]) {
+            ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"AWY";
+            ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"FIR";
+        } else if ([title isEqualToString:@"WPCOORD"]) {
+            ((DoubleLinePlanColumnView *)columnView).upperLabel.text = @"WP";
+            ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"COORD";
+        } else {
+            ((DoubleLinePlanColumnView *)columnView).upperLabel.text = title;
+            ((DoubleLinePlanColumnView *)columnView).lowerLabel.text = @"";
         }
         
         [columnView setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -317,6 +296,13 @@
     }
     
     
+    [self drawUnderLine];
+
+    
+}
+
+-(void)drawUnderLine {
+    
     //下線
     UIView *lineView = [[UIView alloc] init];
     
@@ -378,38 +364,189 @@
 }
 
 
-
-- (IBAction)unwindSegue:(UIStoryboardSegue *)segue
-{
-    if ([segue.identifier isEqualToString:@"doneSegue"] && _planArray != nil) {
-
-        NSArray *sunMoonArray = [SunMoon makeSunMoonPlanArrayWithTakeOffYear:_takeoffYear
-                                                                       month:_takeoffMonth
-                                                                         day:_takeoffDay
-                                                                        hour:_takeoffHour
-                                                                      minute:_takeoffMinute];
-        
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        [ud setObject:sunMoonArray forKey:@"sunMoonPlanArray"];
-        [ud synchronize];
-        
-        _planArray = [sunMoonArray mutableCopy];
-        [_planTableView reloadData];
-
-        UIBarButtonItem *btn =
-        [[UIBarButtonItem alloc]
-         initWithTitle:@"Moon Phase:XXday(s)"  // ボタンタイトル名を指定
-         style:UIBarButtonItemStylePlain  // スタイルを指定（※下記表参照）
-         target:nil  // デリゲートのターゲットを指定
-         action:nil  // ボタンが押されたときに呼ばれるメソッドを指定
-         ];
-
-        btn.tintColor = [UIColor blackColor];
-        
-        _navigationItem.rightBarButtonItem = btn;
-        
+-(void)touchedDoubleLinePlanColumnView:(DoubleLinePlanColumnView *)doubleLineColumnView
+                           columnTitle:(NSString *)columnTitle
+                             rowNumber:(NSInteger)rowNumber{
+    
+    if ([columnTitle isEqualToString:@"ETO"]) {
+        return;
     }
+    
+    if ([columnTitle isEqualToString:@"ETO2"]||[columnTitle isEqualToString:@"ATO"]) {
+        TimeEntryViewController *timeEntryViewController = [[TimeEntryViewController alloc] init];
+        timeEntryViewController.delegate = self;
+        
+        timeEntryViewController.placeHolderString = _planArray[rowNumber][@"ETO"];
+        
+        timeEntryViewController.modalPresentationStyle = UIModalPresentationPopover;
+        timeEntryViewController.preferredContentSize = CGSizeMake(262.0, 441.0);
+        
+        UIPopoverPresentationController *presentationController = timeEntryViewController.popoverPresentationController;
+        presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        presentationController.sourceView = doubleLineColumnView;
+        presentationController.sourceRect = doubleLineColumnView.bounds;
+        
+        timeEntryViewController.columnTitle = columnTitle;
+        timeEntryViewController.rowNo = rowNumber;
+        
+        
+        
+        [self presentViewController:timeEntryViewController animated:YES completion:NULL];
+
+    }
+    
+    if ([columnTitle isEqualToString:@"FRMNG"]) {
+        
+        FuelEntryViewController *fuelEntryViewController = [[FuelEntryViewController alloc] init];
+        fuelEntryViewController.delegate = self;
+        
+        fuelEntryViewController.modalPresentationStyle = UIModalPresentationPopover;
+        fuelEntryViewController.preferredContentSize = CGSizeMake(262.0, 441.0);
+        
+        UIPopoverPresentationController *presentationController = fuelEntryViewController.popoverPresentationController;
+        presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        presentationController.sourceView = doubleLineColumnView;
+        presentationController.sourceRect = doubleLineColumnView.bounds;
+        
+        fuelEntryViewController.columnTitle = columnTitle;
+        fuelEntryViewController.rowNo = rowNumber;
+        
+        
+        
+        [self presentViewController:fuelEntryViewController animated:YES completion:NULL];
+
+    }
+
+    
+    
 }
+
+-(void)timeEntryViewController:(TimeEntryViewController *)timeEntryViewController
+     willDismissWithTimeString:(NSString *)timeString
+                   columnTitle:(NSString *)columnTitle
+                     rowNumber:(NSInteger)rowNo{
+
+    NSString *planArrayName;
+    if ([_cellIdentifier isEqualToString:@"MainNAVLOG"]) {
+        planArrayName = @"planArray";
+    } else if([_cellIdentifier isEqualToString:@"DivertNAVLOG"]) {
+        planArrayName = @"divertPlanArray";
+    }
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    NSMutableArray *newArray = [NSMutableArray arrayWithArray:[ud objectForKey:planArrayName]];
+    
+
+    if ([columnTitle isEqualToString:@"ATO"] && rowNo == 0){
+        newArray = [self makeNewPlanWithATO:timeString planArray:newArray];
+    } else {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:newArray[rowNo]];
+        dic[columnTitle] = timeString;
+        newArray[rowNo] = dic;
+    }
+    
+    
+    [ud setObject:[newArray copy] forKey:planArrayName];
+    [ud synchronize];
+
+    _planArray = [newArray copy];
+    [_planTableView reloadData];
+    
+}
+
+-(void)fuelEntryViewController:(FuelEntryViewController *)fuelEntryViewController
+     willDismissWithFuelString:(NSString *)fuelString
+                   columnTitle:(NSString *)columnTitle
+                     rowNumber:(NSInteger)rowNo {
+    
+    NSString *planArrayName;
+    if ([_cellIdentifier isEqualToString:@"MainNAVLOG"]) {
+        planArrayName = @"planArray";
+    } else if([_cellIdentifier isEqualToString:@"DivertNAVLOG"]) {
+        planArrayName = @"divertPlanArray";
+    }
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    NSMutableArray *newArray = [NSMutableArray arrayWithArray:[ud objectForKey:planArrayName]];
+    
+    
+
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:newArray[rowNo]];
+    dic[@"Afuel"] = fuelString;
+    newArray[rowNo] = dic;
+    
+    [ud setObject:[newArray copy] forKey:planArrayName];
+    [ud synchronize];
+    
+    _planArray = [newArray copy];
+    [_planTableView reloadData];
+    
+}
+
+-(NSMutableArray *)makeNewPlanWithATO:(NSString *)timeString planArray:(NSMutableArray *)planArray{
+    
+    NSMutableArray *returnArray = [NSMutableArray arrayWithArray:planArray];
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:returnArray[0]];
+    dic[@"ATO"] = timeString;
+    returnArray[0] = dic;
+    
+    int time;
+    
+    if ([timeString isEqualToString:@""]) {
+        time = -1;
+    } else {
+        time = [PlanViewController convertStringToTime:timeString];
+    }
+    
+    for (int i = 1; i < returnArray.count; i++) {
+        if (time != -1) {
+            time += [PlanViewController convertStringToTime:[NSString stringWithFormat:@"0%@",planArray[i][@"ZTM"]]];
+        }
+        
+        while (time >= 1440) {//60*24
+            time -= 1440;
+        }
+        
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:returnArray[i]];
+        if (time == -1) {
+            dic[@"ETO"] = @"";
+        } else {
+            dic[@"ETO"] = [PlanViewController convertTimeToString:time];
+        }
+        returnArray[i] = dic;
+
+    }
+    
+    
+    return returnArray;
+    
+}
+
++(int)convertStringToTime:(NSString *)string{
+    
+    int returnInt = 0;
+    
+    returnInt += [string substringToIndex:2].intValue * 60;
+    returnInt += [string substringFromIndex:2].intValue;
+    
+    return returnInt;
+}
+
++(NSString *)convertTimeToString:(int)time{
+    
+    int hour = time / 60;
+    int minute = time - (hour * 60);
+    
+    return [NSString stringWithFormat:@"%02d%02d",hour,minute];
+    
+}
+
+
+
+
 
 
 @end

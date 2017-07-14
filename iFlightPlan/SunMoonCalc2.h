@@ -31,7 +31,8 @@
                      minute:(int)aMinute//UTC
                    latitude:(double)aLat//N:+,S:-
                   longitude:(double)aLon//E:+,W:-
-                   altitude:(int)aAlt;
+                   altitude:(int)aAlt;//feet
 
+-(double)moonPhase;
 
 @end

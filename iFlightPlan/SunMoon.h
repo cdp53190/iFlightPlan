@@ -22,4 +22,12 @@
                                            hour:(int)hour
                                          minute:(int)minute;
 
++(double)moonPhaseWithYear:(int)year
+                     month:(int)month
+                       day:(int)day
+                      hour:(int)hour
+                    minute:(int)minute;
+
+
+
 @end

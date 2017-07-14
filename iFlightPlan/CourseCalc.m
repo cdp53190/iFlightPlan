@@ -135,12 +135,12 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
             }
             if ([FLString isEqualToString:@"CL"]) {
                 returnDic[@"FL"] = [NSNumber numberWithDouble:oldFL];
-                returnDic[@"FLString"] = [NSString stringWithFormat:@"%03d",(int)round(oldFL)];
+                returnDic[@"FLString"] = [NSString stringWithFormat:@"%02d0",(int)round(oldFL)];
             } else if([FLString isEqualToString:@"DS"]){
                 returnDic[@"FL"] = [NSNumber numberWithDouble:oldFL];
-                returnDic[@"FLString"] = [NSString stringWithFormat:@"%03d",(int)round(oldFL)];
+                returnDic[@"FLString"] = [NSString stringWithFormat:@"%02d0",(int)round(oldFL)];
             } else {
-                returnDic[@"FL"] = [NSNumber numberWithDouble:oldFL];
+                returnDic[@"FL"] = [NSNumber numberWithDouble:FLString.doubleValue];
                 returnDic[@"FLString"] = [NSString stringWithFormat:@"%@0",FLString];
             }
             oldLat = lat;
@@ -151,7 +151,7 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
         }
         
         oldCTM = CTM;
-        oldFL = oldFL;
+        oldFL = FLString.doubleValue;
 
         
     }

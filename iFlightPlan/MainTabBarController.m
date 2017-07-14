@@ -21,11 +21,6 @@
     [self loadPlan];
 
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(planReload) name:@"planReload" object:nil];
-    
-
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,24 +40,25 @@
     
     PlanViewController *planVC = self.viewControllers[0];
     PlanViewController *divertPlanVC = self.viewControllers[1];
-    PlanViewController *sunMoonPlanVC = self.viewControllers[2];
+    SunMoonViewController *sunMoonPlanVC = (SunMoonViewController *)(self.viewControllers[2]);
     
-    planVC.cellIdentifier = @"NAVLOG";
-    divertPlanVC.cellIdentifier = @"NAVLOG";
+    planVC.cellIdentifier = @"MainNAVLOG";
+    divertPlanVC.cellIdentifier = @"DivertNAVLOG";
     sunMoonPlanVC.cellIdentifier = @"SunMoon";
     
-    NSArray *columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.15},
-                                 @{@"title":@"FL",@"widthPercent":@0.05},
+    NSArray *columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.14},
+                                 @{@"title":@"FL",@"widthPercent":@0.04},
                                  @{@"title":@"TC",@"widthPercent":@0.04},
                                  @{@"title":@"MC",@"widthPercent":@0.04},
                                  @{@"title":@"Z/END",@"widthPercent":@0.10},
                                  @{@"title":@"AWYFIR",@"widthPercent":@0.10},
                                  @{@"title":@"WPCOORD",@"widthPercent":@0.10},
-                                 @{@"title":@"DST",@"widthPercent":@0.05},
-                                 @{@"title":@"ZTM",@"widthPercent":@0.05},
-                                 @{@"title":@"ETO",@"widthPercent":@0.10},
-                                 @{@"title":@"ATO",@"widthPercent":@0.10},
-                                 @{@"title":@"CTM",@"widthPercent":@0.05},
+                                 @{@"title":@"DST",@"widthPercent":@0.04},
+                                 @{@"title":@"ZTM",@"widthPercent":@0.04},
+                                 @{@"title":@"ETO",@"widthPercent":@0.075},
+                                 @{@"title":@"ETO2",@"widthPercent":@0.075},
+                                 @{@"title":@"ATO",@"widthPercent":@0.075},
+                                 @{@"title":@"CTM",@"widthPercent":@0.065},
                                  @{@"title":@"FRMNG",@"widthPercent":@0.07}];
 
     
@@ -84,20 +80,16 @@
     
     sunMoonPlanVC.columnListArray = columnListArray;
     
+    /*
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     planVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"planArray"]];
     divertPlanVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"divertPlanArray"]];
     sunMoonPlanVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"sunMoonPlanArray"]];
 
-    NSDictionary *dic = [ud objectForKey:@"dataDic"];
-    
-    planVC.navigationItem.title = dic[@"Flight Number"];
-    divertPlanVC.navigationItem.title = dic[@"Flight Number"];
-    sunMoonPlanVC.navigationItem.title = dic[@"Flight Number"];
     
     [planVC.planTableView reloadData];
     [divertPlanVC.planTableView reloadData];
-    [sunMoonPlanVC.planTableView reloadData];
+    [sunMoonPlanVC.planTableView reloadData];*/
 
 }
 /*

@@ -23,4 +23,7 @@
 +(NSDictionary *)dictionaryOfConstantArrayOfMoonByYear:(int)year
                                            tWithDeltaT:(double)t;
 
++(NSDictionary *)dictionaryOfEbyYear:(int)year
+                      tWithoutDeltaT:(double)t;
+
 @end

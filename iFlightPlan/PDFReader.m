@@ -80,7 +80,6 @@ unichar unicharWithGlyph(
     int tempNo;
     NSMutableArray *planArray;
     NSMutableDictionary *planDic;
-    //bool spaceRemain;
     
 }
 
@@ -101,7 +100,7 @@ unichar unicharWithGlyph(
 
 
 
--(void)testWithPathString:(NSString *)path {
+-(void)readPDFWithPathString:(NSString *)path {
     
     // PDFドキュメントを作成
     CGPDFDocumentRef    document;
@@ -154,17 +153,14 @@ unichar unicharWithGlyph(
     
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
     [userDefaults setObject:dataDic forKey:@"dataDic"];
-    [userDefaults synchronize];
 
     //1分ごとのcourseArray作り
-    NSArray *courseArray = [CourseCalc makeCourseArray];
-    [userDefaults setObject:courseArray forKey:@"courseArray"];
-    [userDefaults synchronize];
+    [userDefaults setObject:[CourseCalc makeCourseArray] forKey:@"courseArray"];
 
     //sunMoonPlanArray作り
-    NSArray *sunMoonPlanArray = [SunMoon makeInitialSunMoonPlanArray];
-    [userDefaults setObject:sunMoonPlanArray forKey:@"sunMoonPlanArray"];
+    [userDefaults setObject:[SunMoon makeInitialSunMoonPlanArray] forKey:@"sunMoonPlanArray"];
     [userDefaults synchronize];
     
     //NSLog(@"%@",bufferString);
@@ -967,6 +963,17 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Fuel Of TAXIOUT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
             dataDic[stage] = string;
+            stage = @"MTXW-TAXI";
+        }
+        return;
+    }
+    
+    if ([stage isEqualToString:@"MTXW-TAXI"]) {
+        if (string.length == 5 && [PDFReader isDigit:string]) {
+            dataDic[stage] = string;
+            stage = @"Fuel Of RAMP";
+        } else if ([string isEqualToString:@"RAMP"]) {
+            dataDic[stage] = @"N/A";
             stage = @"Fuel Of RAMP";
         }
         return;
@@ -1476,15 +1483,22 @@ unichar unicharWithGlyph(
                     [bufferString appendString:@" "];
                     continue;
                 } else if ([str hasPrefix:@"N/"]){
-                    
-                    dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
+                    if ([bufferString isEqualToString:@""]) {
+                        dataDic[stage2] = @"";
+                    } else {
+                        dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
+                    }
                     bufferString = [NSMutableString new];
                     
                     stage2 = @"ATC Remarks";
                     
                 } else if ([str hasPrefix:@"C/"]){
+                    if ([bufferString isEqualToString:@""]) {
+                        dataDic[stage2] = @"";
+                    } else {
+                        dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
+                    }
                     
-                    dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
                     bufferString = [NSMutableString new];
                     
                     dataDic[@"ATC Remarks"] = @"";
@@ -1508,7 +1522,10 @@ unichar unicharWithGlyph(
                     continue;
                 } else if ([str hasPrefix:@"C/"]){
                     
-                    dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
+                    if (![bufferString isEqualToString:@""]) {
+                        dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
+                    }
+                    
                     bufferString = [NSMutableString new];
                     
                     stage2 = @"ATC Captain";
@@ -1853,12 +1870,16 @@ unichar unicharWithGlyph(
         if([bufferString isEqualToString:@""]) {
             [bufferString appendString:string];
             
-        }else if ([PDFReader isLongitude:string] && [PDFReader isLatitude:bufferString]){
+        }else if ([PDFReader isLatitude:bufferString]){
             [bufferString appendString:@"||"];
             [bufferString appendString:string];
-            planDic[stage] = bufferString;
-            bufferString = [NSMutableString new];
-            stage = @"AWY";
+            if ([PDFReader isLongitude:string]) {
+                planDic[stage] = bufferString;
+                bufferString = [NSMutableString new];
+                stage = @"AWY";
+            } else {
+                stage = @"waypoint3";
+            }
         }else if ([string isEqualToString:@"WPT"] && [bufferString isEqualToString:@"FIR"]) {
             
             planDic[stage] = @"FIR||WPT";
@@ -1872,6 +1893,15 @@ unichar unicharWithGlyph(
             stage = @"FIR";
         }
         
+        return;
+    }
+    
+    if ([stage isEqualToString:@"waypoint3"]) {
+        
+        [bufferString appendString:string];
+        planDic[@"waypoint"] = bufferString;
+        bufferString = [NSMutableString new];
+        stage = @"AWY";
         return;
     }
     
@@ -1914,6 +1944,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"ZTM"]) {
         planDic[stage] = string;
         planDic[@"ETO"] = @"";
+        planDic[@"ETO2"] = @"";
         planDic[@"ATO"] = @"";
         stage = @"CTM";
         return;

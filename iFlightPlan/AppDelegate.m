@@ -50,7 +50,7 @@
 
         PDFReader *pdfReader = [[PDFReader alloc]init];
         
-        [pdfReader testWithPathString:[url absoluteString]];
+        [pdfReader readPDFWithPathString:[url absoluteString]];
 
         
     }

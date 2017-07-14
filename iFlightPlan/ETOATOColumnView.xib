@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,9 +28,9 @@
                         <constraint firstAttribute="width" constant="1" id="Ls7-iD-fFS"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ITO-6x-bVr">
-                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="13"/>
-                    <nil key="textColor"/>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ITO-6x-bVr">
+                    <fontDescription key="fontDescription" name="Courier-Bold" family="Courier" pointSize="13"/>
+                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -41,18 +40,18 @@
                 <constraint firstItem="gAj-NW-o7I" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="0Yi-RC-IJP"/>
                 <constraint firstAttribute="bottom" secondItem="rE5-k2-Uov" secondAttribute="bottom" constant="4" id="1yg-LE-E51"/>
                 <constraint firstAttribute="trailing" secondItem="ITO-6x-bVr" secondAttribute="trailing" constant="4" id="Gpk-Jv-Uso"/>
+                <constraint firstItem="ITO-6x-bVr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="4" id="L5P-ZR-q9C"/>
                 <constraint firstItem="ITO-6x-bVr" firstAttribute="height" secondItem="zxg-6H-VXa" secondAttribute="height" id="LkQ-zp-O9k"/>
-                <constraint firstItem="zxg-6H-VXa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="4" id="MbZ-K4-Aer"/>
-                <constraint firstItem="ITO-6x-bVr" firstAttribute="width" secondItem="zxg-6H-VXa" secondAttribute="width" id="R0f-0o-RMf"/>
+                <constraint firstItem="zxg-6H-VXa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="MbZ-K4-Aer"/>
+                <constraint firstAttribute="trailing" secondItem="zxg-6H-VXa" secondAttribute="trailing" constant="4" id="RXU-dA-Sh7"/>
                 <constraint firstItem="zxg-6H-VXa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="4" id="aQr-Vs-L0M"/>
                 <constraint firstAttribute="trailing" secondItem="rE5-k2-Uov" secondAttribute="trailing" constant="4" id="f1I-SJ-OVj"/>
                 <constraint firstItem="ITO-6x-bVr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="4" id="hos-mC-g1r"/>
                 <constraint firstAttribute="trailing" secondItem="gAj-NW-o7I" secondAttribute="trailing" id="nAt-mR-WKF"/>
                 <constraint firstAttribute="bottom" secondItem="gAj-NW-o7I" secondAttribute="bottom" id="npE-Nr-Vkp"/>
                 <constraint firstItem="rE5-k2-Uov" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="4" id="qiX-mf-ZJx"/>
-                <constraint firstItem="rE5-k2-Uov" firstAttribute="top" secondItem="zxg-6H-VXa" secondAttribute="bottom" constant="4" id="sUn-dO-ree"/>
+                <constraint firstItem="rE5-k2-Uov" firstAttribute="top" secondItem="zxg-6H-VXa" secondAttribute="bottom" id="sUn-dO-ree"/>
                 <constraint firstItem="rE5-k2-Uov" firstAttribute="height" secondItem="zxg-6H-VXa" secondAttribute="height" multiplier="3" id="sd9-2Q-4DA"/>
-                <constraint firstItem="ITO-6x-bVr" firstAttribute="leading" secondItem="zxg-6H-VXa" secondAttribute="trailing" constant="4" id="uk9-rE-t4d"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>

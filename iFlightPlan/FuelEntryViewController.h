@@ -1,23 +1,22 @@
 //
-//  TimeEntryViewController.h
+//  FuelEntryViewController.h
 //  iFlightPlan
 //
-//  Created by Seiji Mitsuda on 2016/10/10.
+//  Created by Seiji Mitsuda on 2016/10/13.
 //  Copyright © 2016年 Another Sky. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+@class FuelEntryViewController;
 
-@class TimeEntryViewController;
-
-@protocol TimeEntryViewControllerDelegate <NSObject>
+@protocol FuelEntryViewControllerDelegate <NSObject>
 
 @optional
--(void)willDismissTimeEntryViewController;
+-(void)willDismissFuelEntryViewController;
 
 @required
--(void)timeEntryViewController:(TimeEntryViewController *)timeEntryViewController
-     willDismissWithTimeString:(NSString *)timeString
+-(void)fuelEntryViewController:(FuelEntryViewController *)fuelEntryViewController
+     willDismissWithFuelString:(NSString *)fuelString
                    columnTitle:(NSString *)columnTitle
                      rowNumber:(NSInteger)rowNo;
 
@@ -25,15 +24,16 @@
 @end
 
 
-@interface TimeEntryViewController : UIViewController
+@interface FuelEntryViewController : UIViewController
 
-@property (nonatomic, weak) id<TimeEntryViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<FuelEntryViewControllerDelegate> delegate;
 
 @property NSString *columnTitle;
 @property NSInteger rowNo;
 @property NSMutableString *returnString;
-@property NSString *placeHolderString;
+@property NSString *Efuel;
 
+@property IBOutlet UIButton *pointButton;
 @property IBOutlet UIButton *BSButton;
 @property IBOutlet UIBarButtonItem *doneButton;
 

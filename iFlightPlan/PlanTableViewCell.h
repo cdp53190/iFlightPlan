@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "SingleLinePlanColumnView.h"
 #import "DoubleLinePlanColumnView.h"
-
+#import "PlanViewController.h"
 
 @interface PlanTableViewCell : UITableViewCell
 
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier columnListArray:(NSArray *)columnListArray viewController:(UIViewController *)viewController rowNumber:(NSInteger)rowNumber;
 
--(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier columnListArray:(NSArray *)columnListArray;
+-(void)setRowNumber:(int)rowNo;
 
 @end

@@ -11,10 +11,19 @@
 #import "PlanTableViewCell.h"
 #import "SingleLinePlanColumnView.h"
 #import "DoubleLinePlanColumnView.h"
-#import "PDFReader.h"
-#import "SELCALPlayer.h"
+#import "TimeEntryViewController.h"
+#import "FuelEntryViewController.h"
 
-@interface PlanViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UINavigationBarDelegate>
+@interface PlanViewController : UIViewController
+<UITableViewDataSource,
+UITableViewDelegate,
+UIBarPositioningDelegate,
+DoubleLinePlanColumnViewDelegate,
+TimeEntryViewControllerDelegate,
+FuelEntryViewControllerDelegate>
+
+
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 
@@ -24,13 +33,14 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
+
 @property NSArray *columnListArray;
 
 @property NSMutableArray *planArray;
 
 @property NSString *cellIdentifier;
 
-@property int takeoffYear, takeoffMonth, takeoffDay, takeoffHour, takeoffMinute;
+-(void)drawUnderLine;
 
 @end
 

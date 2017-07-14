@@ -66,7 +66,24 @@
 - (void)pushRoute:(UIButton *)sender {
     
     RouteCopy *routeCopy = [[RouteCopy alloc]init];
-    [routeCopy copyRoute];
+    NSString *routeString = [routeCopy stringOfRoute];
+    
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    
+    [pasteboard setValue:routeString forPasteboardType:@"public.text"];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Route Copied"
+                                                                             message:routeString
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {}]];
+    
+    [self presentViewController:alertController
+                       animated:YES
+                     completion:^{}];
+    
     
 }
 
