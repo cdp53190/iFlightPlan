@@ -11,6 +11,8 @@
 
 @interface RouteCopy : NSObject
 
--(NSString *)stringOfRoute;
+-(NSString *)stringOfJeppsenRoute;
+-(NSArray *)arrayOfATCRoute;
+-(NSArray *)arrayOfFMCLegs;
 
 @end

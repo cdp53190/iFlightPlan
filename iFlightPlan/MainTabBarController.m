@@ -19,6 +19,15 @@
     // Do any additional setup after loading the view.
 
     [self loadPlan];
+    
+    self.tabBar.items[0].title = @"NAVLOG";
+    self.tabBar.items[1].title = @"ALTN-NAVLOG";
+    self.tabBar.items[2].title = @"Sun-Moon";
+    self.tabBar.items[3].title = @"Summery";
+    self.tabBar.items[4].title = @"Save&Load";
+    self.tabBar.items[5].title = @"ATC-Plan";
+    self.tabBar.items[6].title = @"Preflight";
+    
 
     
 }

@@ -1322,7 +1322,10 @@ unichar unicharWithGlyph(
         dataDic[@"ATC Arrival APO4"] = [string substringWithRange:NSMakeRange(1, 4)];
         dataDic[@"ATC Arrival Time"] = [string substringWithRange:NSMakeRange(5, 4)];
         
-        if (string.length == 14) {
+        if (string.length == 9) {
+            dataDic[@"ATC ALTN APO4"] = @"";
+            dataDic[@"ATC 2nd ALTN APO4"] = @"";
+        } else if (string.length == 14) {
             dataDic[@"ATC ALTN APO4"] = [string substringWithRange:NSMakeRange(10, 4)];
             dataDic[@"ATC 2nd ALTN APO4"] = @"";
         } else if (string.length == 19) {

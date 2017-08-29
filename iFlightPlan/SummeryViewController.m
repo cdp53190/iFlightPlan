@@ -23,6 +23,7 @@
     
     selcalPlayer = [[SELCALPlayer alloc] init];
     
+    
 
 }
 
@@ -66,7 +67,7 @@
 - (void)pushRoute:(UIButton *)sender {
     
     RouteCopy *routeCopy = [[RouteCopy alloc]init];
-    NSString *routeString = [routeCopy stringOfRoute];
+    NSString *routeString = [routeCopy stringOfJeppsenRoute];
     
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     
