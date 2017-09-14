@@ -26,37 +26,62 @@
     
     _headerHeightConstraint.constant = 50;
     
-    
-    
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    
-    [super viewWillAppear:animated];
-
-
     [self planReload];
+    
     
 }
 
 -(void)planReload {
 
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
-    _navigationItem.title = [ud objectForKey:@"dataDic"][@"Flight Number"];
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if ([[ud objectForKey:@"loadPlanFail"] boolValue]) {
+        
+        [ud setObject:@false forKey:@"loadPlanFail"];
+        [ud synchronize];
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"読み込みエラー"
+                                                                                 message:@"PDFの読み込みに失敗しました。"
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              
+                                                          }]];
+        
+        [self presentViewController:alertController
+                           animated:YES
+                         completion:^{}];
+        return;
+        
+    }
+
+    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
+    _navigationItem.title = dataPackage.otherData.flightNumber;
 
     NSString *planArrayName;
     if ([_cellIdentifier isEqualToString:@"MainNAVLOG"]) {
         planArrayName = @"planArray";
+        _planArray = [NSMutableArray arrayWithArray:dataPackage.planArray];
     } else if([_cellIdentifier isEqualToString:@"DivertNAVLOG"]) {
         planArrayName = @"divertPlanArray";
+        _planArray = [NSMutableArray arrayWithArray:dataPackage.divertPlanArray];
+    }
+        
+    [_planTableView reloadData];
+    
+    if (_planArray.count != 0) {
+        [_planTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        
     }
     
+    if ([_cellIdentifier isEqualToString:@"MainNAVLOG"]) {
+        [self.tabBarController setSelectedIndex:0];
+    }
     
-    _planArray = [NSMutableArray arrayWithArray:[ud objectForKey:planArrayName]];
-    
-    [_planTableView reloadData];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -92,24 +117,25 @@
     
     int numberOfColumn = 1;
 
+    NSString *title = @"";
+    NAVLOGLegComponents *legComps = (NAVLOGLegComponents *)_planArray[indexPath.row];
     
     for (NSDictionary *dic in _columnListArray) {
     
-        NSString *title = dic[@"title"];
-        
+        title = dic[@"title"];
         
         DoubleLinePlanColumnView *columnView = [cell.contentView viewWithTag:numberOfColumn];
         
         if([title isEqualToString:@"W/T"]) {
-            columnView.upperLabel.text =_planArray[indexPath.row][@"Ewindtemp"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"Awindtemp"];
+            columnView.upperLabel.text = legComps.Ewindtemp;;
+            columnView.lowerLabel.text = legComps.Awindtemp;
             
         } else if ([title isEqualToString:@"FL"]) {
-            columnView.upperLabel.text =_planArray[indexPath.row][@"PFL"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"AFL"];
+            columnView.upperLabel.text = legComps.PFL;
+            columnView.lowerLabel.text = legComps.AFL;
         } else if ([title isEqualToString:@"Z/END"]) {
             
-            NSArray *waypointArray = [_planArray[indexPath.row][@"waypoint"] componentsSeparatedByString:@"||"];
+            NSArray *waypointArray = [legComps.waypoint componentsSeparatedByString:@"||"];
             
             if (waypointArray.count == 1) {
                 columnView.upperLabel.text = waypointArray[0];
@@ -120,18 +146,20 @@
             }
             
         } else if ([title isEqualToString:@"WPCOORD"]){
-            columnView.upperLabel.text =_planArray[indexPath.row][@"lat"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"lon"];
-        } else if ([title isEqualToString:@"FRMNG"]){
-            columnView.upperLabel.text =_planArray[indexPath.row][@"Efuel"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"Afuel"];
-        } else if([title isEqualToString:@"AWYFIR"]){
-            columnView.upperLabel.text =_planArray[indexPath.row][@"AWY"];
-            columnView.lowerLabel.text =_planArray[indexPath.row][@"FIR"];
+            columnView.upperLabel.text = legComps.latString;
+            columnView.lowerLabel.text = legComps.lonString;
             
+        } else if ([title isEqualToString:@"FRMNG"]){
+            columnView.upperLabel.text = legComps.Efuel;
+            columnView.lowerLabel.text = legComps.Afuel;
+            
+        } else if([title isEqualToString:@"AWYFIR"]){
+            columnView.upperLabel.text = legComps.AWY;
+            columnView.lowerLabel.text = legComps.FIR;
             
         } else if([title hasPrefix:@"ETO"]){
-            NSString *time = _planArray[indexPath.row][title];
+            NSString *time = [legComps valueForKey:title];
+            
             if (time.length == 4) {
                 columnView.upperLabel.text = [time substringToIndex:2];
                 columnView.lowerLabel.text = [time substringFromIndex:2];
@@ -151,7 +179,7 @@
             columnView.lowerLabel.textAlignment = NSTextAlignmentCenter;
             
         } else if([title isEqualToString:@"ATO"]){
-            NSString *time = _planArray[indexPath.row][title];
+            NSString *time = legComps.ATO;
             if (time.length == 4) {
                 columnView.upperLabel.text = [time substringToIndex:2];
                 columnView.lowerLabel.text = [time substringFromIndex:2];
@@ -171,7 +199,7 @@
             columnView.lowerLabel.textAlignment = NSTextAlignmentCenter;
             
         } else {
-            columnView.upperLabel.text = _planArray[indexPath.row][title];
+            columnView.upperLabel.text = [legComps valueForKey:title];
             columnView.lowerLabel.text = @"";
             
         }
@@ -376,7 +404,7 @@
         TimeEntryViewController *timeEntryViewController = [[TimeEntryViewController alloc] init];
         timeEntryViewController.delegate = self;
         
-        timeEntryViewController.placeHolderString = _planArray[rowNumber][@"ETO"];
+        timeEntryViewController.placeHolderString = ((NAVLOGLegComponents *)_planArray[rowNumber]).ETO;
         
         timeEntryViewController.modalPresentationStyle = UIModalPresentationPopover;
         timeEntryViewController.preferredContentSize = CGSizeMake(262.0, 441.0);
@@ -427,28 +455,37 @@
                      rowNumber:(NSInteger)rowNo{
 
     NSString *planArrayName;
+    NSMutableArray *newArray;
+
+    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
+    
     if ([_cellIdentifier isEqualToString:@"MainNAVLOG"]) {
         planArrayName = @"planArray";
+        newArray = [NSMutableArray arrayWithArray:dataPackage.planArray];
     } else if([_cellIdentifier isEqualToString:@"DivertNAVLOG"]) {
         planArrayName = @"divertPlanArray";
+        newArray = [NSMutableArray arrayWithArray:dataPackage.divertPlanArray];
     }
     
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
-    NSMutableArray *newArray = [NSMutableArray arrayWithArray:[ud objectForKey:planArrayName]];
     
 
     if ([columnTitle isEqualToString:@"ATO"] && rowNo == 0){
         newArray = [self makeNewPlanWithATO:timeString planArray:newArray];
     } else {
-        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:newArray[rowNo]];
-        dic[columnTitle] = timeString;
-        newArray[rowNo] = dic;
+        NAVLOGLegComponents *legComps = newArray[rowNo];
+        [legComps setValue:timeString forKey:columnTitle];
+        newArray[rowNo] = [legComps copy];
     }
     
-    
-    [ud setObject:[newArray copy] forKey:planArrayName];
-    [ud synchronize];
+    if ([planArrayName isEqualToString:@"planArray"]) {
+        
+        [SaveDataPackage savePresentDataWithPlanArray:newArray];
+        
+    } else if ([planArrayName isEqualToString:@"divertPlanArray"]){
+        
+        [SaveDataPackage savePresentDataWithDivertPlanArray:newArray];
+        
+    }
 
     _planArray = [newArray copy];
     [_planTableView reloadData];
@@ -460,25 +497,33 @@
                    columnTitle:(NSString *)columnTitle
                      rowNumber:(NSInteger)rowNo {
     
+    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
+
+    NSMutableArray<NAVLOGLegComponents *> *newArray;
+
     NSString *planArrayName;
     if ([_cellIdentifier isEqualToString:@"MainNAVLOG"]) {
         planArrayName = @"planArray";
+        newArray = [NSMutableArray arrayWithArray:dataPackage.planArray];
     } else if([_cellIdentifier isEqualToString:@"DivertNAVLOG"]) {
         planArrayName = @"divertPlanArray";
+        newArray = [NSMutableArray arrayWithArray:dataPackage.divertPlanArray];
     }
-    
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
-    NSMutableArray *newArray = [NSMutableArray arrayWithArray:[ud objectForKey:planArrayName]];
-    
-    
 
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:newArray[rowNo]];
-    dic[@"Afuel"] = fuelString;
-    newArray[rowNo] = dic;
+    NAVLOGLegComponents *legComps = newArray[rowNo];
+
+    legComps.Afuel = fuelString;
+    newArray[rowNo] = [legComps copy];
     
-    [ud setObject:[newArray copy] forKey:planArrayName];
-    [ud synchronize];
+    if ([planArrayName isEqualToString:@"planArray"]) {
+        
+        [SaveDataPackage savePresentDataWithPlanArray:newArray];
+        
+    } else if ([planArrayName isEqualToString:@"divertPlanArray"]){
+        
+        [SaveDataPackage savePresentDataWithDivertPlanArray:newArray];
+        
+    }
     
     _planArray = [newArray copy];
     [_planTableView reloadData];
@@ -489,9 +534,10 @@
     
     NSMutableArray *returnArray = [NSMutableArray arrayWithArray:planArray];
     
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:returnArray[0]];
-    dic[@"ATO"] = timeString;
-    returnArray[0] = dic;
+    NAVLOGLegComponents *legComps = returnArray[0];
+    
+    legComps.ATO = timeString;
+    returnArray[0] = [legComps copy];
     
     int time;
     
@@ -502,21 +548,24 @@
     }
     
     for (int i = 1; i < returnArray.count; i++) {
+        
+        legComps = returnArray[i];
+        
         if (time != -1) {
-            time += [PlanViewController convertStringToTime:[NSString stringWithFormat:@"0%@",planArray[i][@"ZTM"]]];
+            time += [PlanViewController convertStringToTime:[NSString stringWithFormat:@"0%@", legComps.ZTM]];
         }
         
         while (time >= 1440) {//60*24
             time -= 1440;
         }
         
-        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:returnArray[i]];
         if (time == -1) {
-            dic[@"ETO"] = @"";
+            legComps.ETO = @"";
         } else {
-            dic[@"ETO"] = [PlanViewController convertTimeToString:time];
+            legComps.ETO = [PlanViewController convertTimeToString:time];
         }
-        returnArray[i] = dic;
+
+        returnArray[i] = legComps;
 
     }
     

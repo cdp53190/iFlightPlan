@@ -8,6 +8,16 @@
 
 #import "MainTabBarController.h"
 
+typedef enum tabList : NSInteger {
+    NAVLOG,
+    ALTN_NAVLOG,
+    Sun_Moon,
+    SaveLoad,
+    ATC_Plan,
+    Preflight
+    //Summery
+} tabList;
+
 @interface MainTabBarController ()
 
 @end
@@ -20,13 +30,13 @@
 
     [self loadPlan];
     
-    self.tabBar.items[0].title = @"NAVLOG";
-    self.tabBar.items[1].title = @"ALTN-NAVLOG";
-    self.tabBar.items[2].title = @"Sun-Moon";
-    self.tabBar.items[3].title = @"Summery";
-    self.tabBar.items[4].title = @"Save&Load";
-    self.tabBar.items[5].title = @"ATC-Plan";
-    self.tabBar.items[6].title = @"Preflight";
+    self.tabBar.items[NAVLOG].title = @"NAVLOG";
+    self.tabBar.items[ALTN_NAVLOG].title = @"ALTN-NAVLOG";
+    self.tabBar.items[Sun_Moon].title = @"Sun-Moon";
+//    self.tabBar.items[Summery].title = @"Summery";
+    self.tabBar.items[SaveLoad].title = @"Save&Load";
+    self.tabBar.items[ATC_Plan].title = @"ATC-Plan";
+    self.tabBar.items[Preflight].title = @"Preflight";
     
 
     
@@ -78,8 +88,8 @@
                         @{@"title":@"TIME",@"widthPercent":@0.065},
                         @{@"title":@"LAT",@"widthPercent":@0.085},
                         @{@"title":@"LON",@"widthPercent":@0.095},
-                        @{@"title":@"WPT",@"widthPercent":@0.16},
-                        @{@"title":@"FL",@"widthPercent":@0.06},
+                        @{@"title":@"WPT",@"widthPercent":@0.18},
+                        @{@"title":@"FL",@"widthPercent":@0.04},
                         @{@"title":@"SunDIR",@"widthPercent":@0.075},
                         @{@"title":@"SunALT",@"widthPercent":@0.075},
                         @{@"title":@"SunSTATUS",@"widthPercent":@0.09},
@@ -88,17 +98,6 @@
                         @{@"title":@"MoonSTATUS",@"widthPercent":@0.08}];
     
     sunMoonPlanVC.columnListArray = columnListArray;
-    
-    /*
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    planVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"planArray"]];
-    divertPlanVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"divertPlanArray"]];
-    sunMoonPlanVC.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"sunMoonPlanArray"]];
-
-    
-    [planVC.planTableView reloadData];
-    [divertPlanVC.planTableView reloadData];
-    [sunMoonPlanVC.planTableView reloadData];*/
 
 }
 /*

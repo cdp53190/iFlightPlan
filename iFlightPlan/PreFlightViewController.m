@@ -14,9 +14,11 @@
 
 @implementation PreFlightViewController
 {
+    
     SELCALPlayer *selcalPlayer;
     RouteCopy *routeCopy;
     NSArray *legsArray;
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -28,23 +30,25 @@
     
     legsArray = [routeCopy arrayOfFMCLegs];
 
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(planReload) name:@"planReload" object:nil];
+
     
 }
 
--(void)reloadData{
-    routeCopy = [[RouteCopy alloc]init];
-    [routeCopy arrayOfFMCLegs];
+-(void)planReload{
+    
+    routeCopy = [[RouteCopy alloc] init];
+    legsArray = [routeCopy arrayOfFMCLegs];
     [_legsTableView reloadData];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [self reloadData];
-}
 
 - (IBAction)pushSELCAL:(UIButton *)sender {
     
@@ -59,10 +63,10 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction *action) {
-                                                      
-                                                          NSDictionary *dic = [[NSUserDefaults standardUserDefaults]objectForKey:@"dataDic"];
                                                           
-                                                          [selcalPlayer playWithSELCALString:dic[@"SELCAL"]];
+                                                          SaveDataPackage *dataPackage = [SaveDataPackage presentData];
+                                                          
+                                                          [selcalPlayer playWithSELCALString:dataPackage.otherData.SELCAL];
                                                   
                                                       
                                                       }]];
@@ -77,6 +81,10 @@
 - (IBAction)pushRoute:(UIButton *)sender {
     
     NSString *routeString = [routeCopy stringOfJeppsenRoute];
+    
+    if ([routeString isEqualToString:@""]) {
+        return;
+    }
     
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     
@@ -121,6 +129,12 @@
     
     return cell;
     
+}
+
+-(NSArray *)arrayOfSunRiseSet{
+    NSMutableArray *returnArray = [NSMutableArray new];
+    
+    return [returnArray copy];
 }
 
 /*

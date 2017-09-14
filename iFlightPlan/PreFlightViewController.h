@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "RouteCopy.h"
 #import "SELCALPlayer.h"
+#import "SaveDataPackage.h"
 
 @interface PreFlightViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 
 @property IBOutlet UITableView *legsTableView;
+@property IBOutlet UILabel *sunRiseSetLabel;
 
 @end

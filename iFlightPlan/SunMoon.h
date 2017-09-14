@@ -10,23 +10,18 @@
 #import "SunMoonCalc.h"
 #import "SunMoonCalc2.h"
 #import "SunMoonCalc2Data.h"
+#import "SaveDataPackage.h"
 
 @interface SunMoon : NSObject
 
+-(instancetype)initWithCourseArray:(NSArray<CoursePointComponents *> *)courseArray;
 
-+(NSArray *)makeInitialSunMoonPlanArray;
++(NSArray<SunMoonPointComponents *> *)makeInitialSunMoonPlanArrayWithCourseArray:(NSArray<CoursePointComponents *> *)courseArray
+                                                                     takeoffDate:(NSDate *)takeoffDate;
 
-+(NSArray *)makeSunMoonPlanArrayWithTakeOffYear:(int)year
-                                          month:(int)month
-                                            day:(int)day
-                                           hour:(int)hour
-                                         minute:(int)minute;
+-(NSArray<SunMoonPointComponents *> *)makeSunMoonPlanArrayWithTakeOffDate:(NSDate *)takeoffDate;
 
-+(double)moonPhaseWithYear:(int)year
-                     month:(int)month
-                       day:(int)day
-                      hour:(int)hour
-                    minute:(int)minute;
++(double)moonPhaseWithDate:(NSDate *)date;
 
 
 

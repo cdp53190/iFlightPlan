@@ -17,151 +17,290 @@ static double asind(double x) {return asin(x) * 180 / M_PI;}
 static double acosd(double x) {return acos(x) * 180 / M_PI;}
 static double atand(double x) {return atan(x) * 180 / M_PI;}
 
-+(NSArray *)makeCourseArray {
++(NSArray<CoursePointComponents *> *)makeCourseArrayWithPlanArray:(NSArray<NAVLOGLegComponents *> *)planArray {
     
-    NSMutableArray *returnArray = [NSMutableArray array];
- 
+    NSMutableArray<CoursePointComponents *> *returnArray = [NSMutableArray new];
     
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSArray *planArray = [ud objectForKey:@"planArray"];
+    CoursePointComponents *pointComps = [[CoursePointComponents alloc] init];
     
     double oldLat = 9999;
     double oldLon = 9999;
-    double oldCTM = 9999;
+    int oldCTM = 9999;
     double oldFL = 9999;
+
+    int lastExactLevelPointNo = 0;
+    double levelChangeStartFL = 0.0;//出発高度は0ftで計算する。データがあればそれをいれてもいい。
+    int legNo = -1;
+    int pointNo = -1;
+    int topOfCruisePointNo = 0;
+    BOOL flagDS = NO;
     
-    for (NSDictionary *dic in planArray) {
+    
+    for (NAVLOGLegComponents *legComps in planArray) {
+
+        legNo++;
         
+        double lat = [CourseCalc convertStringToLat:legComps.latString];
+        double lon = [CourseCalc convertStringToLon:legComps.lonString];
+        int CTM = [CourseCalc convertStringToTime:legComps.CTM];
+        NSString *FLString = legComps.PFL;
         
-        double lat = [CourseCalc convertStringToLat:dic[@"lat"]];
-        double lon = [CourseCalc convertStringToLon:dic[@"lon"]];
-        int CTM = [CourseCalc convertStringToTime:dic[@"CTM"]];
-        NSString *FLString = dic[@"PFL"];
-        
+        //1個目
         if (oldLat == 9999) {
 
-            NSMutableDictionary *returnDic = [NSMutableDictionary new];
+            pointComps.CTM = 0;
+            pointComps.lat = lat;
+            pointComps.lon = lon;
+            pointComps.WPT = legComps.waypoint;
+            pointComps.FL = 0.0;
 
-            returnDic[@"CTM"] = [NSNumber numberWithInt:0];
-            returnDic[@"CTMString"] = @"0000";
-            returnDic[@"TIME"] = [NSNumber numberWithInt:0];
-            returnDic[@"TIMEString"] = @"";
-            returnDic[@"lat"] = [NSNumber numberWithDouble:lat];
-            returnDic[@"latString"] = [CourseCalc convertLatToString:lat];
-            returnDic[@"lon"] = [NSNumber numberWithDouble:lon];
-            returnDic[@"lonString"] = [CourseCalc convertLonToString:lon];
-            returnDic[@"WPT"] = dic[@"waypoint"];
-            returnDic[@"FL"] = [NSNumber numberWithDouble:0.0];
-            returnDic[@"FLString"] = @"000";
+            pointNo++;
+            [returnArray addObject:[pointComps copy]];
+            
             oldLat = lat;
             oldLon = lon;
             oldCTM = 0;
             oldFL = 0;
-            [returnArray addObject:[returnDic copy]];
             
             continue;
-        }
-
-        int portionTime =  CTM - oldCTM;
-        
-        if (portionTime == 0) {
-
-            NSMutableDictionary *returnDic = [NSMutableDictionary new];
             
-            returnDic[@"CTM"] = [NSNumber numberWithInt:CTM];
-            returnDic[@"CTMString"] = [CourseCalc convertTimeToString:CTM];
-            returnDic[@"TIME"] = [NSNumber numberWithInt:0];
-            returnDic[@"TIMEString"] = @"";
-            returnDic[@"lat"] = [NSNumber numberWithDouble:lat];
-            returnDic[@"latString"] = [CourseCalc convertLatToString:lat];
-            returnDic[@"lon"] = [NSNumber numberWithDouble:lon];
-            returnDic[@"lonString"] = [CourseCalc convertLonToString:lon];
-            returnDic[@"WPT"] = dic[@"waypoint"];
-            if ([FLString isEqualToString:@"CL"]||[FLString isEqualToString:@"DS"]) {
-                returnDic[@"FL"] = [NSNumber numberWithDouble:oldFL];
-                returnDic[@"FLString"] = [NSString stringWithFormat:@"%03d",(int)round(oldFL)];
-            } else {
-                returnDic[@"FL"] = [NSNumber numberWithDouble:oldFL];
-                returnDic[@"FLString"] = [NSString stringWithFormat:@"%@0",FLString];
-            }
-            oldLat = lat;
-            oldLon = lon;
-            oldCTM = oldCTM;
-            oldFL = oldFL;
-            
-            [returnArray addObject:[returnDic copy]];
-            
-            continue;
         }
         
-        double portionDist = [CourseCalc distanceByDepLat:oldLat
-                                                   DepLon:oldLon
-                                                   ArrLat:lat
-                                                   ArrLon:lon];
-        
-        double course = [CourseCalc calcCourseByDepLat:oldLat
-                                                DepLon:oldLon
-                                                ArrLat:lat
-                                                ArrLon:lon];
-
-        double speed_NM = portionDist / portionTime;
-        
-        for (int time = 1; time <= portionTime; time++) {
-
-            NSMutableDictionary *returnDic = [NSMutableDictionary new];
+        if (CTM == oldCTM) { //0分レグ
             
-            NSArray *nextLatLonCourseArray = [CourseCalc calcNextLatLonWithSpeed:speed_NM
-                                                                          depLat:oldLat
-                                                                          depLon:oldLon
-                                                                          course:course];
+            pointComps.CTM = CTM;
+            pointComps.lat = lat;
+            pointComps.lon = lon;
+            pointComps.WPT = legComps.waypoint;
             
-            int newCTM = oldCTM + time;
-            
-            lat = ((NSNumber *)nextLatLonCourseArray[0]).doubleValue;
-            lon = ((NSNumber *)nextLatLonCourseArray[1]).doubleValue;
-            
-            returnDic[@"CTM"] = [NSNumber numberWithInt:newCTM];
-            returnDic[@"CTMString"] = [CourseCalc convertTimeToString:newCTM];
-            returnDic[@"TIME"] = [NSNumber numberWithInt:0];
-            returnDic[@"TIMEString"] = @"";
-            returnDic[@"lat"] = [NSNumber numberWithDouble:lat];
-            returnDic[@"latString"] = [CourseCalc convertLatToString:lat];
-            returnDic[@"lon"] = [NSNumber numberWithDouble:lon];
-            returnDic[@"lonString"] = [CourseCalc convertLonToString:lon];
-            if (time == portionTime) {
-                returnDic[@"WPT"] = dic[@"waypoint"];
-            } else {
-                returnDic[@"WPT"] = @"";
-            }
             if ([FLString isEqualToString:@"CL"]) {
-                returnDic[@"FL"] = [NSNumber numberWithDouble:oldFL];
-                returnDic[@"FLString"] = [NSString stringWithFormat:@"%02d0",(int)round(oldFL)];
-            } else if([FLString isEqualToString:@"DS"]){
-                returnDic[@"FL"] = [NSNumber numberWithDouble:oldFL];
-                returnDic[@"FLString"] = [NSString stringWithFormat:@"%02d0",(int)round(oldFL)];
+                pointComps.FL = oldFL;
+            } else if ([FLString isEqualToString:@"DS"]) {
+                pointComps.FL = oldFL;
             } else {
-                returnDic[@"FL"] = [NSNumber numberWithDouble:FLString.doubleValue];
-                returnDic[@"FLString"] = [NSString stringWithFormat:@"%@0",FLString];
+                
+                lastExactLevelPointNo = pointNo + 1;
+                levelChangeStartFL = FLString.doubleValue;
+                pointComps.FL = FLString.doubleValue;
             }
+            
+            pointNo++;
+            [returnArray addObject:[pointComps copy]];
+            
             oldLat = lat;
             oldLon = lon;
-            course = ((NSNumber *)nextLatLonCourseArray[2]).doubleValue;
+            oldCTM = CTM;
+            oldFL = pointComps.FL;
             
-            [returnArray addObject:[returnDic copy]];
+        } else {
+            int portionTime =  CTM - oldCTM;
+            
+            double portionDist = [CourseCalc distanceByDepLat:oldLat
+                                                       DepLon:oldLon
+                                                       ArrLat:lat
+                                                       ArrLon:lon];
+            
+            double course = [CourseCalc calcCourseByDepLat:oldLat
+                                                    DepLon:oldLon
+                                                    ArrLat:lat
+                                                    ArrLon:lon];
+            
+            double speed_NM = portionDist / portionTime;
+            
+            for (int time = 1; time <= portionTime; time++) {
+                
+                NSArray *nextLatLonCourseArray = [CourseCalc calcNextLatLonWithSpeed:speed_NM
+                                                                              depLat:oldLat
+                                                                              depLon:oldLon
+                                                                              course:course];
+                
+                int newCTM = oldCTM + time;
+                
+                lat = ((NSNumber *)nextLatLonCourseArray[0]).doubleValue;
+                lon = ((NSNumber *)nextLatLonCourseArray[1]).doubleValue;
+                
+                pointComps.CTM = newCTM;
+                pointComps.lat = lat;
+                pointComps.lon = lon;
+                
+                if (time == portionTime) {
+                    pointComps.WPT = legComps.waypoint;
+                    pointComps.FL = FLString.doubleValue;
+                } else {
+                    pointComps.WPT = @"";
+                }
+                
+                if ([FLString isEqualToString:@"CL"]) {
+                    pointComps.FL = oldFL;
+                } else {
+                    
+                    if ([FLString isEqualToString:@"DS"]) {
+                        flagDS = YES;
+                        if (legNo == planArray.count - 1) {
+                            pointComps.FL = 0.0;
+                        } else {
+                            pointComps.FL = oldFL;
+                        }
+                    } else {
+                        pointComps.FL = FLString.doubleValue;
+                    }
+                    
+                }
+                
+                
+                pointNo++;
+                [returnArray addObject:[pointComps copy]];
+                
+                oldLat = lat;
+                oldLon = lon;
+                course = ((NSNumber *)nextLatLonCourseArray[2]).doubleValue;
+                
+            }
+            
+            oldCTM = CTM;
+            oldFL = pointComps.FL;
+            
         }
         
-        oldCTM = CTM;
-        oldFL = FLString.doubleValue;
+        if (topOfCruisePointNo != 0 && ![FLString isEqualToString:@"CL"]) {//CLが終了したらそこまでのFLを計算
+            
+            double newFL = FLString.doubleValue;
+            
+            double calcdFL = newFL;
+            
+            int lastExactLevelPointCTM = returnArray[lastExactLevelPointNo].CTM;
+            int topOfCruisePointCTM = returnArray[topOfCruisePointNo].CTM;
+            
+            NSMutableArray<NSNumber *> *FLArray = [NSMutableArray new];
+            
+            while (calcdFL >= levelChangeStartFL && calcdFL > levelChangeStartFL) {
+                
+                if (calcdFL > 30) {//30000以上は500fpm
+                    calcdFL = calcdFL - 0.5;
+                } else if (calcdFL > 10) {//10000以上は1000fpm
+                    calcdFL = calcdFL - 1.0;
+                } else { //10000以下は2000fpm
+                    calcdFL = calcdFL - 2.0;
+                }
+                
+                if (round(calcdFL) <= levelChangeStartFL) {
+                    calcdFL = levelChangeStartFL;
+                }
+                
+                [FLArray addObject:[NSNumber numberWithDouble:calcdFL]];
+            }
+            
+            if ((int)FLArray.count > topOfCruisePointCTM - lastExactLevelPointCTM) {//この場合はリニア上昇とするので作り直し
+                
+                FLArray = [NSMutableArray new];
+                newFL = FLString.doubleValue;
+                calcdFL = newFL;
+                
+                double interval = (newFL - levelChangeStartFL) / (topOfCruisePointCTM - lastExactLevelPointCTM);
+                
+                while (calcdFL >= levelChangeStartFL && calcdFL > levelChangeStartFL) {
+                    calcdFL = calcdFL - interval;
+                    
+                    if (round(calcdFL) <= levelChangeStartFL) {
+                        calcdFL = levelChangeStartFL;
+                    }
+                    
+                    [FLArray addObject:[NSNumber numberWithDouble:calcdFL]];
+                    
+                }
+                
+            } else {//この場合はwpt間での上昇開始なのでlastExactLevelPointをリセット
+                lastExactLevelPointCTM = topOfCruisePointCTM - (int)FLArray.count;
+                
+            }
+            
+            [FLArray insertObject:[NSNumber numberWithDouble:newFL] atIndex:0];
+            NSArray<NSNumber *> *finalFLArray = [[FLArray reverseObjectEnumerator]allObjects];
+            
+            CoursePointComponents *newLegComps = returnArray[topOfCruisePointNo];
+            
+            while (newLegComps.CTM >= lastExactLevelPointCTM) {
+                
+                newLegComps.FL = finalFLArray[newLegComps.CTM - lastExactLevelPointCTM].doubleValue;
+                
+                returnArray[topOfCruisePointNo] = [newLegComps copy];
+                
+                topOfCruisePointNo--;
+                if (topOfCruisePointNo < 0) {
+                    newLegComps.CTM = -1;
+                } else {
+                    newLegComps = returnArray[topOfCruisePointNo];
+                }
+            }
+            
+            topOfCruisePointNo = 0;
+            oldFL = newFL;
+        }
+    
+        //DSは基本的にT/Dから次の高度が明確なポイントまでリニアに。
+        //それが1000fpmより浅くなるなら1000fpmで次の高度まで。
+        if ((flagDS && ![FLString isEqualToString:@"DS"]) || legNo == planArray.count - 1) {
+            
+            
+            double newFL;
+            if (legNo == planArray.count - 1) {
+                newFL = 0.0;
+            } else {
+                newFL = FLString.doubleValue;
+                
+            }
+            
+            int lastExactLevelPointCTM = returnArray[lastExactLevelPointNo].CTM;
+            
+            double interval = (levelChangeStartFL - newFL) / (CTM - lastExactLevelPointCTM);
+            
+            if (interval < 1.0) {
+                interval = 1.0;
+            }
+            
+            int tempPointNo = pointNo;
+            
+            CoursePointComponents *newLegComps = returnArray[tempPointNo];
+            
+            while (tempPointNo >= lastExactLevelPointNo) {
+                
+                int interValtime = newLegComps.CTM - lastExactLevelPointCTM;
+                newLegComps.FL = levelChangeStartFL - interval * (double)interValtime;
+                if (newLegComps.FL < newFL) {
+                    newLegComps.FL = newFL;
+                }
+                
+                returnArray[tempPointNo] = [newLegComps copy];
+                
+                tempPointNo--;
+                newLegComps = returnArray[tempPointNo];
+            }
+            
+            levelChangeStartFL = newFL;
+            topOfCruisePointNo = 0;
+            oldFL = newFL;
+            
+            flagDS = NO;
+            
+        }
 
-        
+        if (![FLString isEqualToString:@"CL"] && ![FLString isEqualToString:@"DS"]) {
+            lastExactLevelPointNo = pointNo;
+            levelChangeStartFL = FLString.doubleValue;
+        }
+
+
+        if ([legComps.waypoint isEqualToString:@"(T/C)"]) {
+            topOfCruisePointNo = pointNo;
+        } else if ([legComps.waypoint isEqualToString:@"(T/D)"]) {
+            flagDS = YES;
+            lastExactLevelPointNo = pointNo;
+        }
+
     }
     
     
     return [returnArray copy];
-
-
-    
-    
 }
 
 
@@ -238,7 +377,13 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
 // @"Nxxxxx"->xx.xxxxxx
 +(double)convertStringToLat:(NSString *)string{
     
+    if ([string isEqualToString:@""]) {
+        return 0;
+    }
+
+    
     double returnValue = 0;
+    
     
     returnValue += [string substringWithRange:NSMakeRange(1, 2)].doubleValue;
     returnValue += [string substringWithRange:NSMakeRange(3, 2)].doubleValue / 60;
@@ -258,6 +403,10 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     
     double returnValue = 0;
     
+    if ([string isEqualToString:@""]) {
+        return 0;
+    }
+    
     returnValue += [string substringWithRange:NSMakeRange(1, 3)].doubleValue;
     returnValue += [string substringWithRange:NSMakeRange(4, 2)].doubleValue / 60;
     returnValue += [string substringWithRange:NSMakeRange(6, 1)].doubleValue / 600;
@@ -272,60 +421,6 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     
 }
 
-+(NSString *)convertLatToString:(double)lat {
-    NSMutableString *returnString = [NSMutableString new];
-    
-    double tmp = lat;
-    
-    if (tmp < 0) {
-        [returnString appendString:@"S"];
-        tmp = - tmp;
-    } else {
-        [returnString appendString:@"N"];
-    }
-    
-    int tmp1 = (int)floor(tmp);
-    int tmp2 = (int)round((tmp - tmp1) * 600);
-    
-    if (tmp2 == 600) {
-        tmp2 = 0;
-        tmp1++;
-    }
-
-    [returnString appendString:[NSString stringWithFormat:@"%02d",tmp1]];
-    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp2]];
-    
-    return [returnString copy];
-
-    
-}
-
-+(NSString *)convertLonToString:(double)lon {
-    NSMutableString *returnString = [NSMutableString new];
-    
-    double tmp = lon;
-    
-    if (tmp < 0) {
-        [returnString appendString:@"W"];
-        tmp = - tmp;
-    } else {
-        [returnString appendString:@"E"];
-    }
-    
-    int tmp1 = (int)floor(tmp);
-    int tmp2 = (int)round((tmp - tmp1) * 600);
-    
-    if (tmp2 == 600) {
-        tmp2 = 0;
-        tmp1++;
-    }
-    
-    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp1]];
-    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp2]];
-    
-    return [returnString copy];
-    
-}
 
 +(int)convertStringToTime:(NSString *)string{
     
@@ -337,14 +432,6 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
     return returnInt;
 }
 
-+(NSString *)convertTimeToString:(int)time{
-    
-    int hour = time / 60;
-    int minute = time - (hour * 60);
-    
-    return [NSString stringWithFormat:@"%02d%02d",hour,minute];
-    
-}
 
 +(NSArray *)calcNextLatLonWithSpeed:(double)speed
                              depLat:(double)lat

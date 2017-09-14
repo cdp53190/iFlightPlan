@@ -17,6 +17,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if(![ud objectForKey:@"savedPlanArray"]) {
+        [ud setObject:[NSData new] forKey:@"savedPlanArray"];
+        [ud synchronize];
+    }
+    
 
     
     return YES;
@@ -45,13 +52,14 @@
 }
 
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+
+//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
     if( [[url pathExtension] isEqualToString:@"pdf"] ){
-
+        
         PDFReader *pdfReader = [[PDFReader alloc]init];
         
         [pdfReader readPDFWithPathString:[url absoluteString]];
-
         
     }
     

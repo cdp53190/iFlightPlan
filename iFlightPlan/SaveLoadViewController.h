@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SaveLoadTableViewCell.h"
+#import "SaveDataPackage.h"
 
-@interface SaveLoadViewController : UIViewController
+@interface SaveLoadViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+
+@property IBOutlet UITableView *tableView;
 
 @end

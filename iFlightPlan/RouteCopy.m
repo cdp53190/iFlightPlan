@@ -23,8 +23,10 @@
         
         routeArray = [NSMutableArray new];
         
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        NSString *orgString = [ud objectForKey:@"dataDic"][@"ATC Route"];
+        SaveDataPackage *dataPackage = [SaveDataPackage presentData];
+
+        
+        NSString *orgString = dataPackage.atcData.speedLevelRoute;
         
         NSArray *tempRouteArray = [orgString componentsSeparatedByString:@" "];
         
@@ -45,8 +47,12 @@
                 if ([RouteCopy isSIDorSTAR:string]) {
                     [routeArray addObject:@{@"category":@"SID",@"value":string}];
                     
+                } else if ([string isEqualToString:@"DCT"]){
+                    [routeArray addObject:@{@"category":@"route",@"value":@"DCT"}];
                 } else {
-                    [routeArray addObject:@{@"category":@"route",@"value":string}];
+                    [routeArray addObject:@{@"category":@"route",@"value":@"DCT"}];
+                    [routeArray addObject:@{@"category":@"WPT",@"value":string}];
+                    routeFlag = YES;
                 }
 
                 continue;
@@ -94,6 +100,10 @@
 }
 
 -(NSString *)stringOfJeppsenRoute {
+    
+    if (routeArray.count == 0) {
+        return @"";
+    }
     
     NSMutableString *returnString = [NSMutableString new];
     
@@ -164,9 +174,10 @@
     NSMutableArray *WPTArray = [NSMutableArray new];
     NSString *SPDAlt = @"";
     
+    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
     
-    NSString *ATCDepAPO4 = [[NSUserDefaults standardUserDefaults] objectForKey:@"dataDic"][@"ATC Departure APO4"];
-    NSString *ATCArrAPO4 = [[NSUserDefaults standardUserDefaults] objectForKey:@"dataDic"][@"ATC Arrival APO4"];
+    NSString *ATCDepAPO4 = dataPackage.atcData.depAPO4;
+    NSString *ATCArrAPO4 = dataPackage.atcData.arrAPO4;
     
     if (!ATCDepAPO4) {
         ATCDepAPO4 = @"";
@@ -234,6 +245,11 @@
 }
 
 -(NSArray *)arrayOfFMCLegs {
+    
+    if (routeArray.count == 0) {
+        return @[];
+    }
+    
     NSMutableArray *returnArray = [NSMutableArray new];
     NSMutableDictionary *routeWPTDic = [NSMutableDictionary new];
     
@@ -319,7 +335,6 @@
         
     }
     
-    //見つけた場合は最初に出てきたものをreturn
     NSArray *matches = [regex matchesInString:string options:0 range:NSMakeRange(0, string.length)];
     
     if (matches.count != 1) {

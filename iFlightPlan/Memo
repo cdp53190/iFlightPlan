@@ -1,6 +1,8 @@
 プランはEwindtemp,Awindtemp,PFL,AFL,TC,MC,waypoint,AWY,FIR,lat,lon,DST,ZTM,ETO,ETO2,ATO,CTM,Efuel,Afuelで。
 プラスしてvarとかtimezoneとかがあればなおよし。
 
+UserDefaults keys -> presentData/savedPlanArray/planNumber/loadPlanFail
+
 windtempは@"270/040 P23"の形式
 FLはCL,DS,2桁数字のいずれか
 

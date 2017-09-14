@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SaveDataPackage.h"
 
 @interface CourseCalc : NSObject
 
 
-+(NSArray *)makeCourseArray;
++(NSArray<CoursePointComponents *> *)makeCourseArrayWithPlanArray:(NSArray<NAVLOGLegComponents *> *)planArray;
 
 @end
 

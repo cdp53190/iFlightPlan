@@ -84,7 +84,7 @@ static double atand(double x) {return atan(x) * 180.0 / M_PI;}
     double t3 = -6.0 - e + p;
     double t4 = -s - e - r + p;
     
-    NSLog(@"TIME:%f:%f DIR:%f ALT:%f",hourd, minuted, _directionDeg,_heightDeg);
+    //NSLog(@"TIME:%f:%f DIR:%f ALT:%f",hourd, minuted, _directionDeg,_heightDeg);
     
     //status check
     

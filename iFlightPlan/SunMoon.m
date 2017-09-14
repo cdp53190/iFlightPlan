@@ -9,37 +9,67 @@
 #import "SunMoon.h"
 
 @implementation SunMoon
+{
+    NSMutableArray<SunMoonPointComponents *> *planArray;
+}
 
+-(instancetype)initWithCourseArray:(NSArray<CoursePointComponents *> *)courseArray{
+    self = [super init];
+    
+    if (self) {
+        
+        planArray = [NSMutableArray new];
+        
+        for (CoursePointComponents *courseComps in courseArray) {
+            
+            SunMoonPointComponents *sunMoonComps = [[SunMoonPointComponents alloc] init];
+            
+            sunMoonComps.CTM = courseComps.CTM;
+            int CTMhour = (int)floor(sunMoonComps.CTM / 60.0);
+            int CTMminute = (int)round(sunMoonComps.CTM - (60.0 * (double)CTMhour));
+            
+            sunMoonComps.CTMString = [NSString stringWithFormat:@"%02d%02d", CTMhour, CTMminute];
+            sunMoonComps.time = 9999;
+            sunMoonComps.timeString = @"";
+            sunMoonComps.latString = [SunMoon convertLatToString:courseComps.lat];
+            sunMoonComps.lat = courseComps.lat;
+            sunMoonComps.lonString = [SunMoon convertLonToString:courseComps.lon];
+            sunMoonComps.lon = courseComps.lon;
+            sunMoonComps.WPT = courseComps.WPT;
+            sunMoonComps.FLString = [NSString stringWithFormat:@"%d",(int)round(courseComps.FL)];
+            sunMoonComps.FL = courseComps.FL;
+            sunMoonComps.SunDIR = @"N/A";
+            sunMoonComps.SunALT = @"N/A";
+            sunMoonComps.SunSTATUS = @"N/A";
+            sunMoonComps.MoonDIR = @"N/A";
+            sunMoonComps.MoonALT = @"N/A";
+            sunMoonComps.MoonSTATUS = @"N/A";
+            
+            [planArray addObject:[sunMoonComps copy]];
+            
+            sunMoonComps = [[SunMoonPointComponents alloc] init];
 
-+(NSArray *)makeInitialSunMoonPlanArray {
-    
-    
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    [ud setObject:[ud objectForKey:@"courseArray"] forKey:@"sunMoonPlanArray"];
-    [ud synchronize];
-    
-    NSMutableString *timeString = [[ud objectForKey:@"dataDic"][@"IssueTime"] mutableCopy];
-    
-    [timeString insertString:@"20" atIndex:11];
-    [timeString deleteCharactersInRange:NSMakeRange(2, 1)];//HHmm ddMMMyyyy
-    
-    NSString *STDString = [ud objectForKey:@"dataDic"][@"STD"];
-    
-    NSTimeInterval timeInterval = 0.0;
-    if ([STDString intValue] < [timeString intValue]) {
-        timeInterval = 60.0 * 60.0 * 24.0;
+        }
+        
     }
     
-    [timeString replaceCharactersInRange:NSMakeRange(0, 4) withString:STDString];
+    return self;
+}
+
+
++(NSArray<SunMoonPointComponents *> *)makeInitialSunMoonPlanArrayWithCourseArray:(NSArray<CoursePointComponents *> *)courseArray
+                                                                     takeoffDate:(NSDate *)takeoffDate{
+        
+    SunMoon *obj = [[SunMoon alloc] initWithCourseArray:courseArray];
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [formatter setDateFormat:@"HHmm ddMMMyyyy"];
+    return [obj makeSunMoonPlanArrayWithTakeOffDate:takeoffDate];
     
-    NSDate *issueTimeDate = [formatter dateFromString:timeString];
-    
-    NSDate *takeOffDate =  [NSDate dateWithTimeInterval:timeInterval + 60.0 * 20.0 sinceDate:issueTimeDate];//STD+20分=T/O
-    
+}
+
+-(NSArray<SunMoonPointComponents *> *)makeSunMoonPlanArrayWithTakeOffDate:(NSDate *)takeOffDate{
+
+    [SaveDataPackage savePresentDataWithSunMoonTakeoffDate:[TakeoffTimeData dataOfdate:takeOffDate]];
+
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSUInteger flags;
     NSDateComponents *comps;
@@ -47,31 +77,17 @@
     flags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay |
     NSCalendarUnitHour | NSCalendarUnitMinute;
     
+    if (!takeOffDate) {
+        takeOffDate = [NSDate date];
+    }
+    
     comps = [calendar components:flags fromDate:takeOffDate];
-    
-    [ud setObject:[NSNumber numberWithInt:(int)comps.year] forKey:@"sunMoonTakeoffYear"];
-    [ud setObject:[NSNumber numberWithInt:(int)comps.month] forKey:@"sunMoonTakeoffMonth"];
-    [ud setObject:[NSNumber numberWithInt:(int)comps.day] forKey:@"sunMoonTakeoffDay"];
-    [ud setObject:[NSNumber numberWithInt:(int)comps.hour] forKey:@"sunMoonTakeoffHour"];
-    [ud setObject:[NSNumber numberWithInt:(int)comps.minute] forKey:@"sunMoonTakeoffMinute"];
-    [ud setObject:[NSNumber numberWithDouble:-1.0] forKey:@"moonPhase"];
-    [ud synchronize];
 
-    return [SunMoon makeSunMoonPlanArrayWithTakeOffYear:(int)comps.year
-                                                  month:(int)comps.month
-                                                    day:(int)comps.day
-                                                   hour:(int)comps.hour
-                                                 minute:(int)comps.minute];
-    
-}
-
-+(NSArray *)makeSunMoonPlanArrayWithTakeOffYear:(int)year
-                                          month:(int)month
-                                            day:(int)day
-                                           hour:(int)hour
-                                         minute:(int)minute {
-    
-    NSArray *planArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"sunMoonPlanArray"];
+    int year = (int)comps.year;
+    int month = (int)comps.month;
+    int day = (int)comps.day;
+    int hour = (int)comps.hour;
+    int minute = (int)comps.minute;
     
     Class classname;
     id obj;
@@ -87,19 +103,19 @@
                                      day:day
                                     hour:hour
                                   minute:minute
-                                latitude:((NSNumber *)planArray[0][@"lat"]).doubleValue
-                               longitude:((NSNumber *)planArray[0][@"lon"]).doubleValue
-                                altitude:0.0];
+                                latitude:planArray[0].lat
+                               longitude:planArray[0].lon
+                                altitude:planArray[0].FL * 1000.0];
     
-    NSMutableArray *returnArray = [NSMutableArray new];
+    NSMutableArray<SunMoonPointComponents *> *returnArray = [NSMutableArray new];
     
     double time = hour * 60 + minute;
     
-    NSNumber *oldCTM = @9999.9;
+    double oldCTM = 9999.9;
     
-    for (NSDictionary *dic in planArray) {
+    for (SunMoonPointComponents *sunMoonComps in planArray) {
         
-        if (oldCTM == dic[@"CTM"]) {
+        if (oldCTM == sunMoonComps.CTM) {
             time--;
         }
         
@@ -108,60 +124,74 @@
         double minute = time - (double)hour * 60.0;
         [obj setHourd:hour];
         [obj setMinuted:minute];
-        [obj setLat:((NSNumber *)dic[@"lat"]).doubleValue];
-        [obj setLon:((NSNumber *)dic[@"lon"]).doubleValue];
-        [obj setAlt:((NSNumber *)dic[@"FL"]).doubleValue * 1000.0];
-
-        NSMutableDictionary *returnDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+        [obj setLat:sunMoonComps.lat];
+        [obj setLon:sunMoonComps.lon];
+        [obj setAlt:sunMoonComps.FL * 1000.0];
         
         double returnHour = floor(time / 60.0);
         double returnMinute = time - returnHour * 60.0;
         if (returnHour >= 24) {
             returnHour -= 24;
         }
-        returnDic[@"TIME"] = [NSNumber numberWithInt:(int)time];
-        returnDic[@"TIMEString"] = [NSString stringWithFormat:@"%02d%02d",(int)returnHour,(int)returnMinute];
+        sunMoonComps.time = time;
+        sunMoonComps.timeString = [NSString stringWithFormat:@"%02d%02d",(int)returnHour,(int)returnMinute];
         
         [obj calcSun];
         NSString *directionStr = [NSString stringWithFormat:@"%.1f",[obj directionDeg]];
         if (directionStr.length == 5) { //xxx.x
-            returnDic[@"SunDIR"] = directionStr;
+            sunMoonComps.SunDIR = directionStr;
         } else if (directionStr.length == 4) { //xx.x
-            returnDic[@"SunDIR"] = [NSString stringWithFormat:@"0%@",directionStr];
+            sunMoonComps.SunDIR = [NSString stringWithFormat:@"0%@",directionStr];
         } else { //x.x
-            returnDic[@"SunDIR"] = [NSString stringWithFormat:@"00%@",directionStr];
+            sunMoonComps.SunDIR = [NSString stringWithFormat:@"00%@",directionStr];
         }
-        returnDic[@"SunALT"] = [NSString stringWithFormat:@"%.1f",[obj heightDeg]];
-        returnDic[@"SunSTATUS"] = [NSString stringWithFormat:@"%@",[obj status]];
+        sunMoonComps.SunALT = [NSString stringWithFormat:@"%.1f",[obj heightDeg]];
+        sunMoonComps.SunSTATUS = [NSString stringWithFormat:@"%@",[obj status]];
 
         [obj calcMoon];
         directionStr = [NSString stringWithFormat:@"%.1f",[obj directionDeg]];
         if (directionStr.length == 5) { //xxx.x
-            returnDic[@"MoonDIR"] = directionStr;
+            sunMoonComps.MoonDIR = directionStr;
         } else if (directionStr.length == 4) { //xx.x
-            returnDic[@"MoonDIR"] = [NSString stringWithFormat:@"0%@",directionStr];
+            sunMoonComps.MoonDIR = [NSString stringWithFormat:@"0%@",directionStr];
         } else { //x.x
-            returnDic[@"MoonDIR"] = [NSString stringWithFormat:@"00%@",directionStr];
+            sunMoonComps.MoonDIR = [NSString stringWithFormat:@"00%@",directionStr];
         }
-        returnDic[@"MoonALT"] = [NSString stringWithFormat:@"%.1f",[obj heightDeg]];
-        returnDic[@"MoonSTATUS"] = [NSString stringWithFormat:@"%@",[obj status]];
+        sunMoonComps.MoonALT = [NSString stringWithFormat:@"%.1f",[obj heightDeg]];
+        sunMoonComps.MoonSTATUS = [NSString stringWithFormat:@"%@",[obj status]];
         
         
-        [returnArray addObject:returnDic];
+        [returnArray addObject:[sunMoonComps copy]];
         time++;
-        oldCTM = dic[@"CTM"];
+        oldCTM = sunMoonComps.CTM;
     }
     
     return [returnArray copy];
     
 }
 
-+(double)moonPhaseWithYear:(int)year
-                     month:(int)month
-                       day:(int)day
-                      hour:(int)hour
-                    minute:(int)minute{
++(double)moonPhaseWithDate:(NSDate *)date {
     
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSUInteger flags;
+    NSDateComponents *comps;
+    
+    flags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay |
+    NSCalendarUnitHour | NSCalendarUnitMinute;
+    
+    if (!date) {
+        date = [NSDate date];
+    }
+
+    
+    comps = [calendar components:flags fromDate:date];
+    
+    int year = (int)comps.year;
+    int month = (int)comps.month;
+    int day = (int)comps.day;
+    int hour = (int)comps.hour;
+    int minute = (int)comps.minute;
+
     Class classname;
     id obj;
     
@@ -182,10 +212,76 @@
                                 latitude:0.0
                                longitude:0.0
                                 altitude:0];
-
+    
     
     return [obj moonPhase];
+}
+
+
++(NSString *)convertLatToString:(double)lat {
+    NSMutableString *returnString = [NSMutableString new];
+    
+    double tmp = lat;
+    
+    if (tmp < 0) {
+        [returnString appendString:@"S"];
+        tmp = - tmp;
+    } else {
+        [returnString appendString:@"N"];
+    }
+    
+    int tmp1 = (int)floor(tmp);
+    int tmp2 = (int)round((tmp - tmp1) * 600);
+    
+    if (tmp2 == 600) {
+        tmp2 = 0;
+        tmp1++;
+    }
+    
+    [returnString appendString:[NSString stringWithFormat:@"%02d",tmp1]];
+    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp2]];
+    
+    return [returnString copy];
+    
     
 }
+
++(NSString *)convertLonToString:(double)lon {
+    NSMutableString *returnString = [NSMutableString new];
+    
+    double tmp = lon;
+    
+    if (tmp < 0) {
+        [returnString appendString:@"W"];
+        tmp = - tmp;
+    } else {
+        [returnString appendString:@"E"];
+    }
+    
+    int tmp1 = (int)floor(tmp);
+    int tmp2 = (int)round((tmp - tmp1) * 600);
+    
+    if (tmp2 == 600) {
+        tmp2 = 0;
+        tmp1++;
+    }
+    
+    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp1]];
+    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp2]];
+    
+    return [returnString copy];
+    
+}
+
++(NSString *)convertTimeToString:(int)time{
+    
+    int hour = time / 60;
+    int minute = time - (hour * 60);
+    
+    return [NSString stringWithFormat:@"%02d%02d",hour,minute];
+    
+}
+
+
 
 @end

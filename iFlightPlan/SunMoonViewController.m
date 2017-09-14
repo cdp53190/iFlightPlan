@@ -18,8 +18,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(planReload) name:@"planReload" object:nil];
 
     
     self.headerHeightConstraint.constant = 50;
@@ -34,45 +32,42 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [self planReload];
+}
+
 
 -(void)planReload {
+
+    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
     
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    self.navigationItem.title = dataPackage.otherData.flightNumber;
     
-    self.navigationItem.title = [ud objectForKey:@"dataDic"][@"Flight Number"];
+    self.planArray = [NSMutableArray arrayWithArray:dataPackage.sunMoonPlanArray];
     
-    self.planArray = [NSMutableArray arrayWithArray:[ud objectForKey:@"sunMoonPlanArray"]];
+    TakeoffTimeData *takeoffData = dataPackage.sunMoonTakeoffDate;
+    
+    _takeoffDate = [takeoffData date];
     
     [self.planTableView reloadData];
     
-    _takeoffYear = [[ud objectForKey:@"sunMoonTakeoffYear"] intValue];
-    _takeoffMonth = [[ud objectForKey:@"sunMoonTakeoffMonth"] intValue];
-    _takeoffDay = [[ud objectForKey:@"sunMoonTakeoffDay"] intValue];
-    _takeoffHour = [[ud objectForKey:@"sunMoonTakeoffHour"] intValue];
-    _takeoffMinute = [[ud objectForKey:@"sunMoonTakeoffMinute"] intValue];
+    [self setTakeoffTimeBtnTitle];
     
-    [self.takeoffTimeBtn setTitle:[NSString stringWithFormat:@"T/O : %04d/%02d/%02d %02d%02dZ",
-                                   _takeoffYear,
-                                   _takeoffMonth,
-                                   _takeoffDay,
-                                   _takeoffHour,
-                                   _takeoffMinute]];
+    double moonPhase = dataPackage.moonPhase;
     
-    double moonPhase = [[ud objectForKey:@"moonPhase"]doubleValue];
-    
+    //moonPhase計算値がなかったら計算させる
     if (moonPhase == -1.0) {
-        moonPhase = [SunMoon moonPhaseWithYear:_takeoffYear
-                                         month:_takeoffMonth
-                                           day:_takeoffDay
-                                          hour:_takeoffHour
-                                        minute:_takeoffMinute];
+        moonPhase = [SunMoon moonPhaseWithDate:_takeoffDate];
         
-        [ud setObject:[NSNumber numberWithDouble:moonPhase] forKey:@"moonPhase"];
-        [ud synchronize];
+        [SaveDataPackage savePresentDataWithMoonPhase:moonPhase];
         
     }
     
     _moonPhaseLabel.text = [NSString stringWithFormat:@"Moon Phase at T/O : %.1fday(s)", moonPhase];
+
+    if(self.planArray.count != 0) {
+        [self.planTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
 
     
 }
@@ -105,18 +100,20 @@
         
         SingleLinePlanColumnView *columnView = [cell.contentView viewWithTag:numberOfColumn];
         
+        SunMoonPointComponents *sunMoonComps = (SunMoonPointComponents *)self.planArray[indexPath.row];
+        
         if ([title isEqualToString:@"CTM"]) {
-            columnView.label.text = self.planArray[indexPath.row][@"CTMString"];
+            columnView.label.text = sunMoonComps.CTMString;
         } else if ([title isEqualToString:@"TIME"]) {
-            columnView.label.text = self.planArray[indexPath.row][@"TIMEString"];
+            columnView.label.text = sunMoonComps.timeString;
         } else if ([title isEqualToString:@"LAT"]) {
-            columnView.label.text = self.planArray[indexPath.row][@"latString"];
+            columnView.label.text = sunMoonComps.latString;
         } else if ([title isEqualToString:@"LON"]) {
-            columnView.label.text = self.planArray[indexPath.row][@"lonString"];
+            columnView.label.text = sunMoonComps.lonString;
         } else if ([title isEqualToString:@"FL"]) {
-            columnView.label.text = self.planArray[indexPath.row][@"FLString"];
+            columnView.label.text = sunMoonComps.FLString;
         } else {
-            columnView.label.text = self.planArray[indexPath.row][title];
+            columnView.label.text = [sunMoonComps valueForKey:title];
         }
         
         numberOfColumn++;
@@ -286,64 +283,38 @@
 
 -(void)sunMoonPlanTakeoffTimeChange {
     
-    NSArray *sunMoonArray = [SunMoon makeSunMoonPlanArrayWithTakeOffYear:_takeoffYear
-                                                                   month:_takeoffMonth
-                                                                     day:_takeoffDay
-                                                                    hour:_takeoffHour
-                                                                  minute:_takeoffMinute];
+    if (self.planArray.count == 0) {
+        return;
+    }
+    
+    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
+    
+    SunMoon *sunMoonObj = [[SunMoon alloc] initWithCourseArray:dataPackage.courseArray];
+    NSArray<SunMoonPointComponents *> *sunMoonArray = [sunMoonObj makeSunMoonPlanArrayWithTakeOffDate:_takeoffDate];
     
     
-    self.planArray = [sunMoonArray mutableCopy];
+    self.planArray = [NSMutableArray arrayWithArray:sunMoonArray];
     [self.planTableView reloadData];
-    
-    [self.takeoffTimeBtn setTitle:[NSString stringWithFormat:@"T/O : %04d/%02d/%02d %02d%02dZ",
-                               _takeoffYear,
-                               _takeoffMonth,
-                               _takeoffDay,
-                               _takeoffHour,
-                               _takeoffMinute]];
-    
+    [self setTakeoffTimeBtnTitle];
     
     //月齢計算
-    double moonPhase = [SunMoon moonPhaseWithYear:_takeoffYear
-                                            month:_takeoffMonth
-                                              day:_takeoffDay
-                                             hour:_takeoffHour
-                                           minute:_takeoffMinute];
+    double moonPhase = [SunMoon moonPhaseWithDate:_takeoffDate];
     
-    self.moonPhaseLabel.text = [NSString stringWithFormat:@"Moon Phase at T/O : %.1fday(s)",
-                            moonPhase];
-    
+    self.moonPhaseLabel.text = [NSString stringWithFormat:@"Moon Phase at T/O : %.1fday(s)", moonPhase];
     
     //synchronize
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    [ud setObject:sunMoonArray forKey:@"sunMoonPlanArray"];
-    [ud setObject:[NSNumber numberWithInt:_takeoffYear] forKey:@"sunMoonTakeoffYear"];
-    [ud setObject:[NSNumber numberWithInt:_takeoffMonth] forKey:@"sunMoonTakeoffMonth"];
-    [ud setObject:[NSNumber numberWithInt:_takeoffDay] forKey:@"sunMoonTakeoffDay"];
-    [ud setObject:[NSNumber numberWithInt:_takeoffHour] forKey:@"sunMoonTakeoffHour"];
-    [ud setObject:[NSNumber numberWithInt:_takeoffMinute] forKey:@"sunMoonTakeoffMinute"];
-    [ud setObject:[NSNumber numberWithDouble:moonPhase] forKey:@"moonPhase"];
-    [ud synchronize];
-    
+    [SaveDataPackage savePresentDataWithSunMoonPlanArray:sunMoonArray];
+    [SaveDataPackage savePresentDataWithSunMoonTakeoffDate:[TakeoffTimeData dataOfdate:_takeoffDate]];
+    [SaveDataPackage savePresentDataWithMoonPhase:moonPhase];
     
     
 }
 
 -(IBAction)takeoffTimeBackForward:(UIBarButtonItem *)sender {
     
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [formatter setDateFormat:@"yyyyMMddHHmm"];
-
-    NSDate *takeOffDate = [formatter dateFromString:[NSString stringWithFormat:@"%04d%02d%02d%02d%02d",
-                                                     [[ud objectForKey:@"sunMoonTakeoffYear"] intValue],
-                                                     [[ud objectForKey:@"sunMoonTakeoffMonth"] intValue],
-                                                     [[ud objectForKey:@"sunMoonTakeoffDay"] intValue],
-                                                     [[ud objectForKey:@"sunMoonTakeoffHour"] intValue],
-                                                     [[ud objectForKey:@"sunMoonTakeoffMinute"] intValue]]];
+    if (self.planArray.count == 0) {
+        return;
+    }
     
     NSTimeInterval timeInterval = 60.0;
     
@@ -351,7 +322,12 @@
         timeInterval = timeInterval * -1.0;
     }
     
-    NSDate *newTakeOffDate =  [NSDate dateWithTimeInterval:timeInterval sinceDate:takeOffDate];
+    _takeoffDate =  [NSDate dateWithTimeInterval:timeInterval sinceDate:_takeoffDate];
+    
+    [self sunMoonPlanTakeoffTimeChange];
+}
+
+-(void)setTakeoffTimeBtnTitle {
     
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSUInteger flags;
@@ -360,15 +336,22 @@
     flags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay |
     NSCalendarUnitHour | NSCalendarUnitMinute;
     
-    comps = [calendar components:flags fromDate:newTakeOffDate];
+    if (!_takeoffDate) {
+        _takeoffDate = [NSDate date];
+    }
+
     
-    _takeoffYear = (int)comps.year;
-    _takeoffMonth = (int)comps.month;
-    _takeoffDay = (int)comps.day;
-    _takeoffHour = (int)comps.hour;
-    _takeoffMinute = (int)comps.minute;
+    comps = [calendar components:flags fromDate:_takeoffDate];
     
-    [self sunMoonPlanTakeoffTimeChange];
+    [_takeoffTimeBtn setTitle:[NSString stringWithFormat:@"T/O : %04d/%02d/%02d %02d%02dZ",
+                                   (int)comps.year,
+                                   (int)comps.month,
+                                   (int)comps.day,
+                                   (int)comps.hour,
+                                   (int)comps.minute]];
+
+    
+    
 }
 
 

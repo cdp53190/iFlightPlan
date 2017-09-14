@@ -8,6 +8,7 @@
 
 #import "PDFReader.h"
 
+
 void operator_Text(
                    CGPDFScannerRef scanner,
                    void* info);
@@ -75,25 +76,41 @@ unichar unicharWithGlyph(
     NSString*               _encoding;
     int                     _index;
     NSString *section,*stage,*stage2;
-    NSMutableDictionary *dataDic;
+    
     NSMutableString *bufferString;
     int tempNo;
-    NSMutableArray *planArray;
-    NSMutableDictionary *planDic;
+    
+    SaveDataPackage *dataPackage;
+    NSMutableArray<NAVLOGLegComponents *> *planArray;
+    NAVLOGLegComponents *legComps;
+    BOOL altnNavlogExist;
+    
+    NSMutableArray<RALTData *> *RALTArray;
+    NSMutableArray<ETPDivertData *> *ETPDivertArray;
+    
+    RALTData *raltData;
+    ETPDivertData *etpDivertData;
     
 }
 
 -(instancetype)init {
     if (self = [super init]) {
         
-        dataDic = [NSMutableDictionary new];
         section = @"";
         stage = @"";
         stage2 = @"";
         bufferString = [NSMutableString new];
         tempNo = 0;
-        planDic = [NSMutableDictionary new];
+        legComps = [[NAVLOGLegComponents alloc] init];
         planArray = [NSMutableArray new];
+        altnNavlogExist = false;
+        dataPackage = [[SaveDataPackage alloc] init];
+        RALTArray = [NSMutableArray new];
+        ETPDivertArray = [NSMutableArray new];
+        
+        raltData = [[RALTData alloc] init];
+        etpDivertData = [[ETPDivertData alloc] init];
+        
     }
     return self;
 }
@@ -101,6 +118,16 @@ unichar unicharWithGlyph(
 
 
 -(void)readPDFWithPathString:(NSString *)path {
+    
+    //既存プランのセーブ
+    
+    
+    if ([SaveDataPackage presentData] != nil) {
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        NSNumber *planNumber = [ud objectForKey:@"planNumber"];
+        [SaveDataPackage savePresentPlanWithPlanNumber:planNumber.integerValue];
+    }
+
     
     // PDFドキュメントを作成
     CGPDFDocumentRef    document;
@@ -151,22 +178,71 @@ unichar unicharWithGlyph(
     CGPDFOperatorTableRelease(table), table = NULL;
     CGPDFContentStreamRelease(_stream), _stream = NULL;
     
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if (dataPackage.planArray.count == 0 ||
+        [dataPackage.weightData.takeoff isEqualToString:@""] ||
+        [dataPackage.fuelTimeData.ramp.fuel isEqualToString:@""] ||
+        [dataPackage.otherData.flightNumber isEqualToString:@""]) {
+        
+        [ud setObject:@true forKey:@"loadPlanFail"];
+        [ud synchronize];
 
-    [userDefaults setObject:dataDic forKey:@"dataDic"];
-
+        NSNotification *n = [NSNotification notificationWithName:@"planReload" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotification:n];
+        
+        return;
+        
+    }
+    
+    
     //1分ごとのcourseArray作り
-    [userDefaults setObject:[CourseCalc makeCourseArray] forKey:@"courseArray"];
-
-    //sunMoonPlanArray作り
-    [userDefaults setObject:[SunMoon makeInitialSunMoonPlanArray] forKey:@"sunMoonPlanArray"];
-    [userDefaults synchronize];
+    dataPackage.courseArray = [CourseCalc makeCourseArrayWithPlanArray:dataPackage.planArray];
     
-    //NSLog(@"%@",bufferString);
+    //sunMoonPlanArray作り
+    NSMutableString *timeString = [dataPackage.otherData.issueTime mutableCopy];//00:25 04SEP17
+    
+    [timeString insertString:@"20" atIndex:11];
+    [timeString deleteCharactersInRange:NSMakeRange(2, 1)];//HHmm ddMMMyyyy(0025 04SEP2017)
+    
+    NSString *STDString = dataPackage.otherData.STD;//0940
+    
+    NSTimeInterval timeInterval = 0.0;
+    if ([STDString intValue] < [[timeString substringToIndex:4] intValue]) {
+        timeInterval = 60.0 * 60.0 * 24.0;
+    }
+    
+    [timeString replaceCharactersInRange:NSMakeRange(0, 4) withString:STDString];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    [formatter setDateFormat:@"HHmm ddMMMyyyy"];
+    
+    NSDate *issueTimeDate = [formatter dateFromString:timeString];
+    
+    NSDate *takeOffDate =  [NSDate dateWithTimeInterval:timeInterval + 60.0 * 20.0 sinceDate:issueTimeDate];//STD+20分=T/O
+
+    
+    
+    dataPackage.sunMoonTakeoffDate = [TakeoffTimeData dataOfdate:takeOffDate];
+    dataPackage.sunMoonPlanArray = [SunMoon makeInitialSunMoonPlanArrayWithCourseArray:dataPackage.courseArray
+                                                                           takeoffDate:takeOffDate];
+    dataPackage.moonPhase = [SunMoon moonPhaseWithDate:takeOffDate];
+    
+    //oldPlanに追加
+    [SaveDataPackage saveNewPlanWithDataPackage:dataPackage];
+    
+    //planNumber保存
+    [ud setObject:@0 forKey:@"planNumber"];
+    
+    [ud setObject:@false forKey:@"loadPlanFail"];
+
+    [ud synchronize];
     
     NSNotification *n = [NSNotification notificationWithName:@"planReload" object:nil];
     [[NSNotificationCenter defaultCenter] postNotification:n];
+    
+    
 
 }
 
@@ -191,11 +267,6 @@ unichar unicharWithGlyph(
     string = [string stringByReplacingOccurrencesOfString:@"Ä" withString:@" "];
     string = [string stringByReplacingOccurrencesOfString:@"\t" withString:@" "];
     string = [string stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-/*    if (spaceRemain == YES) {
-        string = [string stringByReplacingOccurrencesOfString:@"\t" withString:@" "];
-    } else {
-        string = [string stringByReplacingOccurrencesOfString:@"\t" withString:@""];
-    }*/
 
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
@@ -403,20 +474,19 @@ unichar unicharWithGlyph(
             stage = @"title";
             tempNo = 0;
         }
-    } else if ([string isEqualToString:@"ALTN-1 NAVLOG"]) {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:planArray forKey:@"planArray"];
-        [userDefaults synchronize];
+    } else if ([string isEqualToString:@"ALTN-1 NAVLOG"] && !altnNavlogExist) {
+        
+        dataPackage.planArray = planArray;
+        
         planArray = [NSMutableArray new];
         
         section = @"ALTN-NAVLOG";
         stage = @"title";
         tempNo = 0;
+        altnNavlogExist = true;//ALTN NAVLOGが２ページ以上になった場合、毎ページ先頭にALTN-1 NAVLOGが表示される
     } else if ([string isEqualToString:@"WINDS/TEMPERATURES ALOFT FORECAST"]) {
         
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:planArray forKey:@"divertPlanArray"];
-        [userDefaults synchronize];
+        dataPackage.divertPlanArray = planArray;
         planArray = [NSMutableArray new];
         
         section = @"WindTemp";
@@ -484,7 +554,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"LOG"]) {
         if ([string hasPrefix:@"LOG"]) {
-            dataDic[stage] = [string substringFromIndex:string.length - 3];
+            dataPackage.otherData.logNumber = [string substringFromIndex:string.length - 3];
             stage = @"IssueTime";
             
         }
@@ -500,16 +570,18 @@ unichar unicharWithGlyph(
             [bufferString appendString:[string substringToIndex:2]];
         } else if (string.length == 5) {
             [bufferString appendString:string];
-            dataDic[stage] = bufferString;
+            dataPackage.otherData.issueTime = bufferString;
             bufferString = [NSMutableString new];
             stage = @"DATE";
         }
         return;
     }
     
+    
     if ([stage isEqualToString:@"DATE"]) {
         if ([string hasPrefix:@"DATE(UTC)"]) {
-            dataDic[stage] = [string substringFromIndex:string.length - 5];
+            //[string substringFromIndex:string.length - 5];
+            //初期はこのデータがあったがなくなったのでコメントアウト
             stage = @"ETOPS";
             return;
         } else {
@@ -519,10 +591,10 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"ETOPS"]) {
         if ([string isEqualToString:@"STD"]) {
-            dataDic[stage] = @"NO";
+            dataPackage.etopsData.ETOPS = @"NO";
             stage = @"Flight Number";
         } else {
-            dataDic[stage] = [string substringWithRange:NSMakeRange(16, string.length - 17)];
+            dataPackage.etopsData.ETOPS = [string substringWithRange:NSMakeRange(16, string.length - 17)];
             stage = @"Flight Number";
             return;
         }
@@ -531,7 +603,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Flight Number"]) {
         if (![string isEqualToString:@"STD"] && ![string isEqualToString:@"STA"] && ![string isEqualToString:@"BLK"]) {
-            dataDic[stage] = string;
+            dataPackage.otherData.flightNumber = string;
             stage = @"Course";
         }
         return;
@@ -542,7 +614,7 @@ unichar unicharWithGlyph(
         if (tempNo == 2) {
             [bufferString appendString:@" "];
             [bufferString appendString:string];
-            dataDic[stage] = bufferString;
+            dataPackage.otherData.courseName = bufferString;
             bufferString = [NSMutableString new];
             tempNo = 0;
             stage = @"Aircraft Number";
@@ -556,39 +628,41 @@ unichar unicharWithGlyph(
     }
     
     if ([stage isEqualToString:@"Aircraft Number"]) {
-        dataDic[@"Aircraft Number"] = string;
+        dataPackage.otherData.aircraftNumber = string;
         stage = @"SELCAL";
         return;
     }
     
     if ([stage isEqualToString:@"SELCAL"]) {
-        dataDic[stage] = [string substringFromIndex:1];
+        dataPackage.otherData.SELCAL = [string substringFromIndex:1];
         stage = @"STD";
         return;
     }
     
     if ([stage isEqualToString:@"STD"]) {
-        dataDic[stage] = [string substringToIndex:4];
+        dataPackage.otherData.STD = [string substringToIndex:4];
         stage = @"STA";
         return;
     }
     
     if ([stage isEqualToString:@"STA"]) {
-        dataDic[stage] = [string substringToIndex:4];
+        dataPackage.otherData.STA = [string substringToIndex:4];
         stage = @"BLK";
         return;
     }
     
     if ([stage isEqualToString:@"BLK"]) {
-        dataDic[stage] = [string substringToIndex:5];
+        dataPackage.otherData.blockTime = [string substringToIndex:5];
         stage = @"Time Margin";
-        [bufferString appendString:[string substringFromIndex:string.length - 1]];
+        if ([[string substringFromIndex:string.length - 1] isEqualToString:@"+"]) {
+            [bufferString appendString:@"+"];
+        }
         return;
     }
     
     if ([stage isEqualToString:@"Time Margin"]) {
         [bufferString appendString:string];
-        dataDic[stage] = [bufferString copy];
+        dataPackage.otherData.timeMargin = [bufferString copy];
         bufferString = [NSMutableString new];
         stage = @"FMCCourse";
         return;
@@ -596,7 +670,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"FMCCourse"]) {
         if (string.length > 2) {
-            dataDic[stage] = [string substringWithRange:NSMakeRange(1, string.length - 2)];
+            dataPackage.otherData.FMCCourse = [string substringWithRange:NSMakeRange(1, string.length - 2)];
             stage = @"Aircraft Type";
         }
         return;
@@ -604,7 +678,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Aircraft Type"]) {
 
-        dataDic[stage] = string;
+        dataPackage.otherData.aircraftType = string;
         stage = @"PIC";
 
         return;
@@ -612,33 +686,33 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"PIC"]) {
         if ([string hasPrefix:@"CAPT."]) {
-            dataDic[stage] = [string substringFromIndex:6];
+            dataPackage.otherData.PIC = [string substringFromIndex:6];
             stage = @"Climb SPD";
         }
         return;
     }
     
     if ([stage isEqualToString:@"Climb SPD"]) {
-        dataDic[stage] = [string componentsSeparatedByString:@" "][0];
+        dataPackage.otherData.climbSpeed = [string componentsSeparatedByString:@" "][0];
         stage = @"Cruise SPD";
         return;
     }
     
     if ([stage isEqualToString:@"Cruise SPD"]) {
-        dataDic[stage] = string;
+        dataPackage.otherData.cruiseSpeed = string;
         stage = @"Descend SPD";
         return;
     }
     
     if ([stage isEqualToString:@"Descend SPD"]) {
-        dataDic[stage] = string;
+        dataPackage.otherData.descendSpeed = string;
         stage = @"INT CRZ FL";
         return;
     }
     
     if ([stage isEqualToString:@"INT CRZ FL"]) {
         if (![string isEqualToString:@"INT CRZ FL"]) {
-            dataDic[stage] = string;
+            dataPackage.otherData.initialFL = string;
             section = @"Fuel";
             stage = @"";
         }
@@ -652,7 +726,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TTL RSV"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.totalReserve = string;
             stage = @"MIN RSV";
         }
         return;
@@ -660,7 +734,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"MIN RSV"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.minReserve = string;
             stage = @"STR LIMIT";
         }
         return;
@@ -668,7 +742,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"STR LIMIT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.structureLimit = string;
             stage = @"PLN ZFWT";
         }
         return;
@@ -676,7 +750,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"PLN ZFWT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.zeroFuel = string;
             stage = @"TIME To DEST";
         }
         return;
@@ -684,7 +758,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TIME To DEST"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.dest.time = string;
             stage = @"Fuel To DEST";
         }
         return;
@@ -692,7 +766,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel To DEST"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.dest.fuel = string;
             stage = @"T/O LIMIT";
         }
         return;
@@ -700,7 +774,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"T/O LIMIT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.takeoffLimit = string;
             stage = @"PLN TOWT";
         }
         return;
@@ -708,22 +782,22 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"PLN TOWT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.takeoff = string;
             stage = @"ALTN APO3";
         }
         return;
     }
     
     if ([stage isEqualToString:@"ALTN APO3"]) {
-        dataDic[stage] = [string substringToIndex:3];
-        dataDic[@"WF To ALTN"] = [string substringFromIndex:4];
+        dataPackage.alternateData.firstAPO3 = [string substringToIndex:3];
+        dataPackage.alternateData.windFactorToFirstALTN = [string substringFromIndex:4];
         stage = @"TIME To ALTN";
         return;
     }
     
     if ([stage isEqualToString:@"TIME To ALTN"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.firstAlternate.time = string;
             stage = @"Fuel To ALTN";
         }
         return;
@@ -731,7 +805,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel To ALTN"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.firstAlternate.fuel = string;
             stage = @"MAX L/DWT";
         }
 
@@ -740,7 +814,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"MAX L/DWT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.maxLanding = string;
             stage = @"PLN L/DWT";
         }
         return;
@@ -748,7 +822,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"PLN L/DWT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.landing = string;
             stage = @"TIME Of Contingency";
         }
         return;
@@ -756,7 +830,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TIME Of Contingency"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.contingency.time = string;
             stage = @"Fuel Of Contingency";
         }
         return;
@@ -764,7 +838,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel Of Contingency"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.contingency.fuel = string;
             stage = @"Burn Off";
         }
         return;
@@ -772,7 +846,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Burn Off"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            //dataDic[stage] = string;//Fuel To DESTと同じなので省略
+            //string;//Fuel To DESTと同じなので省略
             stage = @"AVG TAS";
         }
         return;
@@ -780,7 +854,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"AVG TAS"]) {
         if (string.length == 3 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.otherData.averageTAS = string;
             stage = @"TIME Of Hold";
         }
         return;
@@ -788,7 +862,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TIME Of Hold"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.hold.time = string;
             stage = @"Fuel Of Hold";
         }
         return;
@@ -796,7 +870,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel Of Hold"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.hold.fuel = string;
             stage = @"L/D LIMIT";
         }
         return;
@@ -804,7 +878,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"L/D LIMIT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.landingLimit = string;
             stage = @"AVG WF";
         }
         return;
@@ -812,7 +886,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"AVG WF"]) {
         if (string.length == 4) {
-            dataDic[stage] = string;
+            dataPackage.otherData.windFactor = string;
             stage = @"TIME Of EXTRA/S";
         }
         return;
@@ -820,7 +894,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TIME Of EXTRA/S"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.extra_s.time = string;
             stage = @"Fuel Of EXTRA/S";
         }
         return;
@@ -828,7 +902,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel Of EXTRA/S"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.extra_s.fuel = string;
             stage = @"MAX ZFWT";
         }
         return;
@@ -836,7 +910,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"MAX ZFWT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.maxZeroFuel = string;
             stage = @"AVG GS(kt)";
         }
         return;
@@ -844,7 +918,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"AVG GS(kt)"]) {
         if (string.length == 3) {
-            dataDic[stage] = string;
+            dataPackage.otherData.GS_Kt = string;
             stage = @"AVG GS(MPH)";
         }
         return;
@@ -852,21 +926,21 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"AVG GS(MPH)"]) {
         if (string.length == 4) {
-            dataDic[stage] = [string substringToIndex:3];
+            dataPackage.otherData.GS_MPH = [string substringToIndex:3];
             stage = @"AVG GS(km/h)";
         }
         return;
     }
     
     if ([stage isEqualToString:@"AVG GS(km/h)"]) {
-        dataDic[stage] = string;
+        dataPackage.otherData.GS_KMH = string;
         stage = @"TIME Of EXTRA";
         return;
     }
     
     if ([stage isEqualToString:@"TIME Of EXTRA"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.extra.time = string;
             stage = @"Fuel Of EXTRA";
         }
         return;
@@ -874,7 +948,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel Of EXTRA"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.extra.fuel = string;
             stage = @"T/O Fuel";
         }
         return;
@@ -890,7 +964,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"GRND DIST"]) {
         if (![string isEqualToString:@"GRD DIST"]) {
-            dataDic[stage] = string;
+            dataPackage.otherData.groundDistance = string;
             stage = @"TIME Of EXTRA/E";
         }
         return;
@@ -898,7 +972,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TIME Of EXTRA/E"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.extra_e.time = string;
             stage = @"Fuel Of EXTRA/E";
         }
         return;
@@ -906,7 +980,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel Of EXTRA/E"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.extra_e.fuel = string;
             stage = @"Z/F LIMIT";
         }
         return;
@@ -914,7 +988,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Z/F LIMIT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.zeroFuelLimit = string;
             stage = @"AIR DIST";
         }
         return;
@@ -922,7 +996,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"AIR DIST"]) {
         if (![string isEqualToString:@"AIR DIST"]) {
-            dataDic[stage] = string;
+            dataPackage.otherData.airDistance = string;
             stage = @"Unusable Fuel";
         }
         return;
@@ -930,7 +1004,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Unusable Fuel"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.unusable.fuel = string;
             stage = @"TIME Of T/O";
         }
         return;
@@ -938,7 +1012,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TIME Of T/O"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.takeoff.time = string;
             stage = @"Fuel Of T/O";
         }
         return;
@@ -946,7 +1020,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel Of T/O"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.takeoff.fuel = string;
             stage = @"TIME Of TAXIOUT";
         }
         return;
@@ -954,7 +1028,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TIME Of TAXIOUT"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.taxiout.time = string;
             stage = @"Fuel Of TAXIOUT";
         }
         return;
@@ -962,7 +1036,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel Of TAXIOUT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.taxiout.fuel = string;
             stage = @"MTXW-TAXI";
         }
         return;
@@ -970,10 +1044,10 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"MTXW-TAXI"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.MTXW_TAXI = string;
             stage = @"Fuel Of RAMP";
         } else if ([string isEqualToString:@"RAMP"]) {
-            dataDic[stage] = @"N/A";
+            dataPackage.weightData.MTXW_TAXI = @"N/A";
             stage = @"Fuel Of RAMP";
         }
         return;
@@ -981,7 +1055,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel Of RAMP"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.ramp.fuel = string;
             stage = @"AGTW-PTOW";
         }
         return;
@@ -989,7 +1063,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"AGTW-PTOW"]) {
         if (![string isEqualToString:@"AGTW-PTOW"]) {
-            dataDic[stage] = string;
+            dataPackage.weightData.AGTOW_PTOW = string;
             stage = @"TIME Of TAXIIN";
         }
         return;
@@ -997,7 +1071,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"TIME Of TAXIIN"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.taxiin.time = string;
             stage = @"T/O RWY";
         }
         return;
@@ -1005,7 +1079,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"T/O RWY"]) {
         if (![string isEqualToString:@"T/O RWY:"]) {
-            dataDic[stage] = string;
+            dataPackage.otherData.takeoffRunway = string;
             stage = @"L/D RWY";
         }
         return;
@@ -1013,22 +1087,22 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"L/D RWY"]) {
         if (![string isEqualToString:@"L/D RWY:"]) {
-            dataDic[stage] = string;
+            dataPackage.otherData.landingRunway = string;
             stage = @"2nd ALTN APO3";
         }
         return;
     }
     
     if ([stage isEqualToString:@"2nd ALTN APO3"]) {
-        dataDic[stage] = [string substringToIndex:3];
-        dataDic[@"WF To 2nd ALTN"] = [string substringFromIndex:4];
+        dataPackage.alternateData.secondAPO3 = [string substringToIndex:3];
+        dataPackage.alternateData.windFactorToSecondALTN = [string substringFromIndex:4];
         stage = @"TIME To 2nd ALTN";
         return;
     }
     
     if ([stage isEqualToString:@"TIME To 2nd ALTN"]) {
         if (string.length == 4 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.secondAlternate.time = string;
             stage = @"Fuel To 2nd ALTN";
         }
         return;
@@ -1036,7 +1110,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Fuel To 2nd ALTN"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
-            dataDic[stage] = string;
+            dataPackage.fuelTimeData.secondAlternate.fuel = string;
             section = @"ALTN";
             stage = @"";
         }
@@ -1050,7 +1124,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"ALTN APO4"]) {
         if (string.length == 4) {
-            dataDic[stage] = string;
+            dataPackage.alternateData.firstAPO4 = string;
             stage = @"FL To ALTN";
         }
         return;
@@ -1058,7 +1132,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"FL To ALTN"]) {
         if (![string isEqualToString:@"FL/"]) {
-            dataDic[stage] = string;
+            dataPackage.alternateData.FL = string;
             stage = @"Route To ALTN";
         }
         return;
@@ -1075,10 +1149,10 @@ unichar unicharWithGlyph(
             return;
         }
         
-        if ([string hasSuffix:dataDic[@"ALTN APO4"]]) {
+        if ([string hasSuffix:dataPackage.alternateData.firstAPO4]) {
             
             [bufferString appendString:string];
-            dataDic[stage] = bufferString;
+            dataPackage.alternateData.route = bufferString;
             bufferString = [NSMutableString new];
             
             tempNo = 0;
@@ -1112,7 +1186,7 @@ unichar unicharWithGlyph(
             tempNo = 1;
         } else if (tempNo == 1){
             [bufferString appendString:string];
-            dataDic[stage] = [bufferString copy];
+            dataPackage.otherData.fuelCorrectionFactor = [bufferString copy];
             bufferString = [NSMutableString new];
             
             tempNo = 0;
@@ -1122,10 +1196,23 @@ unichar unicharWithGlyph(
     }
     
     if ([stage isEqualToString:@"MAX T/O WT condition"]) {
+        
+        if ([string hasPrefix:@"L/D"]) {
+            
+            dataPackage.weightData.maxLandingCondition = [string substringFromIndex:4];
+            tempNo = 1;
+            
+        }
+        
         if ([string hasPrefix:@"T/O"]) {
             
-            dataDic[stage] = [string substringFromIndex:4];
-            stage = @"MAX L/D WT condition";
+            dataPackage.weightData.maxTakeoffCondition = [string substringFromIndex:4];
+            if (tempNo == 1) {
+                tempNo = 0;
+                stage = @"MEL";
+            } else {
+                stage = @"MAX L/D WT condition";
+            }
         }
         return;
     }
@@ -1133,7 +1220,8 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"MAX L/D WT condition"]) {
         if ([string hasPrefix:@"L/D"]) {
             
-            dataDic[stage] = [string substringFromIndex:4];
+            dataPackage.weightData.maxLandingCondition = [string substringFromIndex:4];
+            tempNo = 0;
             stage = @"MEL";
         }
         return;
@@ -1150,8 +1238,8 @@ unichar unicharWithGlyph(
             return;
         }
         
-        if ([string isEqualToString:@"ITEMS CONFIRMED BEFORE SIGN,"] || [string hasPrefix:dataDic[@"Flight Number"]]) {
-            dataDic[stage] = [bufferString copy];
+        if ([string isEqualToString:@"ITEMS CONFIRMED BEFORE SIGN,"] || [string hasPrefix:dataPackage.otherData.flightNumber]) {
+            dataPackage.otherData.MEL = [bufferString copy];
             bufferString = [NSMutableString new];
 
             tempNo = 0;
@@ -1171,7 +1259,7 @@ unichar unicharWithGlyph(
 -(void)signatureWithString:(NSString *)string {
     
     if ([stage isEqualToString:@"Dispatcher"]) {
-        if ([string isEqualToString:@"MENTAL AND PHSICAL COND"]) {
+        if ([string isEqualToString:@"MENTAL AND PHYSICAL COND"]) {
             tempNo = 1;
             return;
         }
@@ -1180,7 +1268,7 @@ unichar unicharWithGlyph(
             return;
         }
         
-        dataDic[stage] = string;
+        dataPackage.otherData.dispatcher = string;
 
         tempNo = 0;
         stage = @"Dispatch Date";
@@ -1190,7 +1278,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Dispatch Date"]) {
 
-        dataDic[stage] = string;
+        dataPackage.otherData.dispatchDate = string;
         stage = @"Dispatch Time";
 
         return;
@@ -1198,7 +1286,7 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Dispatch Time"]) {
        
-        dataDic[stage] = string;
+        dataPackage.otherData.dispatchTime = string;
         section = @"ATC PLAN";
         stage = @"";
 
@@ -1215,9 +1303,9 @@ unichar unicharWithGlyph(
             
             NSArray *strArray = [string componentsSeparatedByString:@"-"];
             
-            dataDic[stage] = strArray[1];
-            dataDic[@"ATC Flight rules"] = [strArray[2] substringToIndex:1];
-            dataDic[@"ATC Type of flight"] = [strArray[2] substringFromIndex:1];
+            dataPackage.atcData.aircraftID = strArray[1];
+            dataPackage.atcData.flightRules = [strArray[2] substringToIndex:1];
+            dataPackage.atcData.typeOfFlight = [strArray[2] substringFromIndex:1];
             
             stage = @"Aircraft & Equipment";
         }
@@ -1245,9 +1333,9 @@ unichar unicharWithGlyph(
                         
                         
                         if (bufferString.length == 0) {
-                            dataDic[stage2] = @"1";
+                            dataPackage.atcData.numberOfAircraft = @"1";
                         } else {
-                            dataDic[stage2] = bufferString;
+                            dataPackage.atcData.numberOfAircraft = bufferString;
                         }
                         
                         bufferString = [NSMutableString stringWithString:letter];
@@ -1257,7 +1345,7 @@ unichar unicharWithGlyph(
                 } else if ([stage2 isEqualToString:@"ATC Type of aircraft"]) {
                     
                     if ([letter isEqualToString:@"/"]) {
-                        dataDic[stage2] = bufferString;
+                        dataPackage.atcData.typeOfAircraft = bufferString;
                         bufferString = [NSMutableString new];
                         stage2 = @"ATC Wake turbulence category";
                     } else {
@@ -1266,7 +1354,7 @@ unichar unicharWithGlyph(
                     
                 } else if ([stage2 isEqualToString:@"ATC Wake turbulence category"]) {
                     
-                    dataDic[stage2] = letter;
+                    dataPackage.atcData.wakeCategory = letter;
                     
                 }
                 
@@ -1274,8 +1362,8 @@ unichar unicharWithGlyph(
             
             NSArray *equipArray = [strArray[2] componentsSeparatedByString:@"/"];
             
-            dataDic[@"ATC COMNAV equipment"] = equipArray[0];
-            dataDic[@"ATC Surveillance equipment"] = equipArray[1];
+            dataPackage.atcData.COMNAVEquip = equipArray[0];
+            dataPackage.atcData.surveillanceEquip = equipArray[1];
             
             stage = @"Departure";
             stage2 = @"";
@@ -1288,8 +1376,8 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Departure"]) {
         if (string.length != 0) {
             
-            dataDic[@"ATC Departure APO4"] = [string substringWithRange:NSMakeRange(1, 4)];
-            dataDic[@"ATC Departure Time"] = [string substringFromIndex:5];
+            dataPackage.atcData.depAPO4 = [string substringWithRange:NSMakeRange(1, 4)];
+            dataPackage.atcData.depTime = [string substringFromIndex:5];
             
             stage = @"ATC Route";
         }
@@ -1304,7 +1392,7 @@ unichar unicharWithGlyph(
                 [bufferString appendString:@" "];
                 return;
             } else {
-                dataDic[stage] = [bufferString substringToIndex:bufferString.length - 1];
+                dataPackage.atcData.speedLevelRoute = [bufferString substringToIndex:bufferString.length - 1];
                 bufferString = [NSMutableString new];
                 
                 stage = @"Arrival";
@@ -1319,18 +1407,18 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Arrival"]) {
         
-        dataDic[@"ATC Arrival APO4"] = [string substringWithRange:NSMakeRange(1, 4)];
-        dataDic[@"ATC Arrival Time"] = [string substringWithRange:NSMakeRange(5, 4)];
+        dataPackage.atcData.arrAPO4 = [string substringWithRange:NSMakeRange(1, 4)];
+        dataPackage.atcData.elapsedTime = [string substringWithRange:NSMakeRange(5, 4)];
         
         if (string.length == 9) {
-            dataDic[@"ATC ALTN APO4"] = @"";
-            dataDic[@"ATC 2nd ALTN APO4"] = @"";
+            dataPackage.atcData.firstAlternateAPO4 = @"";
+            dataPackage.atcData.secondAlternateAPO4 = @"";
         } else if (string.length == 14) {
-            dataDic[@"ATC ALTN APO4"] = [string substringWithRange:NSMakeRange(10, 4)];
-            dataDic[@"ATC 2nd ALTN APO4"] = @"";
+            dataPackage.atcData.firstAlternateAPO4 = [string substringWithRange:NSMakeRange(10, 4)];
+            dataPackage.atcData.secondAlternateAPO4 = @"";
         } else if (string.length == 19) {
-            dataDic[@"ATC ALTN APO4"] = [string substringWithRange:NSMakeRange(10, 4)];
-            dataDic[@"ATC 2nd ALTN APO4"] = [string substringWithRange:NSMakeRange(15, 4)];
+            dataPackage.atcData.firstAlternateAPO4 = [string substringWithRange:NSMakeRange(10, 4)];
+            dataPackage.atcData.secondAlternateAPO4 = [string substringWithRange:NSMakeRange(15, 4)];
         }
 
         stage  = @"ATC Other Information";
@@ -1347,8 +1435,59 @@ unichar unicharWithGlyph(
                 return;
             } else {
                 
-                dataDic[stage] = [bufferString substringToIndex:bufferString.length - 1];
+                NSString *ATCOtherInfo = [bufferString substringToIndex:bufferString.length - 1];
+//                dataDic[stage] = [bufferString substringToIndex:bufferString.length - 1];
                 bufferString = [NSMutableString new];
+                
+                if ([ATCOtherInfo isEqualToString:@"0"]) {
+                    
+                    dataPackage.atcData.otherInfoExist = NO;
+                    
+                } else {
+                    
+                    dataPackage.atcData.otherInfoExist = YES;
+                
+                    NSArray *otherInfoArray = [ATCOtherInfo componentsSeparatedByString:@" "];
+                    
+                    NSString *titleString = @"";
+                    NSMutableString *mutableString = [NSMutableString new];
+                    
+                    
+                    
+                    for (NSString *string in otherInfoArray) {
+                        
+                        NSArray *slashedArray = [string componentsSeparatedByString:@"/"];
+                        
+                        
+                        if (slashedArray.count == 1) {
+                            
+                            [mutableString appendString:@" "];
+                            [mutableString appendString:slashedArray[0]];
+                            
+                        } else {
+                            
+                            if (![mutableString isEqualToString:@""]) {
+                                
+                                [dataPackage.atcData setValue:[mutableString copy] forKey:titleString];
+                                
+                            }
+                            
+                            titleString = slashedArray[0];
+                            mutableString = [NSMutableString stringWithString:slashedArray[1]];
+                            
+                        }
+                        
+                    }
+                    
+                    if (![mutableString isEqualToString:@""]) {
+                        
+                        [dataPackage.atcData setValue:[mutableString copy] forKey:titleString];
+                        
+                    }
+                    
+                }
+
+                
                 
                 stage = @"Supplementary Info";
                 stage2 = @"ATC Endurance";
@@ -1369,7 +1508,7 @@ unichar unicharWithGlyph(
         for (NSString *str in strArray) {
             if ([stage2 isEqualToString:@"ATC Endurance"]) {
                 if ([str hasPrefix:@"-E/"]) {
-                    dataDic[stage2] = [str substringFromIndex:3];
+                    dataPackage.atcData.endurance = [str substringFromIndex:3];
                     stage2 = @"ATC POB";
                 }
                 
@@ -1380,11 +1519,11 @@ unichar unicharWithGlyph(
                 
                 
                 if ([str hasPrefix:@"P/"]) {
-                    dataDic[stage2] = [str substringFromIndex:2];
+                    dataPackage.atcData.POB = [str substringFromIndex:2];
                     stage2 = @"ATC Emergency Radio";
                     continue;
                 } else {
-                    dataDic[stage2] = @"";
+                    dataPackage.atcData.POB = @"";
                     stage2 = @"ATC Emergency Radio";
                 }
                 
@@ -1394,11 +1533,11 @@ unichar unicharWithGlyph(
                 
                 
                 if ([str hasPrefix:@"R/"]) {
-                    dataDic[stage2] = [str substringFromIndex:2];
+                    dataPackage.atcData.emergencyRadio = [str substringFromIndex:2];
                     stage2 = @"ATC Survival Equipment";
                     continue;
                 } else {
-                    dataDic[stage2] = @"";
+                    dataPackage.atcData.emergencyRadio = @"";
                     stage2 = @"ATC Survival Equipment";
                 }
                 
@@ -1408,11 +1547,11 @@ unichar unicharWithGlyph(
                 
                 
                 if ([str hasPrefix:@"S/"]) {
-                    dataDic[stage2] = [str substringFromIndex:2];
+                    dataPackage.atcData.survivalEquip = [str substringFromIndex:2];
                     stage2 = @"ATC Jackets";
                     continue;
                 } else {
-                    dataDic[stage2] = @"";
+                    dataPackage.atcData.survivalEquip = @"";
                     stage2 = @"ATC Jackets";
                 }
                 
@@ -1423,11 +1562,11 @@ unichar unicharWithGlyph(
                 
                 
                 if ([str hasPrefix:@"J/"]) {
-                    dataDic[stage2] = [str substringFromIndex:2];
+                    dataPackage.atcData.jackets = [str substringFromIndex:2];
                     stage2 = @"ATC Number Of Dinghies";
                     continue;
                 } else {
-                    dataDic[stage2] = @"";
+                    dataPackage.atcData.jackets = @"";
                     stage2 = @"ATC Number Of Dinghies";
                 }
                 
@@ -1436,14 +1575,14 @@ unichar unicharWithGlyph(
             if ([stage2 isEqualToString:@"ATC Number Of Dinghies"]) {
                 
                 if ([str hasPrefix:@"D/"]) {
-                    dataDic[stage2] = [str substringFromIndex:2];
+                    dataPackage.atcData.dinghiesNumber = [str substringFromIndex:2];
                     stage2 = @"ATC Dinghies Capacity";
                     continue;
                 } else {
-                    dataDic[stage2] = @"";
-                    dataDic[@"ATC Dinghies Capacity"] = @"";
-                    dataDic[@"ATC Dinghies Cover"] = @"";
-                    dataDic[@"ATC Dinghies Color"] = @"";
+                    dataPackage.atcData.dinghiesNumber = @"";
+                    dataPackage.atcData.dinghiesCapacity = @"";
+                    dataPackage.atcData.dinghiesCover = @"";
+                    dataPackage.atcData.dinghiesColor = @"";
                     stage2 = @"ATC Aircraft Color & Markings";
                 }
                 
@@ -1452,7 +1591,7 @@ unichar unicharWithGlyph(
             
             if ([stage2 isEqualToString:@"ATC Dinghies Capacity"]) {
                 
-                dataDic[stage2] = str;
+                dataPackage.atcData.dinghiesCapacity = str;
                 stage2 = @"ATC Dinghies Cover";
                 continue;
             }
@@ -1461,11 +1600,11 @@ unichar unicharWithGlyph(
                 
                 
                 if ([str isEqualToString:@"C"]) {
-                    dataDic[stage2] = str;
+                    dataPackage.atcData.dinghiesCover = str;
                     stage2 = @"ATC Dinghies Color";
                     continue;
                 } else {
-                    dataDic[stage2] = @"";
+                    dataPackage.atcData.dinghiesCover = @"";
                     stage2 = @"ATC Dinghies Color";
                 }
                 
@@ -1473,7 +1612,7 @@ unichar unicharWithGlyph(
             
             if ([stage2 isEqualToString:@"ATC Dinghies Color"]) {
                 
-                dataDic[stage2] = str;
+                dataPackage.atcData.dinghiesColor = str;
                 
                 stage2 = @"ATC Aircraft Color & Markings";
                 continue;
@@ -1487,9 +1626,9 @@ unichar unicharWithGlyph(
                     continue;
                 } else if ([str hasPrefix:@"N/"]){
                     if ([bufferString isEqualToString:@""]) {
-                        dataDic[stage2] = @"";
+                        dataPackage.atcData.aircraftColorMarking = @"";
                     } else {
-                        dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
+                        dataPackage.atcData.aircraftColorMarking = [bufferString substringToIndex:bufferString.length - 1];
                     }
                     bufferString = [NSMutableString new];
                     
@@ -1497,14 +1636,14 @@ unichar unicharWithGlyph(
                     
                 } else if ([str hasPrefix:@"C/"]){
                     if ([bufferString isEqualToString:@""]) {
-                        dataDic[stage2] = @"";
+                        dataPackage.atcData.aircraftColorMarking = @"";
                     } else {
-                        dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
+                        dataPackage.atcData.aircraftColorMarking = [bufferString substringToIndex:bufferString.length - 1];
                     }
                     
                     bufferString = [NSMutableString new];
                     
-                    dataDic[@"ATC Remarks"] = @"";
+                    dataPackage.atcData.remarks = @"";
                     
                     stage2 = @"ATC Captain";
                     
@@ -1526,7 +1665,7 @@ unichar unicharWithGlyph(
                 } else if ([str hasPrefix:@"C/"]){
                     
                     if (![bufferString isEqualToString:@""]) {
-                        dataDic[stage2] = [bufferString substringToIndex:bufferString.length - 1];
+                        dataPackage.atcData.remarks = [bufferString substringToIndex:bufferString.length - 1];
                     }
                     
                     bufferString = [NSMutableString new];
@@ -1547,7 +1686,7 @@ unichar unicharWithGlyph(
                 if (bufferString.length == 0 && [str hasPrefix:@"C/"]) {
                     
                     if ([str hasSuffix:@")"]) {
-                        dataDic[stage2] = [str substringWithRange:NSMakeRange(2, string.length - 3)];
+                        dataPackage.atcData.captain = [str substringWithRange:NSMakeRange(2, string.length - 3)];
                     } else {
                         [bufferString appendString:[str substringFromIndex:2]];
                         [bufferString appendString:@" "];
@@ -1556,7 +1695,7 @@ unichar unicharWithGlyph(
                 } else if ([str hasSuffix:@")"]){
                     
                     [bufferString appendString:[str substringToIndex:str.length - 1]];
-                    dataDic[stage2] = [bufferString copy];
+                    dataPackage.atcData.captain = [bufferString copy];
                     bufferString = [NSMutableString new];
                     
                     section = @"RALT";
@@ -1587,8 +1726,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"RALT APO4"]) {
         
         if (string.length == 4 && ![string isEqualToString:@"FROM"]) {
-            tempNo++;
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            raltData.APO4 = string;
             stage = @"RALT APO3";
             
         }
@@ -1599,7 +1737,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"RALT APO3"]) {
         
         if (string.length == 3) {
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            raltData.APO3 = string;
             stage = @"Earliest Time Of RALT";
             
         }
@@ -1610,7 +1748,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Earliest Time Of RALT"]) {
         
         if (string.length == 5) {
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            raltData.earliestTime = string;
             stage = @"Latest Time Of RALT";
             
         }
@@ -1621,7 +1759,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Latest Time Of RALT"]) {
         
         if (string.length == 5) {
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            raltData.latestTime = string;
             stage = @"Apply Time Circle";
             
         }
@@ -1632,12 +1770,16 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Apply Time Circle"]) {
         
         if ([string hasSuffix:@"("]) {
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = [string substringToIndex:string.length - 1];
+            raltData.applyTimeCircle = [string substringToIndex:string.length - 1];
             stage = @"Actural Time Circle";
 
         } else {
         
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            raltData.applyTimeCircle = string;
+            raltData.actualTimeCircle = string;
+            
+            [RALTArray addObject:[raltData copy]];
+            raltData = [[RALTData alloc] init];
             stage = @"RALT APO4";
             
         }
@@ -1648,9 +1790,11 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Actural Time Circle"]) {
         
         if (string.length == 2 || string.length == 3) {
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            raltData.actualTimeCircle = string;
         }
 
+        [RALTArray addObject:[raltData copy]];
+        raltData = [[RALTData alloc] init];
         stage = @"RALT APO4";
         
         return;
@@ -1664,7 +1808,6 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"start"]) {
         if (string.length == 3 && ![string isEqualToString:@"ETP"] && ![string isEqualToString:@"ETO"]) {
-            tempNo++;
             [bufferString appendString:string];
             [bufferString appendString:@"/"];
             stage = @"ETP APO3s";
@@ -1678,7 +1821,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"ETP APO3s"]) {
         if (string.length == 3) {
             [bufferString appendString:string];
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = [bufferString copy];
+            etpDivertData.ETP_APO3s = [bufferString copy];
             bufferString = [NSMutableString new];
             stage = @"WF To ETP APOs";
 
@@ -1695,7 +1838,7 @@ unichar unicharWithGlyph(
                 [bufferString appendString:@"/"];
             } else {
                 [bufferString appendString:string];
-                dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = [bufferString copy];
+                etpDivertData.windFactor = [bufferString copy];
                 bufferString = [NSMutableString new];
                 stage = @"ETP";
             }
@@ -1705,7 +1848,7 @@ unichar unicharWithGlyph(
     }
     
     if ([stage isEqualToString:@"ETP"]) {
-        dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+        etpDivertData.point = string;
         
         stage = @"Fuel At ETP";
         return;
@@ -1714,7 +1857,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Fuel At ETP"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
             
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            etpDivertData.ETPfuel = string;
             
             stage = @"ETO At ETP";
         }
@@ -1725,7 +1868,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"ETO At ETP"]) {
         if (string.length == 5) {
             
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            etpDivertData.ETPtime = string;
             
             stage = @"Time From ETP To RALT";
         }
@@ -1736,7 +1879,7 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Time From ETP To RALT"]) {
         if (string.length == 5) {
             
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            etpDivertData.divertTime = string;
             
             stage = @"Fuel To RALT";
         }
@@ -1747,10 +1890,11 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Fuel To RALT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
             
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            etpDivertData.divertFuel = string;
             
             stage = @"Divert Calc Condition";
-            dataDic[[NSString stringWithFormat:@"%@(Icing)-%d",stage,tempNo]] = @"NO";
+            
+            etpDivertData.icingCondition = @"NO";
         }
         
         return;
@@ -1760,9 +1904,9 @@ unichar unicharWithGlyph(
         if (string.length == 1) {
             
             if ([string isEqualToString:@"X"]) {
-                dataDic[[NSString stringWithFormat:@"%@(Icing)-%d",stage,tempNo]] = @"YES";
+                etpDivertData.icingCondition = @"YES";
             } else {
-                dataDic[[NSString stringWithFormat:@"%@(Engine)-%d",stage,tempNo]] = string;
+                etpDivertData.engineNumber = string;
                 
                 stage = @"Fuel Remain At RALT";
             }
@@ -1774,7 +1918,10 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"Fuel Remain At RALT"]) {
         if (string.length == 5 && [PDFReader isDigit:string]) {
             
-            dataDic[[NSString stringWithFormat:@"%@-%d",stage,tempNo]] = string;
+            etpDivertData.fuelRemain = string;
+
+            [ETPDivertArray addObject:[etpDivertData copy]];
+            etpDivertData = [[ETPDivertData alloc] init];
             
             stage = @"start";
         }
@@ -1810,10 +1957,11 @@ unichar unicharWithGlyph(
         if ([string isEqualToString:@"FRMNG"]) {
             if (planArray.count == 0) {
                 
-                [planDic setObject:@"" forKey:@"Ewindtemp"];
-                [planDic setObject:@"" forKey:@"Awindtemp"];
-                [planDic setObject:@"" forKey:@"PFL"];
-                [planDic setObject:@"" forKey:@"AFL"];
+                legComps.Ewindtemp = @"";
+                legComps.Awindtemp = @"";
+                legComps.Awindtemp = @"";
+                legComps.PFL = @"";
+                legComps.AFL = @"";
                 stage = @"TC";
             } else {
                 stage = @"WindDir";
@@ -1843,28 +1991,28 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"Temp"]) {
         [bufferString appendString:string];
-        planDic[@"Ewindtemp"] = bufferString;
+        legComps.Ewindtemp = bufferString;
         bufferString = [NSMutableString new];
-        planDic[@"Awindtemp"] = @"";
+        legComps.Awindtemp = @"";
         stage = @"FL";
         return;
     }
     
     if ([stage isEqualToString:@"FL"]) {
-        planDic[@"PFL"] = string;
-        planDic[@"AFL"] = @"";
+        legComps.PFL = string;
+        legComps.AFL = @"";
         stage = @"TC";
         return;
     }
     
     if ([stage isEqualToString:@"TC"]) {
-        planDic[stage] = string;
+        legComps.TC = string;
         stage = @"MC";
         return;
     }
     
     if ([stage isEqualToString:@"MC"]) {
-        planDic[stage] = string;
+        legComps.MC = string;
         stage = @"waypoint";
         return;
     }
@@ -1877,7 +2025,7 @@ unichar unicharWithGlyph(
             [bufferString appendString:@"||"];
             [bufferString appendString:string];
             if ([PDFReader isLongitude:string]) {
-                planDic[stage] = bufferString;
+                legComps.waypoint = bufferString;
                 bufferString = [NSMutableString new];
                 stage = @"AWY";
             } else {
@@ -1885,14 +2033,14 @@ unichar unicharWithGlyph(
             }
         }else if ([string isEqualToString:@"WPT"] && [bufferString isEqualToString:@"FIR"]) {
             
-            planDic[stage] = @"FIR||WPT";
+            legComps.waypoint = @"FIR||WPT";
             bufferString = [NSMutableString new];
             stage = @"AWY";
             
         }else {
-            planDic[stage] = bufferString;
+            legComps.waypoint = bufferString;
             bufferString = [NSMutableString new];
-            planDic[@"AWY"] = string;
+            legComps.AWY = string;
             stage = @"FIR";
         }
         
@@ -1902,70 +2050,69 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"waypoint3"]) {
         
         [bufferString appendString:string];
-        planDic[@"waypoint"] = bufferString;
+        legComps.waypoint = bufferString;
         bufferString = [NSMutableString new];
         stage = @"AWY";
         return;
     }
     
     if ([stage isEqualToString:@"AWY"]) {
-        planDic[stage] = string;
+        legComps.AWY = string;
         stage = @"FIR";
         return;
     }
     
     if ([stage isEqualToString:@"FIR"]) {
         if ([PDFReader isLatitude:string]) {
-            planDic[stage] = @"";
-            planDic[@"lat"] = string;
+            legComps.FIR = @"";
+            legComps.latString = string;
             stage = @"lon";
         } else {
-            planDic[stage] = string;
+            legComps.FIR = string;
             stage = @"lat";
         }
         return;
     }
     
     if ([stage isEqualToString:@"lat"]) {
-        planDic[stage] = string;
+        legComps.latString = string;
         stage = @"lon";
         return;
     }
     
     if ([stage isEqualToString:@"lon"]) {
-        planDic[stage] = string;
+        legComps.lonString = string;
         stage = @"DST";
         return;
     }
     
     if ([stage isEqualToString:@"DST"]) {
-        planDic[stage] = string;
+        legComps.DST = string;
         stage = @"ZTM";
         return;
     }
     
     if ([stage isEqualToString:@"ZTM"]) {
-        planDic[stage] = string;
-        planDic[@"ETO"] = @"";
-        planDic[@"ETO2"] = @"";
-        planDic[@"ATO"] = @"";
+        legComps.ZTM = string;
+        legComps.ETO = @"";
+        legComps.ETO2 = @"";
+        legComps.ATO = @"";
         stage = @"CTM";
         return;
     }
     
     if ([stage isEqualToString:@"CTM"]) {
-        planDic[stage] = string;
+        legComps.CTM = string;
         stage = @"Efuel";
         return;
     }
     
     if ([stage isEqualToString:@"Efuel"]) {
-        planDic[stage] = string;
-        planDic[@"Afuel"] = @"";
+        legComps.Efuel = string;
+        legComps.Afuel = @"";
         
-        [planArray addObject:planDic];
-        
-        planDic = [NSMutableDictionary new];
+        [planArray addObject:[legComps copy]];
+
         stage = @"WindDir";
         return;
     }

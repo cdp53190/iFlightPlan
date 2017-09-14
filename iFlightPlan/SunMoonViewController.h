@@ -9,6 +9,7 @@
 #import "PlanViewController.h"
 #import "SunMoon.h"
 
+
 @interface SunMoonViewController : PlanViewController
 
 
@@ -16,6 +17,6 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *takeoffTimeBtn;
 
-@property int takeoffYear, takeoffMonth, takeoffDay, takeoffHour, takeoffMinute;
+@property (weak, nonatomic) NSDate *takeoffDate;
 
 @end

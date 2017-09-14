@@ -22,14 +22,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    RouteCopy *routeCopy = [[RouteCopy alloc] init];
     
-    routeArray = [routeCopy arrayOfATCRoute];
+    [self planReload];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(planReload) name:@"planReload" object:nil];
+
     
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+-(void)planReload{
+    
+    routeArray = [[[RouteCopy alloc]init] arrayOfATCRoute];
     
     [self reloadATC];
     
@@ -173,57 +177,20 @@
 
 -(void)reloadATC {
     
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults]objectForKey:@"dataDic"];
+    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
     
-    if (!dic) {
+    ATCData *data = dataPackage.atcData;
+    
+    if (!data) {
         return;
     }
-    
-    //other info項(18項)をチェック
-    NSMutableDictionary *otherInfoDic = [NSMutableDictionary new];
-    
-    if (![dic[@"ATC Other Information"] isEqualToString:@"0"]) {
-        
-        NSArray *otherInfoArray = [((NSString *)dic[@"ATC Other Information"]) componentsSeparatedByString:@" "];
-        
-        NSString *titleString = @"";
-        NSMutableString *mutableString = [NSMutableString new];
-        
-        
-        
-        for (NSString *string in otherInfoArray) {
-            
-            NSArray *slashedArray = [string componentsSeparatedByString:@"/"];
-            
-            
-            if (slashedArray.count == 1) {
-                
-                [mutableString appendString:@" "];
-                [mutableString appendString:slashedArray[0]];
-                
-            } else {
-                
-                if (![mutableString isEqualToString:@""]) {
-                    
-                    otherInfoDic[titleString] = mutableString;
-                    
-                }
-                
-                titleString = slashedArray[0];
-                mutableString = [NSMutableString stringWithString:slashedArray[1]];
-                
-            }
-            
-        }
-    }
-    
     
     itemArray = [NSMutableArray new];
     
     ////////////////
     [itemArray addObject:@{@"title":@"Aircraft ID",
                            @"disable":@NO,
-                           @"detail":@[@{@"title":@"ID",@"detail":dic[@"ATC Flight Number"],@"disable":@NO}]}];
+                           @"detail":@[@{@"title":@"ID",@"detail":data.aircraftID,@"disable":@NO}]}];
     
     ////////////////
     NSMutableDictionary *disableDic = [NSMutableDictionary new];
@@ -233,7 +200,7 @@
     disableDic[@"Y"] = @YES;
     disableDic[@"Z"] = @YES;
     
-    disableDic[dic[@"ATC Flight rules"]] = @NO;
+    disableDic[data.flightRules] = @NO;
     
     [itemArray addObject:@{@"title":@"Flight Rules",
                            @"disable":@NO,
@@ -251,7 +218,7 @@
     disableDic[@"M"] = @YES;
     disableDic[@"X"] = @YES;
     
-    disableDic[dic[@"ATC Type of flight"]] = @NO;
+    disableDic[data.typeOfFlight] = @NO;
     
     [itemArray addObject:@{@"title":@"Type of Flight",
                            @"disable":@NO,
@@ -264,12 +231,12 @@
     ////////////////
     [itemArray addObject:@{@"title":@"Number of Aircraft",
                            @"disable":@NO,
-                           @"detail":@[@{@"title":@"Number",@"detail":dic[@"ATC Number of aircraft"],@"disable":@NO}]}];
+                           @"detail":@[@{@"title":@"Number",@"detail":data.numberOfAircraft,@"disable":@NO}]}];
     
     ////////////////
     [itemArray addObject:@{@"title":@"Type(s) of Aircraft",
                            @"disable":@NO,
-                           @"detail":@[@{@"title":@"Type",@"detail":dic[@"ATC Type of aircraft"],@"disable":@NO}]}];
+                           @"detail":@[@{@"title":@"Type",@"detail":data.typeOfAircraft,@"disable":@NO}]}];
     
     ////////////////
     disableDic = [NSMutableDictionary new];
@@ -279,7 +246,7 @@
     disableDic[@"M"] = @YES;
     disableDic[@"L"] = @YES;
     
-    disableDic[dic[@"ATC Wake turbulence category"]] = @NO;
+    disableDic[data.wakeCategory] = @NO;
     
     [itemArray addObject:@{@"title":@"Wake Turbulence Category",
                            @"disable":@NO,
@@ -326,7 +293,7 @@
     disableDic[@"Y"] = @YES;
     disableDic[@"Z"] = @YES;
     
-    NSString *atcString = dic[@"ATC COMNAV equipment"];
+    NSString *atcString = data.COMNAVEquip;
     NSInteger length = atcString.length;
     
     NSString *oldLetter = @"";
@@ -410,7 +377,7 @@
     disableDic[@"D1"] = @YES;
     disableDic[@"G1"] = @YES;
     
-    NSString *surString = dic[@"ATC Surveillance equipment"];
+    NSString *surString = data.surveillanceEquip;
     length = surString.length;
     
     oldLetter = @"";
@@ -457,28 +424,28 @@
                                        @{@"title":@"G1",@"detail":@"ADS-C with ATN",@"disable":disableDic[@"G1"]}]}];
     
     ////////////////
-    if ([dic[@"ATC Departure APO4"] isEqualToString:@"ZZZZ"]) {
-        if (otherInfoDic[@"DEP"]) {
+    if ([data.depAPO4 isEqualToString:@"ZZZZ"]) {
+        if (![data.DEP isEqualToString:@""]) {
             [itemArray addObject:@{@"title":@"Departure",
                                    @"disable":@NO,
                                    @"detail":@[@{@"title":@"Aerodrome",@"detail":@"ZZZZ",@"disable":@YES},
-                                               @{@"title":@"Place",@"detail":otherInfoDic[@"DEP"],@"disable":@NO},
-                                               @{@"title":@"Time",@"detail":dic[@"ATC Departure Time"],@"disable":@NO}]}];
+                                               @{@"title":@"Place",@"detail":data.DEP,@"disable":@NO},
+                                               @{@"title":@"Time",@"detail":data.depTime,@"disable":@NO}]}];
             
         } else {
             [itemArray addObject:@{@"title":@"Departure",
                                    @"disable":@NO,
                                    @"detail":@[@{@"title":@"Aerodrome",@"detail":@"ZZZZ",@"disable":@YES},
                                                @{@"title":@"Place",@"detail":@"",@"disable":@NO},
-                                               @{@"title":@"Time",@"detail":dic[@"ATC Departure Time"],@"disable":@NO}]}];
+                                               @{@"title":@"Time",@"detail":data.depTime,@"disable":@NO}]}];
             
         }
     } else {
         [itemArray addObject:@{@"title":@"Departure",
                                @"disable":@NO,
-                               @"detail":@[@{@"title":@"Aerodrome",@"detail":dic[@"ATC Departure APO4"],@"disable":@NO},
+                               @"detail":@[@{@"title":@"Aerodrome",@"detail":data.depAPO4,@"disable":@NO},
                                            @{@"title":@"Place",@"detail":@"",@"disable":@YES},
-                                           @{@"title":@"Time",@"detail":dic[@"ATC Departure Time"],@"disable":@NO}]}];
+                                           @{@"title":@"Time",@"detail":data.depTime,@"disable":@NO}]}];
     }
     
     ////////////////
@@ -487,12 +454,12 @@
                            @"detail":@[@{@"title":@"",@"detail":@"",@"disable":@NO}]}];
     
     ////////////////
-    if ([dic[@"ATC Arrival APO4"] isEqualToString:@"ZZZZ"]) {
-        if (otherInfoDic[@"DEST"]) {
+    if ([data.arrAPO4 isEqualToString:@"ZZZZ"]) {
+        if (![data.DEST isEqualToString:@""]) {
             [itemArray addObject:@{@"title":@"Destination",
                                    @"disable":@NO,
                                    @"detail":@[@{@"title":@"Aerodrome",@"detail":@"ZZZZ",@"disable":@YES},
-                                               @{@"title":@"Place",@"detail":otherInfoDic[@"DEST"],@"disable":@NO}]}];
+                                               @{@"title":@"Place",@"detail":data.DEST,@"disable":@NO}]}];
         } else {
             [itemArray addObject:@{@"title":@"Destination",
                                    @"disable":@NO,
@@ -503,50 +470,50 @@
     } else {
         [itemArray addObject:@{@"title":@"Destination",
                                @"disable":@NO,
-                               @"detail":@[@{@"title":@"Aerodrome",@"detail":dic[@"ATC Arrival APO4"],@"disable":@NO},
+                               @"detail":@[@{@"title":@"Aerodrome",@"detail":data.arrAPO4,@"disable":@NO},
                                            @{@"title":@"Place",@"detail":@"",@"disable":@YES}]}];
     }
     
     ////////////////
     [itemArray addObject:@{@"title":@"Elapsed time",
                            @"disable":@NO,
-                           @"detail":@[@{@"title":@"Time",@"detail":dic[@"ATC Arrival Time"],@"disable":@NO}]}];
+                           @"detail":@[@{@"title":@"Time",@"detail":data.elapsedTime,@"disable":@NO}]}];
     
     ////////////////
     NSMutableArray *displayArray = [NSMutableArray new];
     
     
-    if ([dic[@"ATC ALTN APO4"]isEqualToString:@""]) {
+    if ([data.firstAlternateAPO4 isEqualToString:@""]) {
         disableDic[@"ALTN"] = @YES;
-    } else if ([dic[@"ATC ALTN APO4"] isEqualToString:@"ZZZZ"]) {
+    } else if ([data.firstAlternateAPO4 isEqualToString:@"ZZZZ"]) {
         disableDic[@"ALTN"] = @NO;
-        if (otherInfoDic[@"ALTN"]) {
+        if (![data.ALTN isEqualToString:@""]) {
             [displayArray addObject:@{@"title":@"1st Alternate Aerodrome",@"detail":@"ZZZZ",@"disable":@YES}];
-            [displayArray addObject:@{@"title":@"1st Alternate Place",@"detail":otherInfoDic[@"ALTN"],@"disable":@NO}];
+            [displayArray addObject:@{@"title":@"1st Alternate Place",@"detail":data.ALTN,@"disable":@NO}];
         } else {
             [displayArray addObject:@{@"title":@"1st Alternate Aerodrome",@"detail":@"ZZZZ",@"disable":@YES}];
             [displayArray addObject:@{@"title":@"1st Alternate Place",@"detail":@"",@"disable":@NO}];
         }
     } else {
         disableDic[@"ALTN"] = @NO;
-        [displayArray addObject:@{@"title":@"1st Alternate Aerodrome",@"detail":dic[@"ATC ALTN APO4"],@"disable":@NO}];
+        [displayArray addObject:@{@"title":@"1st Alternate Aerodrome",@"detail":data.firstAlternateAPO4,@"disable":@NO}];
         [displayArray addObject:@{@"title":@"1st Alternate Place",@"detail":@"",@"disable":@YES}];
     }
     
-    if ([dic[@"ATC 2nd ALTN APO4"] isEqualToString:@""]) {
+    if ([data.secondAlternateAPO4 isEqualToString:@""]) {
         [displayArray addObject:@{@"title":@"2nd Alternate Aerodrome",@"detail":@"",@"disable":@YES}];
         [displayArray addObject:@{@"title":@"2nd Alternate Place",@"detail":@"",@"disable":@YES}];
         
-    } else if ([dic[@"ATC 2nd ALTN APO4"] isEqualToString:@"ZZZZ"]) {
-        if (otherInfoDic[@"ALTN"]) {
+    } else if ([data.secondAlternateAPO4 isEqualToString:@"ZZZZ"]) {
+        if (![data.ALTN isEqualToString:@""]) {
             [displayArray addObject:@{@"title":@"2nd Alternate Aerodrome",@"detail":@"ZZZZ",@"disable":@YES}];
-            [displayArray addObject:@{@"title":@"2nd Alternate Place",@"detail":otherInfoDic[@"ALTN"],@"disable":@NO}];
+            [displayArray addObject:@{@"title":@"2nd Alternate Place",@"detail":data.ALTN,@"disable":@NO}];
         } else {
             [displayArray addObject:@{@"title":@"2nd Alternate Aerodrome",@"detail":@"ZZZZ",@"disable":@YES}];
             [displayArray addObject:@{@"title":@"2nd Alternate Place",@"detail":@"",@"disable":@NO}];
         }
     } else {
-        [displayArray addObject:@{@"title":@"2nd Alternate Aerodrome",@"detail":dic[@"ATC 2nd ALTN APO4"],@"disable":@NO}];
+        [displayArray addObject:@{@"title":@"2nd Alternate Aerodrome",@"detail":data.secondAlternateAPO4,@"disable":@NO}];
         [displayArray addObject:@{@"title":@"2nd Alternate Place",@"detail":@"",@"disable":@YES}];
     }
     
@@ -555,7 +522,7 @@
                            @"detail":displayArray}];
     
     ////////////////
-    if ([dic[@"ATC Other Information"] isEqualToString:@"0"]) {
+    if (!data.otherInfoExist) {
         [itemArray addObject:@{@"title":@"No other information",
                                @"disable":@NO,
                                @"detail":@[@{@"title":@"Other information",@"detail":@"nil",@"disable":@NO}]}];
@@ -583,9 +550,9 @@
     disableDic[@"STATE"] = @YES;
     disableDic[@"STS"] = @YES;
     
-    if (otherInfoDic[@"STS"]) {
+    if (![data.STS isEqualToString:@""]) {
         
-        NSArray *array = [otherInfoDic[@"STS"] componentsSeparatedByString:@" "];
+        NSArray *array = [data.STS componentsSeparatedByString:@" "];
         
         for (NSString *string in array) {
             disableDic[string] = @NO;
@@ -639,9 +606,9 @@
     
     disableDic[@"PBN"] = @YES;
     
-    if (otherInfoDic[@"PBN"]) {
+    if (![data.PBN isEqualToString:@""]) {
         
-        NSString *string = otherInfoDic[@"PBN"];
+        NSString *string = data.PBN;
         
         NSString *string0 = @"";
         
@@ -697,9 +664,9 @@
     
     disableDic[@"NAV"] = @YES;
     
-    if (otherInfoDic[@"NAV"]) {
+    if (![data.NAV isEqualToString:@""]) {
         
-        NSArray *array = [otherInfoDic[@"NAV"] componentsSeparatedByString:@" "];
+        NSArray *array = [data.NAV componentsSeparatedByString:@" "];
         
         for (NSString *string in array) {
             disableDic[string] = @NO;
@@ -720,7 +687,7 @@
     disableDic[@"COM"] = @YES;
     disableDic[@"COMdetail"] = @YES;
     
-    if (otherInfoDic[@"COM"]) {
+    if (![data.COM isEqualToString:@""]) {
         
         disableDic[@"COMdetail"] = @NO;
         
@@ -741,9 +708,9 @@
     
     disableDic[@"DAT"] = @YES;
     
-    if (otherInfoDic[@"DAT"]) {
+    if (![data.DAT isEqualToString:@""]) {
         
-        NSArray *array = [otherInfoDic[@"DAT"] componentsSeparatedByString:@" "];
+        NSArray *array = [data.DAT componentsSeparatedByString:@" "];
         
         for (NSString *string in array) {
             disableDic[string] = @NO;
@@ -765,7 +732,7 @@
     disableDic[@"SUR"] = @YES;
     disableDic[@"SURdetail"] = @YES;
     
-    if (otherInfoDic[@"SUR"]) {
+    if (![data.SUR isEqualToString:@""]) {
         
         disableDic[@"SURdetail"] = @NO;
         
@@ -781,14 +748,14 @@
     
     NSString *detailString = @"";
     
-    if (otherInfoDic[@"DOF"]) {
+    if (![data.DOF isEqualToString:@""]) {
         
         disableDic[@"DOF"] = @NO;
         
         detailString = [NSString stringWithFormat:@"%@-%@-%@",
-                        [otherInfoDic[@"DOF"] substringWithRange:NSMakeRange(0, 2)],
-                        [otherInfoDic[@"DOF"] substringWithRange:NSMakeRange(2, 2)],
-                        [otherInfoDic[@"DOF"] substringWithRange:NSMakeRange(4, 2)]];
+                        [data.DOF substringWithRange:NSMakeRange(0, 2)],
+                        [data.DOF substringWithRange:NSMakeRange(2, 2)],
+                        [data.DOF substringWithRange:NSMakeRange(4, 2)]];
         
         disableDic[@"DOFdetail"] = @NO;
         
@@ -804,12 +771,11 @@
     
     detailString = @"";
     
-    if (otherInfoDic[@"REG"]) {
+    if (![data.REG isEqualToString:@""]) {
         
         disableDic[@"REG"] = @NO;
         
-        detailString = otherInfoDic[@"REG"];
-        
+        detailString = data.REG;
         disableDic[@"REGdetail"] = @NO;
         
     }
@@ -822,7 +788,7 @@
     
     displayArray = [NSMutableArray new];
     
-    if (otherInfoDic[@"EET"]) {
+    if (![data.EET isEqualToString:@""]) {
         
         disableDic[@"EET"] = @NO;
         
@@ -830,7 +796,7 @@
                                   @"detail":@"Elapsed Time",
                                   @"disable":@NO}];
         
-        NSArray *eetArray = [otherInfoDic[@"EET"] componentsSeparatedByString:@" "];
+        NSArray *eetArray = [data.EET componentsSeparatedByString:@" "];
         
         for (NSString *string in eetArray) {
             [displayArray addObject:@{@"title":[string substringToIndex:4],
@@ -858,11 +824,11 @@
     
     detailString = @"";
     
-    if (otherInfoDic[@"SEL"]) {
+    if (![data.SEL isEqualToString:@""]) {
         
         disableDic[@"SEL"] = @NO;
         
-        detailString = otherInfoDic[@"SEL"];
+        detailString = data.SEL;
         
         disableDic[@"SELdetail"] = @NO;
         
@@ -877,11 +843,11 @@
     
     detailString = @"";
     
-    if (otherInfoDic[@"CODE"]) {
+    if (![data.CODE isEqualToString:@""]) {
         
         disableDic[@"CODE"] = @NO;
         
-        detailString = otherInfoDic[@"CODE"];
+        detailString = data.CODE;
         
         disableDic[@"CODEdetail"] = @NO;
         
@@ -895,7 +861,7 @@
     
     displayArray = [NSMutableArray new];
     
-    if (otherInfoDic[@"DLE"]) {
+    if (![data.DLE isEqualToString:@""]) {
         
         disableDic[@"DLE"] = @NO;
         
@@ -903,7 +869,7 @@
                                   @"detail":@"Time",
                                   @"disable":@NO}];
         
-        NSArray *dleArray = [otherInfoDic[@"DLE"] componentsSeparatedByString:@" "];
+        NSArray *dleArray = [data.DLE componentsSeparatedByString:@" "];
         
         for (NSString *string in dleArray) {
             [displayArray addObject:@{@"title":[string substringToIndex:string.length - 4],
@@ -931,11 +897,11 @@
     
     detailString = @"";
     
-    if (otherInfoDic[@"OPR"]) {
+    if (![data.OPR isEqualToString:@""]) {
         
         disableDic[@"OPR"] = @NO;
         
-        detailString = otherInfoDic[@"OPR"];
+        detailString = data.OPR;
         
         disableDic[@"OPRdetail"] = @NO;
         
@@ -950,11 +916,11 @@
     
     detailString = @"";
     
-    if (otherInfoDic[@"ORGN"]) {
+    if (![data.ORGN isEqualToString:@""]) {
         
         disableDic[@"ORGN"] = @NO;
         
-        detailString = otherInfoDic[@"ORGN"];
+        detailString = data.ORGN;
         
         disableDic[@"ORGNdetail"] = @NO;
         
@@ -969,11 +935,11 @@
     
     detailString = @"";
     
-    if (otherInfoDic[@"PER"]) {
+    if (![data.PER isEqualToString:@""]) {
         
         disableDic[@"PER"] = @NO;
         
-        detailString = otherInfoDic[@"PER"];
+        detailString = data.PER;
         
         disableDic[@"PERdetail"] = @NO;
         
@@ -987,7 +953,7 @@
     
     displayArray = [NSMutableArray new];
     
-    if (otherInfoDic[@"RALT"]) {
+    if (![data.RALT isEqualToString:@""]) {
         
         disableDic[@"RALT"] = @NO;
         
@@ -995,7 +961,7 @@
                                   @"detail":@"Aerodrome",
                                   @"disable":@NO}];
         
-        NSArray *RALTArray = [otherInfoDic[@"RALT"] componentsSeparatedByString:@" "];
+        NSArray *RALTArray = [data.RALT componentsSeparatedByString:@" "];
         
         for (NSString *string in RALTArray) {
             [displayArray addObject:@{@"title":@"",
@@ -1021,11 +987,11 @@
     
     detailString = @"";
     
-    if (otherInfoDic[@"TALT"]) {
+    if (![data.TALT isEqualToString:@""]) {
         
         disableDic[@"TALT"] = @NO;
         
-        detailString = otherInfoDic[@"TALT"];
+        detailString = data.TALT;
         
         disableDic[@"TALTdetail"] = @NO;
         

@@ -15,6 +15,7 @@
 @implementation SummeryViewController
 {
     SELCALPlayer *selcalPlayer;
+    SaveDataPackage *dataPackage;
 }
 
 - (void)viewDidLoad {
@@ -29,12 +30,19 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dic = [userDefaults objectForKey:@"dataDic"];
+    dataPackage = [SaveDataPackage presentData];
     
-    _mainTextView.text = [NSString stringWithFormat:@"%@",dic];
+    NSMutableString *str = [NSMutableString new];
+    
+    [str appendString:[NSString stringWithFormat:@"%@",dataPackage.atcData.description]];
+    [str appendString:[NSString stringWithFormat:@"%@",dataPackage.fuelTimeData.description]];
+    [str appendString:[NSString stringWithFormat:@"%@",dataPackage.weightData.description]];
+    [str appendString:[NSString stringWithFormat:@"%@",dataPackage.etopsData.description]];
+    [str appendString:[NSString stringWithFormat:@"%@",dataPackage.otherData.description]];
+    [str appendString:[NSString stringWithFormat:@"%@",dataPackage.alternateData.description]];
+    
+    _mainTextView.text = [NSString stringWithFormat:@"%@",str];
 
-    
 }
 
 
@@ -58,9 +66,7 @@
 
 - (IBAction)pushSELCAL:(UIButton *)sender {
     
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults]objectForKey:@"dataDic"];
-    
-    [selcalPlayer playWithSELCALString:dic[@"SELCAL"]];
+    [selcalPlayer playWithSELCALString:dataPackage.otherData.SELCAL];
     
 }
 

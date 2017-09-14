@@ -20,25 +20,11 @@
     _datePicker.calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
     _timePicker.calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601];
     
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [formatter setDateFormat:@"yyyyMMddHHmm"];
-    
-    
-    NSDate *takeOffDate = [formatter dateFromString:[NSString stringWithFormat:@"%04d%02d%02d%02d%02d",
-                                                     [[ud objectForKey:@"sunMoonTakeoffYear"] intValue],
-                                                     [[ud objectForKey:@"sunMoonTakeoffMonth"] intValue],
-                                                     [[ud objectForKey:@"sunMoonTakeoffDay"] intValue],
-                                                     [[ud objectForKey:@"sunMoonTakeoffHour"] intValue],
-                                                     [[ud objectForKey:@"sunMoonTakeoffMinute"] intValue]]];
-    
-    
-/*    NSDate *now = [NSDate dateWithTimeIntervalSinceNow: -[[NSTimeZone systemTimeZone] secondsFromGMT]];
-        _datePicker.date = now;
-        _timePicker.date = now;
-*/
+    TakeoffTimeData *takeOffData = dataPackage.sunMoonTakeoffDate;
+    NSDate *takeOffDate = [takeOffData date];    
+
     _datePicker.date = takeOffDate;
     _timePicker.date = takeOffDate;
     
@@ -66,19 +52,25 @@
         
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         NSUInteger flags;
-        NSDateComponents *comps;
+        NSDateComponents *compsDate, *compsMinute;
         
         flags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay |
                 NSCalendarUnitHour | NSCalendarUnitMinute;
-        comps = [calendar components:flags fromDate:_datePicker.date];
+        compsDate = [calendar components:flags fromDate:_datePicker.date];
+        compsMinute = [calendar components:flags fromDate:_timePicker.date];
         
-        sunMoonVC.takeoffYear = (int)comps.year;
-        sunMoonVC.takeoffMonth = (int)comps.month;
-        sunMoonVC.takeoffDay = (int)comps.day;
+        NSMutableString *timeString = [NSMutableString stringWithFormat:@"%02d%02d %02d%02d%04d",
+                                       (int)compsMinute.hour,
+                                       (int)compsMinute.minute,
+                                       (int)compsDate.day,
+                                       (int)compsDate.month,
+                                       (int)compsDate.year];
         
-        comps = [calendar components:flags fromDate:_timePicker.date];
-        sunMoonVC.takeoffHour = (int)comps.hour;
-        sunMoonVC.takeoffMinute = (int)comps.minute;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        [formatter setDateFormat:@"HHmm ddMMyyyy"];
+
+        sunMoonVC.takeoffDate = [formatter dateFromString:timeString];
         
     }
 
