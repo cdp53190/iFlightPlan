@@ -13,5 +13,6 @@
 @interface SaveLoadViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
 @property IBOutlet UITableView *tableView;
+@property IBOutlet UIBarButtonItem *editBtn;
 
 @end

@@ -16,5 +16,7 @@
 @property AEAudioController *audioController;
 
 -(void)playWithSELCALString:(NSString *)string;
+-(void)playMuteSound;
+-(void)stopSound;
 
 @end

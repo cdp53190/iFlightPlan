@@ -255,7 +255,7 @@ static double atand(double x) {return atan(x) * 180.0 / M_PI;}
     if(_heightDeg <= t1) {
         _status = @"Night";
     } else if (_heightDeg > t4) {
-        _status = @"Day  ";
+        _status = @"Day";
     } else if (_heightDeg > t1 && _heightDeg <= t2) {
         _status = @"Astro";
     } else if (_heightDeg > t2 && _heightDeg <= t3) {
@@ -526,7 +526,7 @@ static double atand(double x) {return atan(x) * 180.0 / M_PI;}
     if(_heightDeg < heightMoonOnHorizon) {
         _status = @"Under";
     } else {
-        _status = @"Over ";
+        _status = @"Over";
     }
     
     

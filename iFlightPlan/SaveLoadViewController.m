@@ -110,8 +110,8 @@
     
     cell.dateLabel.text = (NSString *)depTime;
     cell.flightLabel.text = saveDataPkg.otherData.flightNumber;
-    cell.depLabel.text = [saveDataPkg.otherData.FMCCourse substringToIndex:3];
-    cell.arrLabel.text = [saveDataPkg.otherData.FMCCourse substringWithRange:NSMakeRange(3, 3)];
+    cell.depLabel.text = saveDataPkg.otherData.depAPO3;
+    cell.arrLabel.text = saveDataPkg.otherData.arrAPO3;
     
     if (indexPath.row == planNumber) {
         cell.backgroundColor = [UIColor greenColor];
@@ -168,6 +168,23 @@
     
 }
 
+
+
+-(IBAction)editBtn:(id)sender {
+    
+    if (_tableView.editing) {
+        _tableView.editing = NO;
+        _editBtn.style= UIBarButtonSystemItemEdit;
+        
+    } else {
+        _tableView.editing = YES;
+        _editBtn.style = UIBarButtonSystemItemDone;
+        
+    }
+    
+    
+    
+}
 
 /*
 #pragma mark - Navigation

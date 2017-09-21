@@ -200,27 +200,40 @@ unichar unicharWithGlyph(
     dataPackage.courseArray = [CourseCalc makeCourseArrayWithPlanArray:dataPackage.planArray];
     
     //sunMoonPlanArray作り
-    NSMutableString *timeString = [dataPackage.otherData.issueTime mutableCopy];//00:25 04SEP17
-    
-    [timeString insertString:@"20" atIndex:11];
-    [timeString deleteCharactersInRange:NSMakeRange(2, 1)];//HHmm ddMMMyyyy(0025 04SEP2017)
-    
+    NSDate *STDDate;
+    NSTimeInterval timeInterval = 0.0;
     NSString *STDString = dataPackage.otherData.STD;//0940
     
-    NSTimeInterval timeInterval = 0.0;
-    if ([STDString intValue] < [[timeString substringToIndex:4] intValue]) {
-        timeInterval = 60.0 * 60.0 * 24.0;
+    if (dataPackage.atcData.DOF) {
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        [formatter setDateFormat:@"yyMMddHHmm"];
+        STDDate = [formatter dateFromString:[NSString stringWithFormat:@"%@%@",
+                                             dataPackage.atcData.DOF,
+                                             STDString]];
+
+    } else {
+        NSMutableString *timeString = [dataPackage.otherData.issueTime mutableCopy];//00:25 04SEP17
+        
+        [timeString insertString:@"20" atIndex:11];
+        [timeString deleteCharactersInRange:NSMakeRange(2, 1)];//HHmm ddMMMyyyy(0025 04SEP2017)
+
+        if ([STDString intValue] < [[timeString substringToIndex:4] intValue]) {
+            timeInterval = 60.0 * 60.0 * 24.0;
+        }
+        
+        [timeString replaceCharactersInRange:NSMakeRange(0, 4) withString:STDString];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        [formatter setDateFormat:@"HHmm ddMMMyyyy"];
+        
+        STDDate = [formatter dateFromString:timeString];
+
     }
     
-    [timeString replaceCharactersInRange:NSMakeRange(0, 4) withString:STDString];
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    [formatter setDateFormat:@"HHmm ddMMMyyyy"];
-    
-    NSDate *issueTimeDate = [formatter dateFromString:timeString];
-    
-    NSDate *takeOffDate =  [NSDate dateWithTimeInterval:timeInterval + 60.0 * 20.0 sinceDate:issueTimeDate];//STD+20分=T/O
+    NSDate *takeOffDate =  [NSDate dateWithTimeInterval:timeInterval + 60.0 * 20.0 sinceDate:STDDate];//STD+20分=T/O
 
     
     
@@ -229,21 +242,26 @@ unichar unicharWithGlyph(
                                                                            takeoffDate:takeOffDate];
     dataPackage.moonPhase = [SunMoon moonPhaseWithDate:takeOffDate];
     
-    //oldPlanに追加
+    WeatherForcast *weatherForcast = [[WeatherForcast alloc] init];
+    
+    weatherForcast.delegate = self;
+    
+    [weatherForcast weatherForcastRequestWithDataPackage:dataPackage];
+    
+    //oldPlan、presentDataに追加
     [SaveDataPackage saveNewPlanWithDataPackage:dataPackage];
     
     //planNumber保存
     [ud setObject:@0 forKey:@"planNumber"];
     
     [ud setObject:@false forKey:@"loadPlanFail"];
-
+    
     [ud synchronize];
     
     NSNotification *n = [NSNotification notificationWithName:@"planReload" object:nil];
     [[NSNotificationCenter defaultCenter] postNotification:n];
-    
-    
 
+    
 }
 
 - (void)operatorTextScanned:(CGPDFScannerRef)scanner
@@ -548,6 +566,7 @@ unichar unicharWithGlyph(
     
 }
 
+#pragma mark - read each section
 
 -(void)summeryWithString:(NSString *)string {
     
@@ -671,6 +690,10 @@ unichar unicharWithGlyph(
     if ([stage isEqualToString:@"FMCCourse"]) {
         if (string.length > 2) {
             dataPackage.otherData.FMCCourse = [string substringWithRange:NSMakeRange(1, string.length - 2)];
+            
+            dataPackage.otherData.depAPO3 = [string substringWithRange:NSMakeRange(1, 3)];
+            dataPackage.otherData.arrAPO3 = [string substringWithRange:NSMakeRange(4, 3)];
+            
             stage = @"Aircraft Type";
         }
         return;
@@ -2118,6 +2141,32 @@ unichar unicharWithGlyph(
     }
     
 }
+
+#pragma mark - WeatherForcastDelegate
+-(void)receiveForcastWithForcastData:(WeatherForcastData *)forcast {
+    
+    dataPackage.otherData.forcast = forcast;
+    
+    //presentに追加
+    [SaveDataPackage savePresentDataWithOtherData:dataPackage.otherData];
+    
+    NSNotification *n = [NSNotification notificationWithName:@"forcastReceive" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:n];
+
+    
+    
+}
+
+-(void)receiveWeatherForcastErrorWithData:(NSData *)data error:(WeatherForcastError)error response:(NSURLResponse *)response {
+    
+    WeatherForcastData *forcast = [[WeatherForcastData alloc] init];
+    dataPackage.otherData.forcast = forcast;
+    
+    [SaveDataPackage savePresentDataWithOtherData:dataPackage.otherData];
+    
+}
+
+#pragma mark - classMethod
 
 +(BOOL)isLatitude:(NSString *)string
 {

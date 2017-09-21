@@ -37,6 +37,9 @@
     
     [self reloadATC];
     
+    _navigationItem.title = [SaveDataPackage presentData].otherData.flightNumber;
+
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -854,7 +857,7 @@
     }
     [itemArray addObject:@{@"title":@"Aircraft address(CODE/)",
                            @"disable":disableDic[@"CODE"],
-                           @"detail":@[@{@"title":@"address",@"detail":detailString,@"disable":disableDic[@"CODE"]}]}];
+                           @"detail":@[@{@"title":@"address",@"detail":detailString,@"disable":disableDic[@"CODEdetail"]}]}];
     
     ////////////////
     disableDic[@"DLE"] = @YES;
@@ -1000,14 +1003,44 @@
                            @"disable":disableDic[@"TALT"],
                            @"detail":@[@{@"title":@"Takeoff Alternate",@"detail":detailString,@"disable":disableDic[@"TALTdetail"]}]}];
     
-    [itemArray addObject:@{@"title":@"Route to revised dest.(RIF/)",
-                           @"disable":@NO,
-                           @"detail":@[@{@"title":@"",@"detail":@"",@"disable":@NO}]}];
+    /////////////////
+    disableDic[@"RIF"] = @YES;
+    disableDic[@"RIFdetail"] = @YES;
     
-    [itemArray addObject:@{@"title":@"Other remarks(RMK/)",
-                           @"disable":@NO,
-                           @"detail":@[@{@"title":@"",@"detail":@"",@"disable":@NO}]}];
+    detailString = @"";
+    
+    if (![data.RIF isEqualToString:@""]) {
+        
+        disableDic[@"RIF"] = @NO;
+        
+        detailString = data.RIF;
+        
+        disableDic[@"RIFdetail"] = @NO;
+        
+    }
 
+    [itemArray addObject:@{@"title":@"Route to revised dest.(RIF/)",
+                           @"disable":disableDic[@"RIF"],
+                           @"detail":@[@{@"title":@"",@"detail":detailString,@"disable":disableDic[@"RIFdetail"]}]}];
+    
+    /////////////////
+    disableDic[@"RMK"] = @YES;
+    disableDic[@"RMKdetail"] = @YES;
+    
+    detailString = @"";
+    
+    if (![data.RMK isEqualToString:@""]) {
+        
+        disableDic[@"RMK"] = @NO;
+        
+        detailString = data.RMK;
+        
+        disableDic[@"RMKdetail"] = @NO;
+        
+    }
+    [itemArray addObject:@{@"title":@"Other remarks(RMK/)",
+                           @"disable":disableDic[@"RMK"],
+                           @"detail":@[@{@"title":@"",@"detail":detailString,@"disable":disableDic[@"RMKdetail"]}]}];
     
     
     

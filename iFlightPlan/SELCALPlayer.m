@@ -76,6 +76,47 @@ static const int kInputChannelsChangedContext;
     
 }
 
+-(void)playMuteSound {
+    
+    if (_audioController) {
+        
+        [_audioController removeObserver:self forKeyPath:@"numberOfInputChannels"];
+        
+        NSMutableArray *channelsToRemove = [NSMutableArray arrayWithObjects:tone1,tone2,tone3,tone4,nil];
+        
+        tone1 = nil;
+        tone2 = nil;
+        tone3 = nil;
+        tone4 = nil;
+        
+        [_audioController removeChannels:channelsToRemove];
+        
+    } else {
+        
+        _audioController = [[AEAudioController alloc] initWithAudioDescription:AEAudioStreamBasicDescriptionNonInterleavedFloatStereo inputEnabled:NO];
+        _audioController.preferredBufferDuration = 0.005;
+        _audioController.useMeasurementMode = YES;
+        
+    }
+    
+    [_audioController start:NULL];
+    
+    AEAudioUnitChannel *audioUnitPlayer = [[AEAudioUnitChannel alloc] initWithComponentDescription:AEAudioComponentDescriptionMake(kAudioUnitManufacturer_Apple, kAudioUnitType_Generator, kAudioUnitSubType_AudioFilePlayer)];
+    
+    
+    tone1 = [self blockChannelOfMuteSound];
+    if (tone1 == nil) return;
+    tone1.channelIsMuted = NO;
+    
+    [_audioController addChannels:@[tone1]];
+    
+    // Finally, add the audio unit player
+    [_audioController addChannels:@[audioUnitPlayer]];
+    
+    [_audioController addObserver:self forKeyPath:@"numberOfInputChannels" options:0 context:(void*)&kInputChannelsChangedContext];
+ 
+}
+
 -(void)changeSound {
     
     tone1.channelIsMuted = YES;
@@ -153,5 +194,34 @@ static const int kInputChannelsChangedContext;
     
     return tone;
 }
+
+-(AEBlockChannel *)blockChannelOfMuteSound {
+    
+    double frequency = 0;
+    
+    double sampleRate = 44100.0;
+    
+    __block double phase = 0.0;
+    double freq = frequency * 2.0 * M_PI / sampleRate;
+    AEBlockChannel *tone = [AEBlockChannel channelWithBlock:^(const AudioTimeStamp *time, UInt32 frames, AudioBufferList *audio) {
+        
+        //サイン波
+        for ( int i=0; i<frames; i++ ) {
+            float wave = sin(phase) * INT16_MAX / 2;
+            ((SInt16*)audio->mBuffers[0].mData)[i] = wave;
+            ((SInt16*)audio->mBuffers[1].mData)[i] = wave;
+            phase += freq;
+        }
+        
+    }];
+    
+    tone.volume = 1;
+    tone.pan = 0;
+    tone.audioDescription = AEAudioStreamBasicDescriptionNonInterleaved16BitStereo;
+    tone.channelIsMuted = NO;
+    
+    return tone;
+}
+
 
 @end

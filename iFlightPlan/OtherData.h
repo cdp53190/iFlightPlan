@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WeatherForcastData.h"
 
 @interface OtherData : NSObject<NSCoding>
 
@@ -16,5 +17,6 @@
 @property NSString *climbSpeed, *cruiseSpeed, *descendSpeed, *initialFL;
 @property NSString *takeoffRunway, *landingRunway, *fuelCorrectionFactor;
 @property NSString *issueTime, *MEL, *PIC, *dispatcher, *dispatchDate, *dispatchTime;
+@property WeatherForcastData *forcast;
 
 @end

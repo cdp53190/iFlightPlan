@@ -100,22 +100,6 @@ typedef enum tabList : NSInteger {
     sunMoonPlanVC.columnListArray = columnListArray;
 
 }
-/*
--(void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
-    
-    if(self.selectedIndex == 2){
-        self.navigationController.navigationItem;
-        UIBarButtonItem *btn =
-        [[UIBarButtonItem alloc]
-         initWithTitle:@"ぼたん"  // ボタンタイトル名を指定
-         style:UIBarButtonItemStylePlain  // スタイルを指定（※下記表参照）
-         target:self  // デリゲートのターゲットを指定
-         action:@selector(hoge)  // ボタンが押されたときに呼ばれるメソッドを指定
-         ];
-        
-    }
-    
-}*/
 
 /*
 #pragma mark - Navigation

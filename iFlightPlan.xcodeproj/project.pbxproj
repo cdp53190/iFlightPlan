@@ -26,7 +26,8 @@
 		EF226E9E1DA898670068C4AF /* ETOATOColumnView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF226E9D1DA898670068C4AF /* ETOATOColumnView.xib */; };
 		EF2526A01D9D788900B5E392 /* DoubleLinePlanColumnView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF25269F1D9D788900B5E392 /* DoubleLinePlanColumnView.xib */; };
 		EF2D0DBF1D9FAC030099B505 /* DoubleLinePlanColumnView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */; };
-		EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF31A0FE1D95928100F8048D /* SummeryViewController.m */; };
+		EF45B4B41F6E9F6900ED06C1 /* WeatherForcast.m in Sources */ = {isa = PBXBuildFile; fileRef = EF45B4B31F6E9F6900ED06C1 /* WeatherForcast.m */; };
+		EF45B4B71F6EA4D000ED06C1 /* WeatherForcastData.m in Sources */ = {isa = PBXBuildFile; fileRef = EF45B4B61F6EA4D000ED06C1 /* WeatherForcastData.m */; };
 		EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */; };
 		EF4A03261DB6C0D900787698 /* ATCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4A03251DB6C0D900787698 /* ATCViewController.m */; };
 		EF4EF85C1CA34D9500FD897F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF85B1CA34D9500FD897F /* main.m */; };
@@ -142,8 +143,10 @@
 		EF25269F1D9D788900B5E392 /* DoubleLinePlanColumnView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoubleLinePlanColumnView.xib; sourceTree = "<group>"; };
 		EF2D0DBD1D9FAC030099B505 /* DoubleLinePlanColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleLinePlanColumnView.h; sourceTree = "<group>"; };
 		EF2D0DBE1D9FAC030099B505 /* DoubleLinePlanColumnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoubleLinePlanColumnView.m; sourceTree = "<group>"; };
-		EF31A0FD1D95928100F8048D /* SummeryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SummeryViewController.h; sourceTree = "<group>"; };
-		EF31A0FE1D95928100F8048D /* SummeryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SummeryViewController.m; sourceTree = "<group>"; };
+		EF45B4B21F6E9F6900ED06C1 /* WeatherForcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherForcast.h; sourceTree = "<group>"; };
+		EF45B4B31F6E9F6900ED06C1 /* WeatherForcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherForcast.m; sourceTree = "<group>"; };
+		EF45B4B51F6EA4D000ED06C1 /* WeatherForcastData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherForcastData.h; sourceTree = "<group>"; };
+		EF45B4B61F6EA4D000ED06C1 /* WeatherForcastData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherForcastData.m; sourceTree = "<group>"; };
 		EF48F8C31CD55A7B004DC03A /* PlanTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanTableViewCell.h; sourceTree = "<group>"; };
 		EF48F8C41CD55A7B004DC03A /* PlanTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanTableViewCell.m; sourceTree = "<group>"; };
 		EF4A03241DB6C0D900787698 /* ATCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATCViewController.h; sourceTree = "<group>"; };
@@ -333,8 +336,6 @@
 				EFE3F1541D934896003A5903 /* PDFReader.h */,
 				EFE3F1551D934896003A5903 /* PDFReader.m */,
 				EF0E73051DA026EA000BC8F4 /* test plan */,
-				EF31A0FD1D95928100F8048D /* SummeryViewController.h */,
-				EF31A0FE1D95928100F8048D /* SummeryViewController.m */,
 				EF0E73061DA2790A000BC8F4 /* MainTabBarController.h */,
 				EF0E73071DA2790A000BC8F4 /* MainTabBarController.m */,
 				EF226E8C1DA547FD0068C4AF /* CourseCalc.h */,
@@ -345,6 +346,8 @@
 				EF7826401E77E18200B3728C /* EntryControllers */,
 				EF80668A1DAB8EDB008A4BCB /* RouteCopy.h */,
 				EF80668B1DAB8EDB008A4BCB /* RouteCopy.m */,
+				EF45B4B21F6E9F6900ED06C1 /* WeatherForcast.h */,
+				EF45B4B31F6E9F6900ED06C1 /* WeatherForcast.m */,
 			);
 			path = iFlightPlan;
 			sourceTree = "<group>";
@@ -412,6 +415,8 @@
 				EF69FB2D1F644B5900025D31 /* ETOPSData.m */,
 				EF69FB2F1F6486CA00025D31 /* AlternateData.h */,
 				EF69FB301F6486CA00025D31 /* AlternateData.m */,
+				EF45B4B51F6EA4D000ED06C1 /* WeatherForcastData.h */,
+				EF45B4B61F6EA4D000ED06C1 /* WeatherForcastData.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -664,6 +669,7 @@
 				EF69FB151F5C292800025D31 /* SunMoonPointComponents.m in Sources */,
 				EFB107C01DAA4A7F009AC5B2 /* SELCALPlayer.m in Sources */,
 				EFE3F1561D934896003A5903 /* PDFReader.m in Sources */,
+				EF45B4B71F6EA4D000ED06C1 /* WeatherForcastData.m in Sources */,
 				EF4A03261DB6C0D900787698 /* ATCViewController.m in Sources */,
 				EF69FB2E1F644B5900025D31 /* ETOPSData.m in Sources */,
 				EF226E8E1DA547FD0068C4AF /* CourseCalc.m in Sources */,
@@ -673,7 +679,6 @@
 				EF5A05ED1F55005200F128C4 /* SaveLoadViewController.m in Sources */,
 				EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */,
 				EF69FB341F69F42A00025D31 /* TakeoffTimeData.m in Sources */,
-				EF31A0FF1D95928100F8048D /* SummeryViewController.m in Sources */,
 				EF226E991DA80F430068C4AF /* TakeoffTimePickerViewController.m in Sources */,
 				EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */,
 				EF69FB121F5C28B700025D31 /* NAVLOGLegComponents.m in Sources */,
@@ -684,6 +689,7 @@
 				EF69FB181F5C2B1D00025D31 /* CoursePointComponents.m in Sources */,
 				EF226E891DA51E130068C4AF /* SingleLinePlanColumnView.m in Sources */,
 				EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */,
+				EF45B4B41F6E9F6900ED06C1 /* WeatherForcast.m in Sources */,
 				EF4EF85C1CA34D9500FD897F /* main.m in Sources */,
 				EF69FB1E1F60236400025D31 /* ATCData.m in Sources */,
 				EFE992521F21AC0B00998991 /* PreFlightViewController.m in Sources */,
@@ -846,7 +852,7 @@
 				INFOPLIST_FILE = iFlightPlan/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlanTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -859,7 +865,7 @@
 				INFOPLIST_FILE = iFlightPlan/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlanTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.micchann.iFlightPlan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

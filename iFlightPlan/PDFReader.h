@@ -12,9 +12,10 @@
 #import "CourseCalc.h"
 #import "SunMoon.h"
 #import "SaveDataPackage.h"
+#import "WeatherForcast.h"
 
 
-@interface PDFReader : NSObject
+@interface PDFReader : NSObject<WeatherForcastDelegate>
 
 
 -(void)readPDFWithPathString:(NSString *)path;
