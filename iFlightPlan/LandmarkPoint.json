@@ -1,0 +1,503 @@
+[
+ {
+ "name":"富士山",
+ "lat":35.360556,
+ "lon":138.727778,
+ "detectDistance":200.0
+ },
+
+ {
+ "name":"京都",
+ "lat":35.011636,
+ "lon":135.768029,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"大阪",
+ "lat":34.693738,
+ "lon":135.502165,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"名古屋",
+ "lat":35.181446,
+ "lon":136.906398,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"岡山",
+ "lat":34.655146,
+ "lon":133.919502,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"広島",
+ "lat":34.385203,
+ "lon":132.455293,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"高知",
+ "lat":33.559587,
+ "lon":133.529279,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"福岡",
+ "lat":33.590355,
+ "lon":130.401716,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"鹿児島",
+ "lat":31.596554,
+ "lon":130.557116,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"奄美大島",
+ "lat":28.377248,
+ "lon":129.493741,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"那覇",
+ "lat":26.212312,
+ "lon":127.679157,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"山形",
+ "lat":38.255439,
+ "lon":140.339602,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"佐渡島",
+ "lat":38.041082,
+ "lon":138.338718,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"潮岬",
+ "lat":33.447481,
+ "lon":135.761528,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"伊豆大島",
+ "lat":34.737098,
+ "lon":139.399337,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"隠岐の島",
+ "lat":36.230695,
+ "lon":133.245576,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"宮古島",
+ "lat":24.80549,
+ "lon":125.281149,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"石垣島",
+ "lat":24.406403,
+ "lon":124.175444,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Midway I.",
+ "lat":28.201527,
+ "lon":-177.380611,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"Butterfly I.",
+ "lat":-2.845365,
+ "lon":146.233663,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Mt.Everest",
+ "lat":27.988056,
+ "lon":86.925278,
+ "detectDistance":250.0
+ },
+ 
+ {
+ "name":"Taipei",
+ "lat":25.032964,
+ "lon":121.565427,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Kaoshung",
+ "lat":22.627278,
+ "lon":120.301435,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Danang",
+ "lat":16.054407,
+ "lon":108.202167,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Ubon Ratchathani",
+ "lat":15.228686,
+ "lon":104.856422,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"南大東島",
+ "lat":25.848778,
+ "lon":131.250733,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Manila",
+ "lat":14.599512,
+ "lon":120.98422,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Mt.Kinabalu",
+ "lat":6.075313,
+ "lon":116.558824,
+ "detectDistance":200.0
+ },
+ 
+ {
+ "name":"Kota Kinabalu",
+ "lat":5.980408,
+ "lon":116.073457,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Bandar Seri Begawan",
+ "lat":4.903052,
+ "lon":114.939821,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Kuching",
+ "lat":1.607681,
+ "lon":110.378544,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Angkor Wat",
+ "lat":13.4125,
+ "lon":103.866667,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Sanya(海南島)",
+ "lat":18.253338,
+ "lon":109.517212,
+ "detectDistance":100.0
+ },
+ 
+ {
+ "name":"Port Moresby",
+ "lat":-9.4438,
+ "lon":147.180267,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"Guam",
+ "lat":13.444304,
+ "lon":144.793731,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"硫黄島",
+ "lat":24.774024,
+ "lon":141.327285,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"母島（小笠原諸島）",
+ "lat":26.61953,
+ "lon":142.179386,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"八丈島",
+ "lat":33.103021,
+ "lon":139.803557,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"Hamilton Island",
+ "lat":-20.351882,
+ "lon":148.957251,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"アッツ島",
+ "lat":52.87631,
+ "lon":172.890483,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"Anchorage",
+ "lat":61.171318,
+ "lon":-149.983978,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Fairbanks",
+ "lat":64.837778,
+ "lon":-147.716389,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Mt.Denali",
+ "lat":63.069169,
+ "lon":-151.006984,
+ "detectDistance":200.0
+ },
+ 
+ {
+ "name":"Mt.Logan",
+ "lat":60.567001,
+ "lon":-140.405293,
+ "detectDistance":200.0
+ },
+ 
+ {
+ "name":"Whitehorse",
+ "lat":60.721187,
+ "lon":-135.056845,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Yellowknife",
+ "lat":62.453972,
+ "lon":-114.371789,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Monument Valley",
+ "lat":37.004245,
+ "lon":-110.173479,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Khabarovsk",
+ "lat":48.515784,
+ "lon":135.101171,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Mir mine",
+ "lat":62.526952,
+ "lon":113.992924,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Monument Valley",
+ "lat":37.004245,
+ "lon":-110.173479,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"Yamal Penn.",
+ "lat":72.0,
+ "lon":70.0,
+ "detectDistance":150.0
+ },
+ 
+ {
+ "name":"Novaya Zemlya",
+ "lat":74.0,
+ "lon":57.0,
+ "detectDistance":250.0
+ },
+ 
+ {
+ "name":"White Sea",
+ "lat":65.6,
+ "lon":36.8,
+ "detectDistance":150.0
+ },
+ 
+ {
+ "name":"St.Petersburg",
+ "lat":59.93428,
+ "lon":30.335099,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Helsinki",
+ "lat":60.169856,
+ "lon":24.938379,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Stockholm",
+ "lat":59.329324,
+ "lon":18.068581,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Oslo",
+ "lat":59.913869,
+ "lon":10.752245,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Copenhagen",
+ "lat":55.676097,
+ "lon":12.568337,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Riga",
+ "lat":56.979649,
+ "lon":24.105187,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Amsterdam",
+ "lat":52.370216,
+ "lon":4.895168,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Baltic sea",
+ "lat":58.45509,
+ "lon":19.865258,
+ "detectDistance":100.0
+ },
+ 
+ {
+ "name":"Nome",
+ "lat":64.50111,
+ "lon":-165.406389,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Lake Superior",
+ "lat":47.67826,
+ "lon":-87.625965,
+ "detectDistance":200.0
+ },
+ 
+ {
+ "name":"Lake Michigan",
+ "lat":43.814395,
+ "lon":-87.111585,
+ "detectDistance":150.0
+ },
+ 
+ {
+ "name":"Niagara Falls",
+ "lat":43.08,
+ "lon":-79.071111,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"Toronto",
+ "lat":43.653226,
+ "lon":-79.383184,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Montreal",
+ "lat":45.501689,
+ "lon":-73.567256,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Seattle",
+ "lat":47.60621,
+ "lon":-122.332071,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Golden Gate Bridge",
+ "lat":37.817915,
+ "lon":-122.478224,
+ "detectDistance":100.0
+ },
+ 
+ {
+ "name":"Denver",
+ "lat":39.739236,
+ "lon":-104.990251,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Grand Canyon",
+ "lat":36.1,
+ "lon":-112.1,
+ "detectDistance":100.0
+ }
+ 
+ 
+ 
+ 
+ 
+]

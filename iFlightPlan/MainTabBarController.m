@@ -12,10 +12,10 @@ typedef enum tabList : NSInteger {
     NAVLOG,
     ALTN_NAVLOG,
     Sun_Moon,
-    SaveLoad,
     ATC_Plan,
-    Preflight
-    //Summery
+    Preflight,
+    Progress,
+    SaveLoad
 } tabList;
 
 @interface MainTabBarController ()
@@ -33,10 +33,10 @@ typedef enum tabList : NSInteger {
     self.tabBar.items[NAVLOG].title = @"NAVLOG";
     self.tabBar.items[ALTN_NAVLOG].title = @"ALTN-NAVLOG";
     self.tabBar.items[Sun_Moon].title = @"Sun-Moon";
-//    self.tabBar.items[Summery].title = @"Summery";
     self.tabBar.items[SaveLoad].title = @"Save&Load";
     self.tabBar.items[ATC_Plan].title = @"ATC-Plan";
     self.tabBar.items[Preflight].title = @"Preflight";
+    self.tabBar.items[Progress].title = @"Progress";
     
 
     
@@ -57,13 +57,16 @@ typedef enum tabList : NSInteger {
 
 -(void)loadPlan {
     
-    PlanViewController *planVC = self.viewControllers[0];
-    PlanViewController *divertPlanVC = self.viewControllers[1];
-    SunMoonViewController *sunMoonPlanVC = (SunMoonViewController *)(self.viewControllers[2]);
+    PlanViewController *planVC = self.viewControllers[NAVLOG];
+    PlanViewController *divertPlanVC = self.viewControllers[ALTN_NAVLOG];
+    SunMoonViewController *sunMoonPlanVC = (SunMoonViewController *)(self.viewControllers[Sun_Moon]);
+    ProgressViewController *progressVC = self.viewControllers[Progress];
+    
     
     planVC.cellIdentifier = @"MainNAVLOG";
     divertPlanVC.cellIdentifier = @"DivertNAVLOG";
     sunMoonPlanVC.cellIdentifier = @"SunMoon";
+    progressVC.cellIdentifier = @"Progress";
     
     NSArray *columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.14},
                                  @{@"title":@"FL",@"widthPercent":@0.04},
@@ -98,6 +101,21 @@ typedef enum tabList : NSInteger {
                         @{@"title":@"MoonSTATUS",@"widthPercent":@0.08}];
     
     sunMoonPlanVC.columnListArray = columnListArray;
+    
+    columnListArray = @[@{@"title":@"W/T",@"widthPercent":@0.14},
+                        @{@"title":@"W/T+-",@"widthPercent":@0.06},
+                        @{@"title":@"FL",@"widthPercent":@0.04},
+                        @{@"title":@"Z/END",@"widthPercent":@0.08},
+                        @{@"title":@"ETO",@"widthPercent":@0.075},
+                        @{@"title":@"ETO2",@"widthPercent":@0.075},
+                        @{@"title":@"ETO3",@"widthPercent":@0.075},
+                        @{@"title":@"ATO",@"widthPercent":@0.075},
+                        @{@"title":@"ATO+-",@"widthPercent":@0.075},
+                        @{@"title":@"FRMNG",@"widthPercent":@0.07},
+                        @{@"title":@"FRMNG+-",@"widthPercent":@0.07},
+                        @{@"title":@"MEMO",@"widthPercent":@0.165}];
+    
+    progressVC.columnListArray = columnListArray;
 
 }
 

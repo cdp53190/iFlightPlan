@@ -18,6 +18,8 @@
         newInstance.CTM = _CTM;
         newInstance.lat = _lat;
         newInstance.lon = _lon;
+        newInstance.distance = _distance;
+        newInstance.course = _course;
         newInstance.FL = _FL;
         newInstance.WPT = _WPT;
         
@@ -35,6 +37,8 @@
     [coder encodeInt:_CTM forKey:@"CTM"];
     [coder encodeDouble:_lat forKey:@"lat"];
     [coder encodeDouble:_lon forKey:@"lon"];
+    [coder encodeDouble:_distance forKey:@"distance"];
+    [coder encodeDouble:_course forKey:@"course"];
     [coder encodeDouble:_FL forKey:@"FL"];
     [coder encodeObject:_WPT forKey:@"WPT"];
     
@@ -49,6 +53,8 @@
         _CTM = [coder decodeIntForKey:@"CTM"];
         _lat = [coder decodeDoubleForKey:@"lat"];
         _lon = [coder decodeDoubleForKey:@"lon"];
+        _distance = [coder decodeDoubleForKey:@"distance"];
+        _course = [coder decodeDoubleForKey:@"course"];
         _FL = [coder decodeDoubleForKey:@"FL"];
         _WPT = [coder decodeObjectForKey:@"WPT"];
         
@@ -65,6 +71,8 @@
         _CTM = -1;
         _lat = 9999;
         _lon = 9999;
+        _distance = 0;
+        _course = 0;
         _FL = 9999;
         _WPT = @"";
     }

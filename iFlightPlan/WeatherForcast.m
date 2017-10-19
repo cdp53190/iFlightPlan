@@ -56,6 +56,8 @@
         
     }
     
+    STADate = [NSDate dateWithTimeInterval:timeInterval sinceDate:STADate];
+    
     NSTimeZone *tz = [NSTimeZone defaultTimeZone];
     STADate = [NSDate dateWithTimeInterval:tz.secondsFromGMT sinceDate:STADate];
     
@@ -72,12 +74,14 @@
         
         if (error) {
             [self.delegate receiveWeatherForcastErrorWithData:data error:WeatherForcastErrorConnection response:response];
+            self.delegate = nil;
             return;
         }
         
         NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
         if (statusCode != 200 && statusCode != 304) {
             [self.delegate receiveWeatherForcastErrorWithData:data error:WeatherForcastErrorServer response:response];
+            self.delegate = nil;
             return;
         }
         
@@ -86,6 +90,7 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error2];
         if (error2) {
             [self.delegate receiveWeatherForcastErrorWithData:data error:WeatherForcastErrorJSON response:response];
+            self.delegate = nil;
             
         }else {
             
@@ -135,9 +140,11 @@
                 }
                 
                 [self.delegate receiveForcastWithForcastData:forcast];
+                self.delegate = nil;
 
             } else {
                 [self.delegate receiveWeatherForcastErrorWithData:data error:WeatherForcastErrorNoData response:response];
+                self.delegate = nil;
             }
             
         }

@@ -17,12 +17,19 @@
 #import "OtherData.h"
 #import "AlternateData.h"
 #import "TakeoffTimeData.h"
+#import "LandmarkPassData.h"
+#import "SaveLoadViewData.h"
+
+#import <objc/runtime.h>
+
+
 
 @interface SaveDataPackage : NSObject<NSCoding>
 
 @property NSArray<NAVLOGLegComponents *> *planArray, *divertPlanArray;
 @property NSArray<SunMoonPointComponents *> *sunMoonPlanArray;
 @property NSArray<CoursePointComponents *> *courseArray;
+@property NSArray<LandmarkPassData *> *landmarkPassArray;
 @property TakeoffTimeData *sunMoonTakeoffDate;
 @property double moonPhase;
 @property ATCData *atcData;
@@ -41,6 +48,7 @@
 +(void)savePresentDataWithDivertPlanArray:(NSArray<NAVLOGLegComponents *> *)divertPlanArray;
 +(void)savePresentDataWithSunMoonPlanArray:(NSArray<SunMoonPointComponents *> *)sunMoonPlanArray;
 +(void)savePresentDataWithCourseArray:(NSArray<CoursePointComponents *> *)courseArray;
++(void)savePresentDataWithLandmarkPassArray:(NSArray<LandmarkPassData *> *)landmarkPassArray;
 +(void)savePresentDataWithSunMoonTakeoffDate:(TakeoffTimeData *)sunMoonTakeoffDate;
 +(void)savePresentDataWithMoonPhase:(double)moonPhase;
 +(void)savePresentDataWithATCData:(ATCData *)atcData;
@@ -50,6 +58,11 @@
 +(void)savePresentDataWithAlternateData:(AlternateData *)alternateData;
 
 +(SaveDataPackage *)presentData;
-+(NSArray<SaveDataPackage *> *)savedPlanArray;
++(NSArray<NSString *> *)savedFileNameArray;
++(NSArray<SaveLoadViewData *> *)SLViewDataArray;
+
+//log用
++(void)allDataLogWithDataPackage:(SaveDataPackage *)dataPackage;
+
 
 @end

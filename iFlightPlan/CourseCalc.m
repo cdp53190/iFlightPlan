@@ -53,6 +53,8 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
             pointComps.lon = lon;
             pointComps.WPT = legComps.waypoint;
             pointComps.FL = 0.0;
+            pointComps.course = 0.0;
+            pointComps.distance = 0.0;
 
             pointNo++;
             [returnArray addObject:[pointComps copy]];
@@ -72,6 +74,14 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
             pointComps.lat = lat;
             pointComps.lon = lon;
             pointComps.WPT = legComps.waypoint;
+            pointComps.course = [CourseCalc calcCourseByDepLat:oldLat
+                                                        DepLon:oldLon
+                                                        ArrLat:lat
+                                                        ArrLon:lon];
+            pointComps.distance = [CourseCalc distanceByDepLat:oldLat
+                                                        DepLon:oldLon
+                                                        ArrLat:lat
+                                                        ArrLon:lon];
             
             if ([FLString isEqualToString:@"CL"]) {
                 pointComps.FL = oldFL;
@@ -79,8 +89,8 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
                 pointComps.FL = oldFL;
             } else {
                 
-                lastExactLevelPointNo = pointNo + 1;
-                levelChangeStartFL = FLString.doubleValue;
+                //lastExactLevelPointNo = pointNo + 1;
+                //levelChangeStartFL = FLString.doubleValue;
                 pointComps.FL = FLString.doubleValue;
             }
             
@@ -122,6 +132,8 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
                 pointComps.CTM = newCTM;
                 pointComps.lat = lat;
                 pointComps.lon = lon;
+                pointComps.course = course;
+                pointComps.distance = speed_NM;
                 
                 if (time == portionTime) {
                     pointComps.WPT = legComps.waypoint;

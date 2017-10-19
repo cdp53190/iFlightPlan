@@ -19,13 +19,15 @@
     // Override point for customization after application launch.
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    if(![ud objectForKey:@"savedPlanArray"]) {
-        [ud setObject:[NSData new] forKey:@"savedPlanArray"];
+    if (![ud objectForKey:@"savedFileNameArray"]) {
+        [ud setObject:@[] forKey:@"savedFileNameArray"];
         [ud synchronize];
     }
     
+    if (![ud objectForKey:@"SLViewDataArray"]) {
+        [ud setObject:[NSKeyedArchiver archivedDataWithRootObject:@[]] forKey:@"SLViewDataArray"];
+    }
 
-    
     return YES;
 }
 
@@ -52,8 +54,6 @@
 }
 
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-
-//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
     if( [[url pathExtension] isEqualToString:@"pdf"] ){
         

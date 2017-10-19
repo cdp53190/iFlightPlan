@@ -214,7 +214,7 @@
             continue;
         }
         
-        if ([category isEqualToString:@"route"]) {
+        if ([category isEqualToString:@"route"]||[category isEqualToString:@"SID"]||[category isEqualToString:@"STAR"]) {
 
             [routeNameArray addObject:value];
             continue;
@@ -310,8 +310,8 @@
         }
     }
     
-    if ([RouteCopy isDigit:[text substringWithRange:NSMakeRange(text.length - 1, 1)]]) {
-        if ([RouteCopy isCharacter:[text substringWithRange:NSMakeRange(0, text.length - 1)]]) {
+    if ([RouteCopy isDigit:[text substringWithRange:NSMakeRange(text.length - 2, 1)]]) {
+        if ([RouteCopy isCharacter:[text substringWithRange:NSMakeRange(0, text.length - 2)]]) {
             return YES;
         }
     }

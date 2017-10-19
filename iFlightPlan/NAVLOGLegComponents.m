@@ -34,7 +34,8 @@
         newInstance.CTM = _CTM;
         newInstance.Efuel = _Efuel;
         newInstance.Afuel = _Afuel;
-
+        newInstance.memo1 = _memo1;
+        newInstance.memo2 = _memo2;
 
     }
     return newInstance;
@@ -66,6 +67,8 @@
     [coder encodeObject:_CTM forKey:@"CTM"];
     [coder encodeObject:_Efuel forKey:@"Efuel"];
     [coder encodeObject:_Afuel forKey:@"Afuel"];
+    [coder encodeObject:_memo1 forKey:@"memo1"];
+    [coder encodeObject:_memo2 forKey:@"memo2"];
 
 }
 
@@ -94,7 +97,9 @@
         _CTM = [coder decodeObjectForKey:@"CTM"];
         _Efuel = [coder decodeObjectForKey:@"Efuel"];
         _Afuel = [coder decodeObjectForKey:@"Afuel"];
-        
+        _memo1 = [coder decodeObjectForKey:@"memo1"];
+        _memo2 = [coder decodeObjectForKey:@"memo2"];
+
     }
     return self;
 }
@@ -123,7 +128,8 @@
         _CTM = @"";
         _Efuel = @"";
         _Afuel = @"";
-        
+        _memo1 = @"";
+        _memo2 = @"";
     }
     
     return self;

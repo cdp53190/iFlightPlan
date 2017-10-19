@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PlanViewController.h"
 #import "SunMoonViewController.h"
+#import "ProgressViewController.h"
 
 @interface MainTabBarController : UITabBarController
 

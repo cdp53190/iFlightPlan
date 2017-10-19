@@ -15,19 +15,19 @@
 @implementation SaveLoadViewController
 {
     NSUserDefaults *ud;
-    NSMutableArray<SaveDataPackage *> *savedPlanArray;
+    NSMutableArray<SaveLoadViewData *> *SLViewDataArray;
+    NSMutableArray<NSString *> *fileNameArray;
     NSInteger planNumber;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    _navigationItem.rightBarButtonItem = [self editButtonItem];
+    _navigationItem.title = @"Save & Load";
+    
     ud = [NSUserDefaults standardUserDefaults];
 
-    if(![ud objectForKey:@"savedPlanArray"]) {
-        [ud setObject:[NSData new] forKey:@"savedPlanArray"];
-        [ud synchronize];
-    }
     
     UINib *nib = [UINib nibWithNibName:@"SaveLoadTableViewCell" bundle:nil];
     [_tableView registerNib:nib forCellReuseIdentifier:@"cell"];
@@ -44,7 +44,8 @@
 
 -(void)planReload{
     
-    savedPlanArray = [NSMutableArray arrayWithArray:[SaveDataPackage savedPlanArray]];
+    SLViewDataArray = [NSMutableArray arrayWithArray:[SaveDataPackage SLViewDataArray]];
+    fileNameArray = [NSMutableArray arrayWithArray:[SaveDataPackage savedFileNameArray]];
     
     planNumber = [[ud objectForKey:@"planNumber"] integerValue];
     
@@ -61,57 +62,19 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
         
-    return savedPlanArray.count;
+    return SLViewDataArray.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     SaveLoadTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     
-    SaveDataPackage *saveDataPkg = savedPlanArray[indexPath.row];
+    SaveLoadViewData *data = SLViewDataArray[indexPath.row];
     
-    NSMutableString *depTime = [NSMutableString stringWithString:@"STD:"];
-    
-    NSString *atcDOF = saveDataPkg.atcData.DOF;
-    
-    NSString *searchPattern = @"^([0-9][0-9])([0-9][0-9])([0-9][0-9])$";
-    NSError *matchError = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:searchPattern
-                                                                           options:NSRegularExpressionCaseInsensitive
-                                                                             error:&matchError];
-    
-    if (matchError != nil){
-        
-        [depTime appendString:@"00-00-00 "];
-        
-    } else {
-        
-        if (!atcDOF) {
-            [depTime appendString:@"00-00-00 "];
-        } else {
-            
-            NSArray *matches = [regex matchesInString:atcDOF options:0 range:NSMakeRange(0, atcDOF.length)];
-            
-            if (matches.count != 1) {
-                [depTime appendString:@"00-00-00 "];
-            } else {
-                [depTime appendFormat:@"%@-%@-%@ ",
-                 [atcDOF substringWithRange:[matches[0] rangeAtIndex:1]],
-                 [atcDOF substringWithRange:[matches[0] rangeAtIndex:2]],
-                 [atcDOF substringWithRange:[matches[0] rangeAtIndex:3]]];
-            }
-            
-        }
-        
-    }
-    
-    [depTime appendString:saveDataPkg.otherData.STD];
-    [depTime appendString:@"Z"];
-    
-    cell.dateLabel.text = (NSString *)depTime;
-    cell.flightLabel.text = saveDataPkg.otherData.flightNumber;
-    cell.depLabel.text = saveDataPkg.otherData.depAPO3;
-    cell.arrLabel.text = saveDataPkg.otherData.arrAPO3;
+    cell.dateLabel.text = [NSString stringWithFormat:@"STD:%@",data.depTime];
+    cell.flightLabel.text = data.flightNumber;
+    cell.depLabel.text = data.depAPO3;
+    cell.arrLabel.text = data.arrAPO3;
     
     if (indexPath.row == planNumber) {
         cell.backgroundColor = [UIColor greenColor];
@@ -132,6 +95,110 @@
 
     
 }
+
+
+-(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    
+    if (sourceIndexPath.row == destinationIndexPath.row) {
+        return;
+    }
+    
+    if (sourceIndexPath.row > destinationIndexPath.row) {
+        [fileNameArray insertObject:fileNameArray[sourceIndexPath.row] atIndex:destinationIndexPath.row];
+        [fileNameArray removeObjectAtIndex:sourceIndexPath.row + 1];
+        
+        [SLViewDataArray insertObject:SLViewDataArray[sourceIndexPath.row] atIndex:destinationIndexPath.row];
+        [SLViewDataArray removeObjectAtIndex:sourceIndexPath.row + 1];
+        
+        if (sourceIndexPath.row > planNumber && destinationIndexPath.row <= planNumber) {
+            planNumber++;
+        } else if (sourceIndexPath.row == planNumber) {
+            planNumber = destinationIndexPath.row;
+        }
+        
+    } else if (sourceIndexPath.row < destinationIndexPath.row){
+        
+        [fileNameArray insertObject:fileNameArray[sourceIndexPath.row] atIndex:destinationIndexPath.row + 1];
+        [fileNameArray removeObjectAtIndex:sourceIndexPath.row];
+        
+        [SLViewDataArray insertObject:SLViewDataArray[sourceIndexPath.row] atIndex:destinationIndexPath.row + 1];
+        [SLViewDataArray removeObjectAtIndex:sourceIndexPath.row];
+
+        if (sourceIndexPath.row < planNumber && destinationIndexPath.row >= planNumber) {
+            planNumber--;
+        } else if (sourceIndexPath.row == planNumber) {
+            planNumber = destinationIndexPath.row;
+        }
+        
+    }
+    
+    [ud setObject:fileNameArray.copy forKey:@"savedFileNameArray"];
+    [ud setObject:[NSKeyedArchiver archivedDataWithRootObject:SLViewDataArray.copy] forKey:@"SLViewDataArray"];
+    [ud setObject:[NSNumber numberWithInteger:planNumber] forKey:@"planNumber"];
+    [ud synchronize];
+    
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if (indexPath.row == planNumber) {
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"削除エラー"
+                                                                                     message:@"現在利用中のプランは削除できません"
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *action) {
+                                                                  
+                                                              }]];
+            
+            [self presentViewController:alertController
+                               animated:YES
+                             completion:^{}];
+
+        } else {
+            
+            NSString *fileName = [NSString stringWithFormat:@"%@.data", fileNameArray[indexPath.row]];
+            NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)[0];
+            NSString *filePath = [documentPath stringByAppendingPathComponent:fileName];
+
+            NSFileManager *fm = [NSFileManager defaultManager];
+            if (![fm fileExistsAtPath:filePath]) {
+                NSLog(@"no file");
+                return;//エラー処理未実装
+            }
+            
+            NSError *error=nil;
+            [fm removeItemAtPath:filePath error:&error];
+            if (error!=nil) {//failed
+                NSLog(@"failed to remove %@",[error localizedDescription]);//エラー処理未実装
+            }else{
+                NSLog(@"Successfully removed:%@",filePath);
+            }
+            
+            [fileNameArray removeObjectAtIndex:indexPath.row];
+            [SLViewDataArray removeObjectAtIndex:indexPath.row];
+            
+            [ud setObject:fileNameArray.copy forKey:@"savedFileNameArray"];
+            [ud setObject:[NSKeyedArchiver archivedDataWithRootObject:SLViewDataArray.copy] forKey:@"SLViewDataArray"];
+
+            if (indexPath.row < planNumber) {
+                planNumber--;
+                [ud setObject:[NSNumber numberWithInteger:planNumber] forKey:@"planNumber"];
+            }
+            
+            [ud synchronize];
+            [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+        }
+    }
+}
+
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -168,23 +235,14 @@
     
 }
 
-
-
--(IBAction)editBtn:(id)sender {
+-(void)setEditing:(BOOL)editing animated:(BOOL)animated {
     
-    if (_tableView.editing) {
-        _tableView.editing = NO;
-        _editBtn.style= UIBarButtonSystemItemEdit;
-        
-    } else {
-        _tableView.editing = YES;
-        _editBtn.style = UIBarButtonSystemItemDone;
-        
-    }
+    [super setEditing:editing animated:animated];
     
-    
-    
+    [_tableView setEditing:editing animated:animated];
 }
+
+
 
 /*
 #pragma mark - Navigation

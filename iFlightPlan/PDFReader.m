@@ -93,6 +93,7 @@ unichar unicharWithGlyph(
     
 }
 
+
 -(instancetype)init {
     if (self = [super init]) {
         
@@ -120,14 +121,11 @@ unichar unicharWithGlyph(
 -(void)readPDFWithPathString:(NSString *)path {
     
     //既存プランのセーブ
-    
-    
     if ([SaveDataPackage presentData] != nil) {
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         NSNumber *planNumber = [ud objectForKey:@"planNumber"];
         [SaveDataPackage savePresentPlanWithPlanNumber:planNumber.integerValue];
     }
-
     
     // PDFドキュメントを作成
     CGPDFDocumentRef    document;
@@ -168,15 +166,15 @@ unichar unicharWithGlyph(
         CGPDFScannerScan(scanner);
         
         // オブジェクトの解放
-        CGPDFScannerRelease(scanner), scanner = NULL;
+        CGPDFScannerRelease(scanner); scanner = NULL;
         
         _index++;
     }
 
     // オブジェクトの解放
-    CGPDFDocumentRelease(document), document = NULL;
-    CGPDFOperatorTableRelease(table), table = NULL;
-    CGPDFContentStreamRelease(_stream), _stream = NULL;
+    CGPDFDocumentRelease(document); document = NULL;
+    CGPDFOperatorTableRelease(table); table = NULL;
+    CGPDFContentStreamRelease(_stream); _stream = NULL;
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
@@ -203,6 +201,10 @@ unichar unicharWithGlyph(
     NSDate *STDDate;
     NSTimeInterval timeInterval = 0.0;
     NSString *STDString = dataPackage.otherData.STD;//0940
+    
+    //landmarkArray作り
+    LandmarkPass *landmarkPass = [[LandmarkPass alloc] init];
+    dataPackage.landmarkPassArray = [landmarkPass landmarkPassByCourseArray:dataPackage.courseArray];
     
     if (dataPackage.atcData.DOF) {
         
@@ -233,7 +235,8 @@ unichar unicharWithGlyph(
 
     }
     
-    NSDate *takeOffDate =  [NSDate dateWithTimeInterval:timeInterval + 60.0 * 20.0 sinceDate:STDDate];//STD+20分=T/O
+    NSDate *takeOffDate =  [NSDate dateWithTimeInterval:timeInterval + 60.0 *  dataPackage.fuelTimeData.taxiout.time.doubleValue
+                                              sinceDate:STDDate];//STD+TAXIOUT=T/O
 
     
     
@@ -242,24 +245,24 @@ unichar unicharWithGlyph(
                                                                            takeoffDate:takeOffDate];
     dataPackage.moonPhase = [SunMoon moonPhaseWithDate:takeOffDate];
     
+    
+ 
+    //log
+    //[SaveDataPackage allDataLogWithDataPackage:dataPackage];
+    
+    //oldPlan、presentDataに追加 planNumber保存
+    [SaveDataPackage saveNewPlanWithDataPackage:dataPackage];
+    [ud setObject:@false forKey:@"loadPlanFail"];
+    [ud synchronize];
+    
+    NSNotification *n = [NSNotification notificationWithName:@"planReload" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:n];
+    
     WeatherForcast *weatherForcast = [[WeatherForcast alloc] init];
     
     weatherForcast.delegate = self;
     
     [weatherForcast weatherForcastRequestWithDataPackage:dataPackage];
-    
-    //oldPlan、presentDataに追加
-    [SaveDataPackage saveNewPlanWithDataPackage:dataPackage];
-    
-    //planNumber保存
-    [ud setObject:@0 forKey:@"planNumber"];
-    
-    [ud setObject:@false forKey:@"loadPlanFail"];
-    
-    [ud synchronize];
-    
-    NSNotification *n = [NSNotification notificationWithName:@"planReload" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:n];
 
     
 }
@@ -2064,6 +2067,17 @@ unichar unicharWithGlyph(
             legComps.waypoint = bufferString;
             bufferString = [NSMutableString new];
             legComps.AWY = string;
+            
+            if (planArray.count == 0 && [section isEqualToString:@"NAVLOG"] && ![string isEqualToString:@"DCT"]) {
+                dataPackage.otherData.SID = string;
+            }
+            
+            if ([legComps.waypoint isEqualToString:dataPackage.atcData.arrAPO4] && [section isEqualToString:@"NAVLOG"] && ![string isEqualToString:@"DCT"]) {
+                
+                dataPackage.otherData.STAR = string;
+                
+            }
+
             stage = @"FIR";
         }
         
@@ -2081,6 +2095,17 @@ unichar unicharWithGlyph(
     
     if ([stage isEqualToString:@"AWY"]) {
         legComps.AWY = string;
+        
+        if (planArray.count == 0 && [section isEqualToString:@"NAVLOG"] && ![string isEqualToString:@"DCT"]) {
+            dataPackage.otherData.SID = string;
+        }
+        
+        if ([legComps.waypoint isEqualToString:dataPackage.atcData.arrAPO4] && [section isEqualToString:@"NAVLOG"] && ![string isEqualToString:@"DCT"]) {
+            
+            dataPackage.otherData.STAR = string;
+            
+        }
+        
         stage = @"FIR";
         return;
     }
@@ -2145,24 +2170,25 @@ unichar unicharWithGlyph(
 #pragma mark - WeatherForcastDelegate
 -(void)receiveForcastWithForcastData:(WeatherForcastData *)forcast {
     
-    dataPackage.otherData.forcast = forcast;
+    SaveDataPackage *dataPkg = [SaveDataPackage presentData];
+    dataPkg.otherData.forcast = forcast;
     
     //presentに追加
-    [SaveDataPackage savePresentDataWithOtherData:dataPackage.otherData];
-    
-    NSNotification *n = [NSNotification notificationWithName:@"forcastReceive" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:n];
-
+    [SaveDataPackage savePresentDataWithOtherData:dataPkg.otherData];
     
     
 }
 
 -(void)receiveWeatherForcastErrorWithData:(NSData *)data error:(WeatherForcastError)error response:(NSURLResponse *)response {
     
-    WeatherForcastData *forcast = [[WeatherForcastData alloc] init];
-    dataPackage.otherData.forcast = forcast;
     
-    [SaveDataPackage savePresentDataWithOtherData:dataPackage.otherData];
+    SaveDataPackage *dataPkg = [SaveDataPackage presentData];
+    dataPkg.otherData.forcast = [[WeatherForcastData alloc] init];
+    
+    //presentに追加
+    [SaveDataPackage savePresentDataWithOtherData:dataPkg.otherData];
+    
+    
     
 }
 
@@ -2211,5 +2237,6 @@ unichar unicharWithGlyph(
     [aScanner scanCharactersFromSet:digitCharSet intoString:NULL];
     return [aScanner isAtEnd];
 }
+
 
 @end

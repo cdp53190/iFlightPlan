@@ -15,4 +15,8 @@
 @property IBOutlet UITableView *tableView;
 @property IBOutlet UIBarButtonItem *editBtn;
 
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationItem;
+
+
 @end

@@ -46,6 +46,8 @@
     [coder encodeObject:_dispatcher forKey:@"dispatcher"];
     [coder encodeObject:_dispatchDate forKey:@"dispatchDate"];
     [coder encodeObject:_dispatchTime forKey:@"dispatchTime"];
+    [coder encodeObject:_SID forKey:@"SID"];
+    [coder encodeObject:_STAR forKey:@"STAR"];
     [coder encodeObject:_forcast forKey:@"forcast"];
 
     
@@ -90,6 +92,8 @@
         _dispatcher = [coder decodeObjectForKey:@"dispatcher"];
         _dispatchDate = [coder decodeObjectForKey:@"dispatchDate"];
         _dispatchTime = [coder decodeObjectForKey:@"dispatchTime"];
+        _SID = [coder decodeObjectForKey:@"SID"];
+        _STAR = [coder decodeObjectForKey:@"STAR"];
         _forcast = [coder decodeObjectForKey:@"forcast"];
         
     }
@@ -134,6 +138,8 @@
         _dispatcher = @"";
         _dispatchDate = @"";
         _dispatchTime = @"";
+        _SID = @"";
+        _STAR = @"";
         _forcast = [[WeatherForcastData alloc]init];
 
     }

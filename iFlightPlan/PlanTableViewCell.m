@@ -37,17 +37,17 @@
             
             UIView *columnView;
             
-            if ([reuseIdentifier hasSuffix:@"NAVLOG"]) {
+            if ([reuseIdentifier hasSuffix:@"NAVLOG"] || [reuseIdentifier isEqualToString:@"Progress"]) {
                 UINib *nib;
                 NSString *title = dic[@"title"];
-                if ([title hasPrefix:@"ETO"] || [title isEqualToString:@"ATO"]) {
+                if ([title hasPrefix:@"ETO"] || [title hasPrefix:@"ATO"]) {
                     nib = [UINib nibWithNibName:@"ETOATOColumnView" bundle:nil];
                     columnView = [nib instantiateWithOwner:self options:nil][0];
                     
                     ((DoubleLinePlanColumnView *)columnView).rowNo = rowNumber;
                     
                     ((DoubleLinePlanColumnView *)columnView).delegate = (PlanViewController *)viewController;
-                } else if ([title isEqualToString:@"FRMNG"]){
+                } else if ([title hasPrefix:@"FRMNG"]){
                     nib = [UINib nibWithNibName:@"DoubleLinePlanColumnView" bundle:nil];
                     columnView = [nib instantiateWithOwner:self options:nil][0];
                     

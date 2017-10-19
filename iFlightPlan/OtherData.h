@@ -17,6 +17,7 @@
 @property NSString *climbSpeed, *cruiseSpeed, *descendSpeed, *initialFL;
 @property NSString *takeoffRunway, *landingRunway, *fuelCorrectionFactor;
 @property NSString *issueTime, *MEL, *PIC, *dispatcher, *dispatchDate, *dispatchTime;
+@property NSString *SID,*STAR;
 @property WeatherForcastData *forcast;
 
 @end

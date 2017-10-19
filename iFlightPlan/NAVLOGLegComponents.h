@@ -12,5 +12,6 @@
 
 @property NSString *Ewindtemp, *Awindtemp, *PFL, *AFL, *TC, *MC, *waypoint, *AWY, *FIR;
 @property NSString *latString, *lonString, *DST,*ZTM, *ETO, *ETO2, *ATO, *CTM, *Efuel, *Afuel;
+@property NSString *memo1, *memo2;
 
 @end

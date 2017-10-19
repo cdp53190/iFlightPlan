@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF0B85891F744ED600F0D3BD /* LandmarkPointData.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B85881F744ED600F0D3BD /* LandmarkPointData.m */; };
+		EF0B858C1F7453CE00F0D3BD /* LandmarkPass.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B858B1F7453CD00F0D3BD /* LandmarkPass.m */; };
+		EF0B858F1F74F5A700F0D3BD /* LandmarkLineData.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B858E1F74F5A700F0D3BD /* LandmarkLineData.m */; };
 		EF0E0F5C1D8845B70085EB7F /* Memo in Resources */ = {isa = PBXBuildFile; fileRef = EF0E0F5B1D8845B70085EB7F /* Memo */; };
 		EF0E72FF1DA026E1000BC8F4 /* 297241.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF0E72F91DA026E1000BC8F4 /* 297241.pdf */; };
 		EF0E73001DA026E1000BC8F4 /* 297063.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EF0E72FA1DA026E1000BC8F4 /* 297063.pdf */; };
@@ -39,6 +42,7 @@
 		EF4EF8751CA34D9600FD897F /* iFlightPlanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8741CA34D9600FD897F /* iFlightPlanTests.m */; };
 		EF4EF8801CA34D9600FD897F /* iFlightPlanUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF87F1CA34D9600FD897F /* iFlightPlanUITests.m */; };
 		EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */ = {isa = PBXBuildFile; fileRef = EF4EF8901CA34E1F00FD897F /* SunMoonCalc.m */; };
+		EF5869361F9532C200845007 /* ProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5869351F9532C200845007 /* ProgressViewController.m */; };
 		EF5A05ED1F55005200F128C4 /* SaveLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5A05EC1F55005200F128C4 /* SaveLoadViewController.m */; };
 		EF5A05F11F5501C100F128C4 /* SaveLoadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5A05EF1F5501C100F128C4 /* SaveLoadTableViewCell.m */; };
 		EF5A05F21F5501C100F128C4 /* SaveLoadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF5A05F01F5501C100F128C4 /* SaveLoadTableViewCell.xib */; };
@@ -58,7 +62,11 @@
 		EF8066931DABB072008A4BCB /* TimeEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */; };
 		EF8066951DAFBF44008A4BCB /* FuelEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8066941DAFBF44008A4BCB /* FuelEntryViewController.xib */; };
 		EF8066981DAFBF69008A4BCB /* FuelEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8066971DAFBF69008A4BCB /* FuelEntryViewController.m */; };
+		EF8279DB1F79DAF500E0FB72 /* LandmarkPassData.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8279DA1F79DAF500E0FB72 /* LandmarkPassData.m */; };
+		EFA981921F7A5CCA00A41995 /* SaveLoadViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = EFA981911F7A5CCA00A41995 /* SaveLoadViewData.m */; };
 		EFB107C01DAA4A7F009AC5B2 /* SELCALPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */; };
+		EFBD054C1F84A55200734A8B /* LandmarkLine.json in Resources */ = {isa = PBXBuildFile; fileRef = EFBD054B1F84A55200734A8B /* LandmarkLine.json */; };
+		EFBD05501F84A56D00734A8B /* LandmarkPoint.json in Resources */ = {isa = PBXBuildFile; fileRef = EFBD054F1F84A56D00734A8B /* LandmarkPoint.json */; };
 		EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1461D92DDCA003A5903 /* TitleViewController.m */; };
 		EFE3F1561D934896003A5903 /* PDFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1551D934896003A5903 /* PDFReader.m */; };
 		EFE3F15B1D942D55003A5903 /* 292650.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EFE3F15A1D942D55003A5903 /* 292650.pdf */; };
@@ -116,6 +124,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EF0B85871F744ED600F0D3BD /* LandmarkPointData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandmarkPointData.h; sourceTree = "<group>"; };
+		EF0B85881F744ED600F0D3BD /* LandmarkPointData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandmarkPointData.m; sourceTree = "<group>"; };
+		EF0B858A1F7453CD00F0D3BD /* LandmarkPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandmarkPass.h; sourceTree = "<group>"; };
+		EF0B858B1F7453CD00F0D3BD /* LandmarkPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandmarkPass.m; sourceTree = "<group>"; };
+		EF0B858D1F74F5A700F0D3BD /* LandmarkLineData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandmarkLineData.h; sourceTree = "<group>"; };
+		EF0B858E1F74F5A700F0D3BD /* LandmarkLineData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandmarkLineData.m; sourceTree = "<group>"; };
 		EF0E0F5B1D8845B70085EB7F /* Memo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Memo; path = iFlightPlan/Memo; sourceTree = "<group>"; };
 		EF0E72F91DA026E1000BC8F4 /* 297241.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 297241.pdf; sourceTree = "<group>"; };
 		EF0E72FA1DA026E1000BC8F4 /* 297063.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 297063.pdf; sourceTree = "<group>"; };
@@ -169,6 +183,8 @@
 		EF4EF8811CA34D9600FD897F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF4EF88F1CA34E1F00FD897F /* SunMoonCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunMoonCalc.h; sourceTree = "<group>"; };
 		EF4EF8901CA34E1F00FD897F /* SunMoonCalc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunMoonCalc.m; sourceTree = "<group>"; };
+		EF5869341F9532C200845007 /* ProgressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgressViewController.h; sourceTree = "<group>"; };
+		EF5869351F9532C200845007 /* ProgressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressViewController.m; sourceTree = "<group>"; };
 		EF5A05EB1F55005200F128C4 /* SaveLoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveLoadViewController.h; sourceTree = "<group>"; };
 		EF5A05EC1F55005200F128C4 /* SaveLoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveLoadViewController.m; sourceTree = "<group>"; };
 		EF5A05EE1F5501C100F128C4 /* SaveLoadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveLoadTableViewCell.h; sourceTree = "<group>"; };
@@ -204,9 +220,15 @@
 		EF8066941DAFBF44008A4BCB /* FuelEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FuelEntryViewController.xib; sourceTree = "<group>"; };
 		EF8066961DAFBF69008A4BCB /* FuelEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuelEntryViewController.h; sourceTree = "<group>"; };
 		EF8066971DAFBF69008A4BCB /* FuelEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuelEntryViewController.m; sourceTree = "<group>"; };
+		EF8279D91F79DAF500E0FB72 /* LandmarkPassData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LandmarkPassData.h; sourceTree = "<group>"; };
+		EF8279DA1F79DAF500E0FB72 /* LandmarkPassData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LandmarkPassData.m; sourceTree = "<group>"; };
+		EFA981901F7A5CCA00A41995 /* SaveLoadViewData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaveLoadViewData.h; sourceTree = "<group>"; };
+		EFA981911F7A5CCA00A41995 /* SaveLoadViewData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveLoadViewData.m; sourceTree = "<group>"; };
 		EFB107BE1DAA4A7F009AC5B2 /* SELCALPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELCALPlayer.h; sourceTree = "<group>"; };
 		EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELCALPlayer.m; sourceTree = "<group>"; };
 		EFB107C11DAA5ADD009AC5B2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		EFBD054B1F84A55200734A8B /* LandmarkLine.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LandmarkLine.json; sourceTree = "<group>"; };
+		EFBD054F1F84A56D00734A8B /* LandmarkPoint.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LandmarkPoint.json; sourceTree = "<group>"; };
 		EFE3F1451D92DDCA003A5903 /* TitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleViewController.h; sourceTree = "<group>"; };
 		EFE3F1461D92DDCA003A5903 /* TitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleViewController.m; sourceTree = "<group>"; };
 		EFE3F1541D934896003A5903 /* PDFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFReader.h; sourceTree = "<group>"; };
@@ -324,6 +346,7 @@
 				EF4A031E1DB6BED700787698 /* ATC */,
 				EF31A0FC1D95922300F8048D /* Plan */,
 				EFE3F1511D934360003A5903 /* SunMoon */,
+				EF5869311F95329C00845007 /* Progress */,
 				EF4EF85D1CA34D9500FD897F /* AppDelegate.h */,
 				EF4EF85E1CA34D9500FD897F /* AppDelegate.m */,
 				EF4EF8631CA34D9500FD897F /* Main.storyboard */,
@@ -378,6 +401,15 @@
 			path = iFlightPlanUITests;
 			sourceTree = "<group>";
 		};
+		EF5869311F95329C00845007 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				EF5869341F9532C200845007 /* ProgressViewController.h */,
+				EF5869351F9532C200845007 /* ProgressViewController.m */,
+			);
+			name = Progress;
+			sourceTree = "<group>";
+		};
 		EF5A05E81F55003200F128C4 /* SaveLoad */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,6 +449,14 @@
 				EF69FB301F6486CA00025D31 /* AlternateData.m */,
 				EF45B4B51F6EA4D000ED06C1 /* WeatherForcastData.h */,
 				EF45B4B61F6EA4D000ED06C1 /* WeatherForcastData.m */,
+				EF0B85871F744ED600F0D3BD /* LandmarkPointData.h */,
+				EF0B85881F744ED600F0D3BD /* LandmarkPointData.m */,
+				EF0B858D1F74F5A700F0D3BD /* LandmarkLineData.h */,
+				EF0B858E1F74F5A700F0D3BD /* LandmarkLineData.m */,
+				EF8279D91F79DAF500E0FB72 /* LandmarkPassData.h */,
+				EF8279DA1F79DAF500E0FB72 /* LandmarkPassData.m */,
+				EFA981901F7A5CCA00A41995 /* SaveLoadViewData.h */,
+				EFA981911F7A5CCA00A41995 /* SaveLoadViewData.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -469,6 +509,10 @@
 			children = (
 				EFE992501F21AC0B00998991 /* PreFlightViewController.h */,
 				EFE992511F21AC0B00998991 /* PreFlightViewController.m */,
+				EF0B858A1F7453CD00F0D3BD /* LandmarkPass.h */,
+				EF0B858B1F7453CD00F0D3BD /* LandmarkPass.m */,
+				EFBD054B1F84A55200734A8B /* LandmarkLine.json */,
+				EFBD054F1F84A56D00734A8B /* LandmarkPoint.json */,
 			);
 			name = PreFlight;
 			sourceTree = "<group>";
@@ -546,7 +590,7 @@
 		EF4EF84F1CA34D9500FD897F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Another Sky";
 				TargetAttributes = {
 					EF4EF8561CA34D9500FD897F = {
@@ -632,10 +676,12 @@
 				EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */,
 				EF8066931DABB072008A4BCB /* TimeEntryViewController.xib in Resources */,
 				EF8066951DAFBF44008A4BCB /* FuelEntryViewController.xib in Resources */,
+				EFBD05501F84A56D00734A8B /* LandmarkPoint.json in Resources */,
 				EF5A05F21F5501C100F128C4 /* SaveLoadTableViewCell.xib in Resources */,
 				EF226E8B1DA51E750068C4AF /* SingleLinePlanColumnView.xib in Resources */,
 				EF0E73011DA026E1000BC8F4 /* 274630.pdf in Resources */,
 				EF226E821DA363760068C4AF /* 314662.pdf in Resources */,
+				EFBD054C1F84A55200734A8B /* LandmarkLine.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,10 +707,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFF6EC541E86F6D800B66A4A /* SunMoonViewController.m in Sources */,
+				EF0B858F1F74F5A700F0D3BD /* LandmarkLineData.m in Sources */,
+				EF5869361F9532C200845007 /* ProgressViewController.m in Sources */,
 				EF48F8C61CD55A7B004DC03A /* PlanTableViewCell.m in Sources */,
 				EF69FB221F606F0700025D31 /* OtherData.m in Sources */,
 				EF5A05F11F5501C100F128C4 /* SaveLoadTableViewCell.m in Sources */,
 				EF69FB311F6486CA00025D31 /* AlternateData.m in Sources */,
+				EF0B858C1F7453CE00F0D3BD /* LandmarkPass.m in Sources */,
 				EF0E73081DA2790A000BC8F4 /* MainTabBarController.m in Sources */,
 				EF69FB151F5C292800025D31 /* SunMoonPointComponents.m in Sources */,
 				EFB107C01DAA4A7F009AC5B2 /* SELCALPlayer.m in Sources */,
@@ -677,6 +726,7 @@
 				EF69FB1B1F5DC1A900025D31 /* SaveDataPackage.m in Sources */,
 				EF4EF8621CA34D9500FD897F /* PlanViewController.m in Sources */,
 				EF5A05ED1F55005200F128C4 /* SaveLoadViewController.m in Sources */,
+				EF0B85891F744ED600F0D3BD /* LandmarkPointData.m in Sources */,
 				EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */,
 				EF69FB341F69F42A00025D31 /* TakeoffTimeData.m in Sources */,
 				EF226E991DA80F430068C4AF /* TakeoffTimePickerViewController.m in Sources */,
@@ -688,9 +738,11 @@
 				EF8066981DAFBF69008A4BCB /* FuelEntryViewController.m in Sources */,
 				EF69FB181F5C2B1D00025D31 /* CoursePointComponents.m in Sources */,
 				EF226E891DA51E130068C4AF /* SingleLinePlanColumnView.m in Sources */,
+				EFA981921F7A5CCA00A41995 /* SaveLoadViewData.m in Sources */,
 				EF4EF8911CA34E1F00FD897F /* SunMoonCalc.m in Sources */,
 				EF45B4B41F6E9F6900ED06C1 /* WeatherForcast.m in Sources */,
 				EF4EF85C1CA34D9500FD897F /* main.m in Sources */,
+				EF8279DB1F79DAF500E0FB72 /* LandmarkPassData.m in Sources */,
 				EF69FB1E1F60236400025D31 /* ATCData.m in Sources */,
 				EFE992521F21AC0B00998991 /* PreFlightViewController.m in Sources */,
 				EF2116C11CB2B34C004F9F9A /* SunMoonCalc2Data.m in Sources */,
@@ -764,14 +816,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -811,14 +869,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

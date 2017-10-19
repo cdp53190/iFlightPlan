@@ -465,6 +465,9 @@
     } else if([_cellIdentifier isEqualToString:@"DivertNAVLOG"]) {
         planArrayName = @"divertPlanArray";
         newArray = [NSMutableArray arrayWithArray:dataPackage.divertPlanArray];
+    } else if([_cellIdentifier isEqualToString:@"Progress"]) {
+        planArrayName = @"planArray";
+        newArray = [NSMutableArray arrayWithArray:dataPackage.planArray];
     }
     
     
@@ -508,6 +511,9 @@
     } else if([_cellIdentifier isEqualToString:@"DivertNAVLOG"]) {
         planArrayName = @"divertPlanArray";
         newArray = [NSMutableArray arrayWithArray:dataPackage.divertPlanArray];
+    } else if([_cellIdentifier isEqualToString:@"Progress"]) {
+        planArrayName = @"planArray";
+        newArray = [NSMutableArray arrayWithArray:dataPackage.planArray];
     }
 
     NAVLOGLegComponents *legComps = newArray[rowNo];

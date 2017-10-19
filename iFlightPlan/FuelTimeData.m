@@ -100,30 +100,21 @@
         _totalReserve = @"";
         _minReserve = @"";
         
-        for (int i = 0; i <= 1; i++) {
-            NSString *string;
-            if (i == 0) {
-                string = @"fuel";
-            } else {
-                string = @"time";
-            }
-            
-            [_dest setValue:@"" forKey:string];
-            [_firstAlternate setValue:@"" forKey:string];
-            [_contingency setValue:@"" forKey:string];
-            [_hold setValue:@"" forKey:string];
-            [_extra setValue:@"" forKey:string];
-            [_extra_s setValue:@"" forKey:string];
-            [_extra_e setValue:@"" forKey:string];
-            [_unusable setValue:@"" forKey:string];
-            [_takeoff setValue:@"" forKey:string];
-            [_taxiout setValue:@"" forKey:string];
-            [_ramp setValue:@"" forKey:string];
-            [_taxiin setValue:@"" forKey:string];
-            [_secondAlternate setValue:@"" forKey:string];
-            
-        }
         
+        _dest = [[FuelTimeComponents alloc] init];
+        _firstAlternate = [[FuelTimeComponents alloc] init];
+        _contingency = [[FuelTimeComponents alloc] init];
+        _hold = [[FuelTimeComponents alloc] init];
+        _extra = [[FuelTimeComponents alloc] init];
+        _extra_s = [[FuelTimeComponents alloc] init];
+        _extra_e = [[FuelTimeComponents alloc] init];
+        _unusable = [[FuelTimeComponents alloc] init];
+        _takeoff = [[FuelTimeComponents alloc] init];
+        _taxiout = [[FuelTimeComponents alloc] init];
+        _ramp = [[FuelTimeComponents alloc] init];
+        _taxiin = [[FuelTimeComponents alloc] init];
+        _secondAlternate = [[FuelTimeComponents alloc] init];
+
 
     }
     

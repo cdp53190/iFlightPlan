@@ -11,7 +11,7 @@
 @interface CoursePointComponents : NSObject<NSCoding, NSCopying>
 
 @property int CTM;
-@property double lat, lon, FL;
+@property double lat, lon, FL, distance, course;
 @property NSString *WPT;
 
 

@@ -13,6 +13,8 @@
 #import "SunMoon.h"
 #import "SaveDataPackage.h"
 #import "WeatherForcast.h"
+#import "LandmarkPass.h"
+
 
 
 @interface PDFReader : NSObject<WeatherForcastDelegate>
@@ -23,6 +25,9 @@
 // オペレータコールバック
 - (void)operatorTextScanned:(CGPDFScannerRef)scanner;
 - (void)operatorFontScanned:(CGPDFScannerRef)scanner;
+
+
+
 
 @end
 

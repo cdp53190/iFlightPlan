@@ -18,12 +18,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(planReload) name:@"planReload" object:nil];
 
     
     self.headerHeightConstraint.constant = 50;
     
     //ヘッダ描画
     [self makeHeaderView];
+    
+    [self planReload];
     
 }
 
@@ -32,13 +36,9 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [self planReload];
-}
 
-
--(void)planReload {
-
+-(void)planReload{
+    
     SaveDataPackage *dataPackage = [SaveDataPackage presentData];
     
     self.navigationItem.title = dataPackage.otherData.flightNumber;

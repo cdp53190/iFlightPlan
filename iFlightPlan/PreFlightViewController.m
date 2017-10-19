@@ -18,6 +18,8 @@
     SELCALPlayer *selcalPlayer;
     RouteCopy *routeCopy;
     NSArray *legsArray;
+    NSArray<LandmarkPassData *> *landmarkArray;
+    SaveDataPackage *presentData;
     
 }
 - (void)viewDidLoad {
@@ -27,19 +29,73 @@
     selcalPlayer = [[SELCALPlayer alloc] init];
     
     [self planReload];
+    
+    [self.view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[UIView class]]) {
+            obj.layer.borderColor = [UIColor blackColor].CGColor;
+            obj.layer.borderWidth = .5;
+        }
+    }];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(planReload) name:@"planReload" object:nil];
-    [nc addObserver:self selector:@selector(setWeatherForcast) name:@"forcastReceive" object:nil];
 
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    
+    [super viewWillAppear:animated];
+    
+    presentData = [SaveDataPackage presentData];
+    
+    [self setSunRiseSunSet];
+    [self setMoonRiseSetPhase];
+    [self setWeatherForcast];
+    
+    
     
 }
 
 -(void)planReload{
     
+    presentData = [SaveDataPackage presentData];
+
     routeCopy = [[RouteCopy alloc] init];
     legsArray = [routeCopy arrayOfFMCLegs];
+    landmarkArray = presentData.landmarkPassArray;
+
+    
+    
+    _navigationItem.title = presentData.otherData.flightNumber;
+    
     [_legsTableView reloadData];
+    [_landmarkTableView reloadData];
+    
+    _regNoLabel.text = presentData.otherData.aircraftNumber;
+    _blockTimeLabel.text = presentData.otherData.blockTime;
+    _flightTimeLabel.text = [NSString stringWithFormat:@"%@+%@(%@)",
+                             [presentData.fuelTimeData.dest.time substringToIndex:2],
+                             [presentData.fuelTimeData.dest.time substringFromIndex:2],
+                             presentData.otherData.timeMargin];
+    _depRWYLabel.text = presentData.otherData.takeoffRunway;
+    if (presentData.otherData.SID && ![presentData.otherData.SID isEqualToString:@""]) {
+        _SIDLabel.text = presentData.otherData.SID;
+    } else {
+        _SIDLabel.text = @"N/A";
+    }
+    
+    NSString *type = presentData.otherData.aircraftType;
+    double reserveFuel = presentData.fuelTimeData.firstAlternate.fuel.doubleValue;
+    
+    if ([type isEqualToString:@"788"] || [type isEqualToString:@"789"]) {
+        reserveFuel += 8.0;
+        _STDReserveLabel.text = [NSString stringWithFormat:@"%.01f",reserveFuel];
+    } else {
+        _STDReserveLabel.text = @"N/A";
+    }
+    
+    _initialAltLabel.text = presentData.otherData.initialFL;
     [self setSunRiseSunSet];
     [self setMoonRiseSetPhase];
     [self setAPOTime];
@@ -77,9 +133,7 @@
                                                           
                                                           [selcalPlayer stopSound];
                                                           
-                                                          SaveDataPackage *dataPackage = [SaveDataPackage presentData];
-                                                          
-                                                          [selcalPlayer playWithSELCALString:dataPackage.otherData.SELCAL];
+                                                          [selcalPlayer playWithSELCALString:presentData.otherData.SELCAL];
                                                   
                                                       
                                                       }]];
@@ -120,7 +174,7 @@
 
 - (IBAction)pushWeatherForcast:(id)sender {
     
-    WeatherForcastData *forcast = [SaveDataPackage presentData].otherData.forcast;
+    WeatherForcastData *forcast = presentData.otherData.forcast;
     
     if ([forcast.posteriorWeatherForcastSummery isEqualToString:@""]) {
         WeatherForcast *wf = [[WeatherForcast alloc] init];
@@ -128,7 +182,7 @@
         wf.delegate = self;
         
         
-        [wf weatherForcastRequestWithDataPackage:[SaveDataPackage presentData]];
+        [wf weatherForcastRequestWithDataPackage:presentData];
 
     } else {
         
@@ -140,35 +194,70 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return legsArray.count;
+    
+    if (tableView == _legsTableView) {
+        return legsArray.count;
+    } else if (tableView == _landmarkTableView) {
+        return landmarkArray.count;
+    }
+    return 0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    
-    
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1
-                                     reuseIdentifier:@"cell"];
-        
-    }
+    if (tableView == _legsTableView) {
 
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"legsCell"];
+        
+        
+        
+        if (!cell) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1
+                                         reuseIdentifier:@"legsCell"];
+            
+        }
+        
+        
+        cell.textLabel.text = legsArray[indexPath.row][@"route"];
+        cell.detailTextLabel.text = legsArray[indexPath.row][@"WPT"];
+        
+        cell.detailTextLabel.textColor = [UIColor blackColor];
+        
+        return cell;
+    } else if (tableView == _landmarkTableView) {
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"landmarkCell"];
+
+        if (!cell) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1
+                                         reuseIdentifier:@"landmarkCell"];
+            
+        }
+
+        LandmarkPassData *landmarkPassData = landmarkArray[indexPath.row];
+        
+        NSString *mainText = [NSString stringWithFormat:@"%@(%@)", landmarkPassData.name, [PreFlightViewController convertTimeToString:landmarkPassData.CTM]];
+        cell.textLabel.text = mainText.copy;
+        
+        NSMutableString *detailText = [NSMutableString new];
     
-    cell.textLabel.text = legsArray[indexPath.row][@"route"];
-    cell.detailTextLabel.text = legsArray[indexPath.row][@"WPT"];
+        if (![landmarkPassData.direction isEqualToString:@""]) {
+            [detailText appendFormat:@"%@-%dNM", landmarkPassData.direction, (int)landmarkPassData.distance];
+        }
+                
+        cell.detailTextLabel.text = detailText;
+        
+        cell.detailTextLabel.textColor = [UIColor blackColor];
+
+        return cell;
+    }
     
-    cell.detailTextLabel.textColor = [UIColor blackColor];
-    
-    return cell;
-    
+    return nil;
 }
 
 -(void)setSunRiseSunSet{
     NSMutableString *returnString = [NSMutableString new];
     
-    NSArray<SunMoonPointComponents *> *sunMoonArray = [SaveDataPackage presentData].sunMoonPlanArray;
+    NSArray<SunMoonPointComponents *> *sunMoonArray = presentData.sunMoonPlanArray;
     
     NSString *lastSunStatus = sunMoonArray[0].SunSTATUS;
     for (SunMoonPointComponents *sunMoonComps in sunMoonArray) {
@@ -211,7 +300,7 @@
 {
     NSMutableString *returnString = [NSMutableString new];
     
-    NSArray<SunMoonPointComponents *> *sunMoonArray = [SaveDataPackage presentData].sunMoonPlanArray;
+    NSArray<SunMoonPointComponents *> *sunMoonArray = presentData.sunMoonPlanArray;
     
     NSString *lastMoonStatus = sunMoonArray[0].MoonSTATUS;
     
@@ -246,8 +335,7 @@
         }
     }
     
-    [returnString appendFormat:@"(Moon Phase:%.01fday(s))",
-     [SaveDataPackage presentData].moonPhase];
+    [returnString appendFormat:@"(Moon Phase:%.01fday(s))", presentData.moonPhase];
     
     _moonRiseSetPhaseLabel.text = returnString;
                                                         
@@ -256,7 +344,6 @@
 
 
 -(void)setWeatherForcast{
-    SaveDataPackage *presentData = [SaveDataPackage presentData];
     
     if([presentData.otherData.forcast.previousWeatherForcastSummery isEqualToString:@""] ||
        presentData.otherData.forcast.previousWeatherForcastSummery == nil) {
@@ -354,33 +441,29 @@
 
 -(void)setAPOTime {
     
-    SaveDataPackage *dataPackage = [SaveDataPackage presentData];
-    
     _depAPOLabel.text = [NSString stringWithFormat:@"%@/%@",
-                         dataPackage.atcData.depAPO4, dataPackage.otherData.depAPO3];
+                         presentData.atcData.depAPO4, presentData.otherData.depAPO3];
     _arrAPOLabel.text = [NSString stringWithFormat:@"%@/%@",
-                         dataPackage.atcData.arrAPO4, dataPackage.otherData.arrAPO3];
+                         presentData.atcData.arrAPO4, presentData.otherData.arrAPO3];
     
-    _depTimeLabel.text = dataPackage.otherData.STD;
-    _arrTimeLabel.text = dataPackage.otherData.STA;
+    _depTimeLabel.text = presentData.otherData.STD;
+    _arrTimeLabel.text = presentData.otherData.STA;
     
 }
 
 -(void)setFMCCourse {
     
-    _FMCCourseLabel.text = [SaveDataPackage presentData].otherData.FMCCourse;
+    _FMCCourseLabel.text = presentData.otherData.FMCCourse;
     
 }
 
 
 -(void)receiveForcastWithForcastData:(WeatherForcastData *)forcast {
     
-    OtherData *otherData = [SaveDataPackage presentData].otherData;
+    presentData.otherData.forcast = forcast;
     
-    otherData.forcast = forcast;
-    
-    [SaveDataPackage savePresentDataWithOtherData:otherData];
-    
+    [SaveDataPackage savePresentDataWithOtherData:presentData.otherData];
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setWeatherForcast];
     });
@@ -413,6 +496,25 @@
                      completion:^{}];
 
 
+}
+
++(NSString *)convertTimeToString:(int)time{
+    
+    int hour = time / 60;
+    int minute = time - (hour * 60);
+    
+    return [NSString stringWithFormat:@"%02d+%02d",hour,minute];
+    
+}
+
++(int)convertStringToTime:(NSString *)string{
+    
+    int returnInt = 0;
+    
+    returnInt += [string substringToIndex:2].intValue * 60;
+    returnInt += [string substringFromIndex:2].intValue;
+    
+    return returnInt;
 }
 
 /*
