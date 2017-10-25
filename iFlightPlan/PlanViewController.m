@@ -82,6 +82,12 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self planReload];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -598,9 +604,6 @@
     return [NSString stringWithFormat:@"%02d%02d",hour,minute];
     
 }
-
-
-
 
 
 

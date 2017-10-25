@@ -67,6 +67,8 @@
 		EFB107C01DAA4A7F009AC5B2 /* SELCALPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB107BF1DAA4A7F009AC5B2 /* SELCALPlayer.m */; };
 		EFBD054C1F84A55200734A8B /* LandmarkLine.json in Resources */ = {isa = PBXBuildFile; fileRef = EFBD054B1F84A55200734A8B /* LandmarkLine.json */; };
 		EFBD05501F84A56D00734A8B /* LandmarkPoint.json in Resources */ = {isa = PBXBuildFile; fileRef = EFBD054F1F84A56D00734A8B /* LandmarkPoint.json */; };
+		EFDBF1811F9DDEA400820E0D /* WindEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDBF17F1F9DDEA400820E0D /* WindEntryViewController.m */; };
+		EFDBF1821F9DDEA400820E0D /* WindEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFDBF1801F9DDEA400820E0D /* WindEntryViewController.xib */; };
 		EFE3F1471D92DDCA003A5903 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1461D92DDCA003A5903 /* TitleViewController.m */; };
 		EFE3F1561D934896003A5903 /* PDFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F1551D934896003A5903 /* PDFReader.m */; };
 		EFE3F15B1D942D55003A5903 /* 292650.pdf in Resources */ = {isa = PBXBuildFile; fileRef = EFE3F15A1D942D55003A5903 /* 292650.pdf */; };
@@ -229,6 +231,9 @@
 		EFB107C11DAA5ADD009AC5B2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		EFBD054B1F84A55200734A8B /* LandmarkLine.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LandmarkLine.json; sourceTree = "<group>"; };
 		EFBD054F1F84A56D00734A8B /* LandmarkPoint.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LandmarkPoint.json; sourceTree = "<group>"; };
+		EFDBF17E1F9DDEA400820E0D /* WindEntryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindEntryViewController.h; sourceTree = "<group>"; };
+		EFDBF17F1F9DDEA400820E0D /* WindEntryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindEntryViewController.m; sourceTree = "<group>"; };
+		EFDBF1801F9DDEA400820E0D /* WindEntryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WindEntryViewController.xib; sourceTree = "<group>"; };
 		EFE3F1451D92DDCA003A5903 /* TitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleViewController.h; sourceTree = "<group>"; };
 		EFE3F1461D92DDCA003A5903 /* TitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleViewController.m; sourceTree = "<group>"; };
 		EFE3F1541D934896003A5903 /* PDFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFReader.h; sourceTree = "<group>"; };
@@ -472,6 +477,9 @@
 				EF80668F1DABB072008A4BCB /* TimeEntryViewController.h */,
 				EF8066901DABB072008A4BCB /* TimeEntryViewController.m */,
 				EF8066911DABB072008A4BCB /* TimeEntryViewController.xib */,
+				EFDBF17E1F9DDEA400820E0D /* WindEntryViewController.h */,
+				EFDBF17F1F9DDEA400820E0D /* WindEntryViewController.m */,
+				EFDBF1801F9DDEA400820E0D /* WindEntryViewController.xib */,
 			);
 			name = EntryControllers;
 			sourceTree = "<group>";
@@ -676,6 +684,7 @@
 				EF4EF8651CA34D9500FD897F /* Main.storyboard in Resources */,
 				EF8066931DABB072008A4BCB /* TimeEntryViewController.xib in Resources */,
 				EF8066951DAFBF44008A4BCB /* FuelEntryViewController.xib in Resources */,
+				EFDBF1821F9DDEA400820E0D /* WindEntryViewController.xib in Resources */,
 				EFBD05501F84A56D00734A8B /* LandmarkPoint.json in Resources */,
 				EF5A05F21F5501C100F128C4 /* SaveLoadTableViewCell.xib in Resources */,
 				EF226E8B1DA51E750068C4AF /* SingleLinePlanColumnView.xib in Resources */,
@@ -729,6 +738,7 @@
 				EF0B85891F744ED600F0D3BD /* LandmarkPointData.m in Sources */,
 				EF4EF85F1CA34D9500FD897F /* AppDelegate.m in Sources */,
 				EF69FB341F69F42A00025D31 /* TakeoffTimeData.m in Sources */,
+				EFDBF1811F9DDEA400820E0D /* WindEntryViewController.m in Sources */,
 				EF226E991DA80F430068C4AF /* TakeoffTimePickerViewController.m in Sources */,
 				EF2116BE1CB1247A004F9F9A /* SunMoonCalc2.m in Sources */,
 				EF69FB121F5C28B700025D31 /* NAVLOGLegComponents.m in Sources */,

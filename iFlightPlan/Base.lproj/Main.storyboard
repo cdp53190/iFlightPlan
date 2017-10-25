@@ -527,29 +527,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dq3-zO-NZ5" userLabel="cabinMemoView">
                                 <rect key="frame" x="0.0" y="447" width="768" height="528"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cabin Briefing Memo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9AL-01-tt1">
-                                        <rect key="frame" x="280" y="21" width="209" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cabin Briefing Memo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9AL-01-tt1">
+                                        <rect key="frame" x="296.5" y="21" width="176.5" height="21"/>
                                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qqL-x7-oyu">
-                                        <rect key="frame" x="8" y="348" width="752" height="172"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qqL-x7-oyu">
+                                        <rect key="frame" x="8" y="196" width="752" height="324"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="dataSource" destination="KxT-2a-zu6" id="ma2-h7-ZXx"/>
                                             <outlet property="delegate" destination="KxT-2a-zu6" id="NkA-n3-6Nx"/>
                                         </connections>
                                     </tableView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Landmark List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LR8-xi-faa">
-                                        <rect key="frame" x="321" y="319" width="126" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="MoonLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqM-Ar-8y3">
                                         <rect key="frame" x="97" y="79" width="603" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -611,8 +602,32 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Landmark List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LR8-xi-faa">
+                                        <rect key="frame" x="330" y="167" width="108" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XJO-wV-iZe">
+                                        <rect key="frame" x="613" y="162" width="74" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="MapTest"/>
+                                        <connections>
+                                            <action selector="pushMapTest:" destination="KxT-2a-zu6" eventType="touchUpInside" id="6o1-16-wVZ"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="9AL-01-tt1" firstAttribute="centerX" secondItem="dq3-zO-NZ5" secondAttribute="centerX" id="0bf-ax-Hnr"/>
+                                    <constraint firstItem="9AL-01-tt1" firstAttribute="top" secondItem="dq3-zO-NZ5" secondAttribute="top" constant="21" id="1Mu-Uh-6nB"/>
+                                    <constraint firstItem="LR8-xi-faa" firstAttribute="centerX" secondItem="dq3-zO-NZ5" secondAttribute="centerX" id="I7x-UP-8TK"/>
+                                    <constraint firstItem="LR8-xi-faa" firstAttribute="top" secondItem="9AL-01-tt1" secondAttribute="bottom" constant="125" id="JsK-yv-ZDg"/>
+                                    <constraint firstAttribute="bottom" secondItem="qqL-x7-oyu" secondAttribute="bottom" constant="8" id="Mdi-0G-EfS"/>
+                                    <constraint firstItem="qqL-x7-oyu" firstAttribute="top" secondItem="LR8-xi-faa" secondAttribute="bottom" constant="8" id="cdW-LI-ltG"/>
+                                    <constraint firstItem="qqL-x7-oyu" firstAttribute="leading" secondItem="dq3-zO-NZ5" secondAttribute="leading" constant="8" id="mg8-dP-gEg"/>
+                                    <constraint firstAttribute="trailing" secondItem="qqL-x7-oyu" secondAttribute="trailing" constant="8" id="rX2-2l-zeR"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Si0-YW-Gm0" userLabel="summeryView">
                                 <rect key="frame" x="0.0" y="64" width="384" height="383"/>
@@ -624,22 +639,6 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lbp-wK-r1S">
-                                        <rect key="frame" x="46" y="339" width="78" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Route copy"/>
-                                        <connections>
-                                            <action selector="pushRoute:" destination="KxT-2a-zu6" eventType="touchUpInside" id="rTC-DC-VDF"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMa-U5-8sR">
-                                        <rect key="frame" x="225" y="339" width="55" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="SELCAL"/>
-                                        <connections>
-                                            <action selector="pushSELCAL:" destination="KxT-2a-zu6" eventType="touchUpInside" id="bdb-gP-fmC"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Klu-nI-G92">
                                         <rect key="frame" x="211" y="37" width="132" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -780,6 +779,22 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lbp-wK-r1S">
+                                        <rect key="frame" x="207" y="345" width="78" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Route copy"/>
+                                        <connections>
+                                            <action selector="pushRoute:" destination="KxT-2a-zu6" eventType="touchUpInside" id="rTC-DC-VDF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMa-U5-8sR">
+                                        <rect key="frame" x="92" y="345" width="55" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="SELCAL"/>
+                                        <connections>
+                                            <action selector="pushSELCAL:" destination="KxT-2a-zu6" eventType="touchUpInside" id="bdb-gP-fmC"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>

@@ -343,13 +343,6 @@
  },
  
  {
- "name":"Monument Valley",
- "lat":37.004245,
- "lon":-110.173479,
- "detectDistance":80.0
- },
- 
- {
  "name":"Yamal Penn.",
  "lat":72.0,
  "lon":70.0,
@@ -494,7 +487,79 @@
  "lat":36.1,
  "lon":-112.1,
  "detectDistance":100.0
+ },
+ 
+ {
+ "name":"Seoul",
+ "lat":37.564567,
+ "lon":126.993161,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Dalian(大連)",
+ "lat":38.9486,
+ "lon":121.604468,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Shanghai(上海)",
+ "lat":31.23039,
+ "lon":121.473702,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Guangzhou(広州)",
+ "lat":23.12911,
+ "lon":113.264385,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Hongkong(香港)",
+ "lat":22.254506,
+ "lon":114.172668,
+ "detectDistance":80.0
+ },
+ 
+ {
+ "name":"Nanning(南寧)",
+ "lat":22.81822,
+ "lon":108.366543,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Hangzhou(杭州)",
+ "lat":30.274084,
+ "lon":120.15507,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Wuhan(武漢)",
+ "lat":30.592849,
+ "lon":114.305539,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Kunming(昆明)",
+ "lat":24.880095,
+ "lon":102.832891,
+ "detectDistance":50.0
+ },
+ 
+ {
+ "name":"Dhaka",
+ "lat":30.274084,
+ "lon":120.15507,
+ "detectDistance":50.0
  }
+ 
+ 
  
  
  

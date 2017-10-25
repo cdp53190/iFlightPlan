@@ -47,12 +47,14 @@
     
     [super viewWillAppear:animated];
     
-    presentData = [SaveDataPackage presentData];
+    /*
+    [presentData = [SaveDataPackage presentData];
+     
+     [self setSunRiseSunSet];
+     [self setMoonRiseSetPhase];
+     [self setWeatherForcast];*/
     
-    [self setSunRiseSunSet];
-    [self setMoonRiseSetPhase];
-    [self setWeatherForcast];
-    
+    [self planReload];
     
     
 }
@@ -516,6 +518,156 @@
     
     return returnInt;
 }
+
+
+-(IBAction)pushMapTest:(id)sender{
+    
+    SaveDataPackage *dataPkg = [SaveDataPackage presentData];
+    
+    NSArray<NAVLOGLegComponents *> *planArray = dataPkg.planArray;
+
+    NSMutableString *testURL = [NSMutableString new];
+    [testURL appendString:@"https://maps.googleapis.com/maps/api/staticmap?"];
+    /*
+    double centerLat = ([[self class] convertStringToLat:planArray[0].latString] + [[self class] convertStringToLat:planArray.lastObject.latString]) / 2.0;
+    double centerLon = ([[self class] convertStringToLon:planArray[0].lonString] + [[self class] convertStringToLon:planArray.lastObject.lonString]) / 2.0
+    
+    //[testURL appendFormat:@"&center=%.5f,%.5f",centerLat, centerLon];*/
+    //[testURL appendString:@"&zoom=2"];
+    //[testURL appendString:@"&size=640x640"];
+    [testURL appendString:@"&size=302x640"];//640 / 1.41421356 / 3 * 2
+    //[testURL appendString:@"&format=PNG"];
+    [testURL appendString:@"&scale=2"];
+    //[testURL appendString:@"&maptype=roadmap"];
+    /*
+    [testURL appendString:@"https://chart.apis.google.com/chart?chst=d_map_pin_icon%26chld=cafe%257C996600%7C224+West+20th+Street+NY%7C75+9th+Ave+NY%7C700+E+9th+St+NY&path=color:0x0000ff|weight:5|40.737102,-73.990318|40.749825,-73.987963|40.752946,-73.987384|40.755823,-73.986397&key=AIzaSyAjv4LpnqIuvaoiK6ot5i4Wf9Mf8BGZ1go"];*/
+    
+    [testURL appendString:@"&path="];
+    
+    __block const NSInteger lastLegIdx = planArray.count - 1;
+    [planArray enumerateObjectsUsingBlock:^(NAVLOGLegComponents * _Nonnull comps, NSUInteger idx, BOOL * _Nonnull stop) {
+        [testURL appendFormat:@"%.5f,%.5f",
+         [[self class] convertStringToLat:comps.latString],
+         [[self class] convertStringToLon:comps.lonString]];
+        if (idx != lastLegIdx) {
+            [testURL appendString:@"|"];
+        }
+    }];
+    
+    //[testURL appendString:@"|geodesic"];
+    
+    [testURL appendString:@"&key=AIzaSyAjv4LpnqIuvaoiK6ot5i4Wf9Mf8BGZ1go"];
+    
+    NSURL *url = [NSURL URLWithString:[testURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+    
+    [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+    }];
+    
+    
+}
+
++(NSString *)convertLatToString:(double)lat {
+    NSMutableString *returnString = [NSMutableString new];
+    
+    double tmp = lat;
+    
+    if (tmp < 0) {
+        [returnString appendString:@"S"];
+        tmp = - tmp;
+    } else {
+        [returnString appendString:@"N"];
+    }
+    
+    int tmp1 = (int)floor(tmp);
+    int tmp2 = (int)round((tmp - tmp1) * 600);
+    
+    if (tmp2 == 600) {
+        tmp2 = 0;
+        tmp1++;
+    }
+    
+    [returnString appendString:[NSString stringWithFormat:@"%02d",tmp1]];
+    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp2]];
+    
+    return [returnString copy];
+    
+    
+}
+
++(NSString *)convertLonToString:(double)lon {
+    NSMutableString *returnString = [NSMutableString new];
+    
+    double tmp = lon;
+    
+    if (tmp < 0) {
+        [returnString appendString:@"W"];
+        tmp = - tmp;
+    } else {
+        [returnString appendString:@"E"];
+    }
+    
+    int tmp1 = (int)floor(tmp);
+    int tmp2 = (int)round((tmp - tmp1) * 600);
+    
+    if (tmp2 == 600) {
+        tmp2 = 0;
+        tmp1++;
+    }
+    
+    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp1]];
+    [returnString appendString:[NSString stringWithFormat:@"%03d",tmp2]];
+    
+    return [returnString copy];
+    
+}
+
++(double)convertStringToLat:(NSString *)string{
+    
+    if ([string isEqualToString:@""]) {
+        return 0;
+    }
+    
+    
+    double returnValue = 0;
+    
+    
+    returnValue += [string substringWithRange:NSMakeRange(1, 2)].doubleValue;
+    returnValue += [string substringWithRange:NSMakeRange(3, 2)].doubleValue / 60;
+    returnValue += [string substringWithRange:NSMakeRange(5, 1)].doubleValue / 600;
+    
+    if ([string hasPrefix:@"N"]) {
+        return returnValue;
+    } else if([string hasPrefix:@"S"]){
+        return -returnValue;
+    }
+    
+    return 0;
+    
+}
+
++(double)convertStringToLon:(NSString *)string{
+    
+    double returnValue = 0;
+    
+    if ([string isEqualToString:@""]) {
+        return 0;
+    }
+    
+    returnValue += [string substringWithRange:NSMakeRange(1, 3)].doubleValue;
+    returnValue += [string substringWithRange:NSMakeRange(4, 2)].doubleValue / 60;
+    returnValue += [string substringWithRange:NSMakeRange(6, 1)].doubleValue / 600;
+    
+    if ([string hasPrefix:@"E"]) {
+        return returnValue;
+    } else if([string hasPrefix:@"W"]){
+        return -returnValue;
+    }
+    
+    return 0;
+    
+}
+
+
 
 /*
 #pragma mark - Navigation

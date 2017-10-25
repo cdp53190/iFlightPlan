@@ -208,7 +208,12 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
                 newFL = FLString.doubleValue;
                 calcdFL = newFL;
                 
-                double interval = (newFL - levelChangeStartFL) / (topOfCruisePointCTM - lastExactLevelPointCTM);
+                double interval;
+                if (topOfCruisePointCTM == lastExactLevelPointCTM) {
+                    interval = 1.0;
+                } else {
+                    interval = (newFL - levelChangeStartFL) / (topOfCruisePointCTM - lastExactLevelPointCTM);
+                }
                 
                 while (calcdFL >= levelChangeStartFL && calcdFL > levelChangeStartFL) {
                     calcdFL = calcdFL - interval;
@@ -264,7 +269,12 @@ static double atand(double x) {return atan(x) * 180 / M_PI;}
             
             int lastExactLevelPointCTM = returnArray[lastExactLevelPointNo].CTM;
             
-            double interval = (levelChangeStartFL - newFL) / (CTM - lastExactLevelPointCTM);
+            double interval;
+            if (CTM == lastExactLevelPointCTM) {//0分でLevelChangeということもあったので。
+                interval = 1.0;
+            } else {
+                interval = (levelChangeStartFL - newFL) / (CTM - lastExactLevelPointCTM);
+            }
             
             if (interval < 1.0) {
                 interval = 1.0;

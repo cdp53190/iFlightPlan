@@ -43,7 +43,7 @@
     
     self.planArray = [NSMutableArray arrayWithArray:dataPackage.planArray];
     
-    lastATOidx = -1;
+    lastATOidx = 0;
     [self.planArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NAVLOGLegComponents * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![obj.ATO isEqualToString:@""]) {
             lastATOidx = idx;
@@ -163,7 +163,7 @@
         } else if([title hasPrefix:@"ETO"]){
             
             if ([title isEqualToString:@"ETO3"]) {
-                if (lastATOidx == -1 || lastATOidx >= indexPath.row) {
+                if (lastATOidx == 0 || lastATOidx >= indexPath.row) {
                     columnView.upperLabel.text = @"";
                     columnView.lowerLabel.text = @"";
                 } else {
@@ -230,10 +230,10 @@
             columnView.lowerLabel.textAlignment = NSTextAlignmentCenter;
             
         } else if([title isEqualToString:@"ATO+-"]){
-            NSString *time = legComps.ATO;
+            NSString *ATOString = legComps.ATO;
             
-            if (time.length == 4 && indexPath.row != 0) {
-                int ATOtime = [[self class] convertStringToTime:time];
+            if (ATOString.length == 4 && indexPath.row != 0) {
+                int ATOtime = [[self class] convertStringToTime:ATOString];
                 int ETOtime = [[self class] convertStringToTime:legComps.ETO];
                 
                 int differ = ATOtime - ETOtime;
@@ -289,11 +289,15 @@
                 if (fabs(fuelDiff) > 99.9) {
                     columnView.lowerLabel.text = @"XXX.X";
                 } else {
+                    NSString *spacer = @"";
                     
+                    if (fabs(fuelDiff) < 10.0) {
+                        spacer = @" ";
+                    }
                     if (fuelDiff > 0) {
-                        columnView.lowerLabel.text = [NSString stringWithFormat:@"+%04.1f", fabs(fuelDiff)];
+                        columnView.lowerLabel.text = [NSString stringWithFormat:@"+%@%.1f", spacer, fabs(fuelDiff)];
                     } else if (fuelDiff < 0) {
-                        columnView.lowerLabel.text = [NSString stringWithFormat:@"-%04.1f", fabs(fuelDiff)];
+                        columnView.lowerLabel.text = [NSString stringWithFormat:@"-%@%.1f", spacer,  fabs(fuelDiff)];
                     } else {
                         columnView.lowerLabel.text = @"+-0.0";
                     }
@@ -471,7 +475,16 @@
                        columnTitle:columnTitle
                          rowNumber:rowNo];
     
-    if (lastATOidx <= rowNo) {
+
+    if ([timeString isEqualToString:@""] && lastATOidx == rowNo) {
+        lastATOidx = 0;
+        [self.planArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NAVLOGLegComponents * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (![obj.ATO isEqualToString:@""]) {
+                lastATOidx = idx;
+                *stop = YES;
+            }
+        }];
+    } else if (![timeString isEqualToString:@""] && lastATOidx <= rowNo) {
         lastATOidx = rowNo;
         [self.planTableView reloadData];
     }

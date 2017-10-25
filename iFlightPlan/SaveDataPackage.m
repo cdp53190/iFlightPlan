@@ -370,7 +370,6 @@
     unsigned int outCount;
     objc_property_t *properties;
     
-    //atcData
     NSLog(@"atcData");
     properties = class_copyPropertyList([(dataPackage.atcData) class], &outCount);
     for (int i = 0; i < outCount; i++) {
@@ -381,62 +380,8 @@
         NSLog(@"%@:%@\n",propertyName,propertyValue);
     }
     free(properties);
-    
-    /*
-     NSLog(@"%@\n", dataPackage.atcData.aircraftID);
-     NSLog(@"%@\n", dataPackage.atcData.flightRules);
-     NSLog(@"%@\n", dataPackage.atcData.typeOfFlight);
-     NSLog(@"%@\n", dataPackage.atcData.numberOfAircraft);
-     NSLog(@"%@\n", dataPackage.atcData.typeOfAircraft);
-     NSLog(@"%@\n", dataPackage.atcData.wakeCategory);
-     NSLog(@"%@\n", dataPackage.atcData.COMNAVEquip);
-     NSLog(@"%@\n", dataPackage.atcData.surveillanceEquip);
-     NSLog(@"%@\n", dataPackage.atcData.depAPO4);
-     NSLog(@"%@\n", dataPackage.atcData.speedLevelRoute);
-     NSLog(@"%@\n", dataPackage.atcData.arrAPO4);
-     NSLog(@"%@\n", dataPackage.atcData.depTime);
-     NSLog(@"%@\n", dataPackage.atcData.elapsedTime);
-     NSLog(@"%@\n", dataPackage.atcData.firstAlternateAPO4);
-     NSLog(@"%@\n", dataPackage.atcData.secondAlternateAPO4);
-     NSLog(@"%d\n", dataPackage.atcData.otherInfoExist);
-     NSLog(@"%@\n", dataPackage.atcData.STS);
-     NSLog(@"%@\n", dataPackage.atcData.PBN);
-     NSLog(@"%@\n", dataPackage.atcData.NAV);
-     NSLog(@"%@\n", dataPackage.atcData.COM);
-     NSLog(@"%@\n", dataPackage.atcData.DAT);
-     NSLog(@"%@\n", dataPackage.atcData.SUR);
-     NSLog(@"%@\n", dataPackage.atcData.DOF);
-     NSLog(@"%@\n", dataPackage.atcData.REG);
-     NSLog(@"%@\n", dataPackage.atcData.EET);
-     NSLog(@"%@\n", dataPackage.atcData.SEL);
-     NSLog(@"%@\n", dataPackage.atcData.CODE);
-     NSLog(@"%@\n", dataPackage.atcData.DLE);
-     NSLog(@"%@\n", dataPackage.atcData.OPR);
-     NSLog(@"%@\n", dataPackage.atcData.ORGN);
-     NSLog(@"%@\n", dataPackage.atcData.PER);
-     NSLog(@"%@\n", dataPackage.atcData.RALT);
-     NSLog(@"%@\n", dataPackage.atcData.TALT);
-     NSLog(@"%@\n", dataPackage.atcData.RIF);
-     NSLog(@"%@\n", dataPackage.atcData.RMK);
-     NSLog(@"%@\n", dataPackage.atcData.DEP);
-     NSLog(@"%@\n", dataPackage.atcData.DEST);
-     NSLog(@"%@\n", dataPackage.atcData.ALTN);
-     NSLog(@"%@\n", dataPackage.atcData.endurance);
-     NSLog(@"%@\n", dataPackage.atcData.POB);
-     NSLog(@"%@\n", dataPackage.atcData.emergencyRadio);
-     NSLog(@"%@\n", dataPackage.atcData.survivalEquip);
-     NSLog(@"%@\n", dataPackage.atcData.jackets);
-     NSLog(@"%@\n", dataPackage.atcData.dinghiesNumber);
-     NSLog(@"%@\n", dataPackage.atcData.dinghiesCapacity);
-     NSLog(@"%@\n", dataPackage.atcData.dinghiesCover);
-     NSLog(@"%@\n", dataPackage.atcData.dinghiesColor);
-     NSLog(@"%@\n", dataPackage.atcData.aircraftColorMarking);
-     NSLog(@"%@\n", dataPackage.atcData.remarks);
-     NSLog(@"%@\n", dataPackage.atcData.captain);
-     */
     NSLog(@"\n\n");
     
-    //fuelTimeData
     NSLog(@"fuelTimeData");
     properties = class_copyPropertyList([(dataPackage.fuelTimeData) class], &outCount);
     for (int i = 0; i < outCount; i++) {
@@ -455,36 +400,10 @@
         
     }
     free(properties);
-    
-    /*
-     for (int i = 0; i <= 1; i++) {
-     NSString *str;
-     if (i == 0) {
-     str = @"time";
-     } else {
-     str = @"fuel";
-     }
-     
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.dest valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.firstAlternate valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.contingency valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.hold valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.extra valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.extra_s valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.extra_e valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.unusable valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.takeoff valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.taxiout valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.ramp valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.taxiin valueForKey:str]);
-     NSLog(@"%@\n", [dataPackage.fuelTimeData.secondAlternate valueForKey:str]);
-     
-     }
-     */
     NSLog(@"\n\n");
     
     
-    //WeightData
+    NSLog(@"WeightData");
     properties = class_copyPropertyList([(dataPackage.weightData) class], &outCount);
     for (int i = 0; i < outCount; i++) {
         objc_property_t property = properties[i];
@@ -494,29 +413,8 @@
         NSLog(@"%@:%@\n",propertyName, propertyValue);
     }
     free(properties);
-    
-    /*
-     NSLog(@"%@\n", dataPackage.weightData.structureLimit);
-     NSLog(@"%@\n", dataPackage.weightData.takeoffLimit);
-     NSLog(@"%@\n", dataPackage.weightData.maxLanding);
-     NSLog(@"%@\n", dataPackage.weightData.burnOffFuel);
-     NSLog(@"%@\n", dataPackage.weightData.landingLimit);
-     NSLog(@"%@\n", dataPackage.weightData.maxZeroFuel);
-     NSLog(@"%@\n", dataPackage.weightData.takeoffFuel);
-     NSLog(@"%@\n", dataPackage.weightData.zeroFuelLimit);
-     NSLog(@"%@\n", dataPackage.weightData.maxTakeoffCondition);
-     NSLog(@"%@\n", dataPackage.weightData.maxLandingCondition);
-     NSLog(@"%@\n", dataPackage.weightData.takeoff);
-     NSLog(@"%@\n", dataPackage.weightData.landing);
-     NSLog(@"%@\n", dataPackage.weightData.zeroFuel);
-     NSLog(@"%@\n", dataPackage.weightData.AGTOW_PTOW);
-     NSLog(@"%@\n", dataPackage.weightData.MTXW_TAXI);
-     */
-    
     NSLog(@"\n\n");
     
-    
-    //ETOPSData
     NSLog(@"etopsData");
     NSLog(@"ETOPS:%@\n", dataPackage.etopsData.ETOPS);
     [dataPackage.etopsData.RALT enumerateObjectsUsingBlock:^(RALTData * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -533,18 +431,7 @@
             NSLog(@"%@-%ld:%@\n",propertyName, (long)idx, propertyValue);
         }
         free(properties);
-        
-        /*
-         NSLog(@"%@\n", obj.APO3);
-         NSLog(@"%@\n", obj.APO4);
-         NSLog(@"%@\n", obj.earliestTime);
-         NSLog(@"%@\n", obj.latestTime);
-         NSLog(@"%@\n", obj.applyTimeCircle);
-         NSLog(@"%@\n", obj.actualTimeCircle);
-         */
-        
     }];
-    
     [dataPackage.etopsData.ETPDivert enumerateObjectsUsingBlock:^(ETPDivertData * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         unsigned int outCount;
@@ -559,27 +446,10 @@
             NSLog(@"%@-%ld:%@\n",propertyName, (long)idx, propertyValue);
         }
         free(properties);
-        
-        /*
-         NSLog(@"%@\n", obj.point);
-         NSLog(@"%@\n", obj.ETPfuel);
-         NSLog(@"%@\n", obj.ETPtime);
-         NSLog(@"%@\n", obj.ETP_APO3s);
-         NSLog(@"%@\n", obj.windFactor);
-         NSLog(@"%@\n", obj.divertFuel);
-         NSLog(@"%@\n", obj.divertTime);
-         NSLog(@"%@\n", obj.fuelRemain);
-         NSLog(@"%@\n", obj.engineNumber);
-         NSLog(@"%@\n", obj.icingCondition);
-         */
-        
     }];
-    
     NSLog(@"\n\n");
     
-    //OtherData
     NSLog(@"otherData");
-    
     properties = class_copyPropertyList([(dataPackage.otherData) class], &outCount);
     for (int i = 0; i < outCount; i++) {
         objc_property_t property = properties[i];
@@ -589,48 +459,10 @@
         NSLog(@"%@:%@\n",propertyName, propertyValue);
     }
     free(properties);
-    
-    /*
-     NSLog(@"%@\n", dataPackage.otherData.logNumber);
-     NSLog(@"%@\n", dataPackage.otherData.flightNumber);
-     NSLog(@"%@\n", dataPackage.otherData.courseName);
-     NSLog(@"%@\n", dataPackage.otherData.FMCCourse);
-     NSLog(@"%@\n", dataPackage.otherData.aircraftNumber);
-     NSLog(@"%@\n", dataPackage.otherData.aircraftType);
-     NSLog(@"%@\n", dataPackage.otherData.SELCAL);
-     NSLog(@"%@\n", dataPackage.otherData.depAPO3);
-     NSLog(@"%@\n", dataPackage.otherData.arrAPO3);
-     NSLog(@"%@\n", dataPackage.otherData.STD);
-     NSLog(@"%@\n", dataPackage.otherData.STA);
-     NSLog(@"%@\n", dataPackage.otherData.blockTime);
-     NSLog(@"%@\n", dataPackage.otherData.timeMargin);
-     NSLog(@"%@\n", dataPackage.otherData.GS_MPH);
-     NSLog(@"%@\n", dataPackage.otherData.GS_KMH);
-     NSLog(@"%@\n", dataPackage.otherData.GS_Kt);
-     NSLog(@"%@\n", dataPackage.otherData.averageTAS);
-     NSLog(@"%@\n", dataPackage.otherData.windFactor);
-     NSLog(@"%@\n", dataPackage.otherData.groundDistance);
-     NSLog(@"%@\n", dataPackage.otherData.airDistance);
-     NSLog(@"%@\n", dataPackage.otherData.climbSpeed);
-     NSLog(@"%@\n", dataPackage.otherData.cruiseSpeed);
-     NSLog(@"%@\n", dataPackage.otherData.descendSpeed);
-     NSLog(@"%@\n", dataPackage.otherData.initialFL);
-     NSLog(@"%@\n", dataPackage.otherData.takeoffRunway);
-     NSLog(@"%@\n", dataPackage.otherData.landingRunway);
-     NSLog(@"%@\n", dataPackage.otherData.fuelCorrectionFactor);
-     NSLog(@"%@\n", dataPackage.otherData.issueTime);
-     NSLog(@"%@\n", dataPackage.otherData.MEL);
-     NSLog(@"%@\n", dataPackage.otherData.PIC);
-     NSLog(@"%@\n", dataPackage.otherData.dispatcher);
-     NSLog(@"%@\n", dataPackage.otherData.dispatchDate);
-     NSLog(@"%@\n", dataPackage.otherData.dispatchTime);
-     NSLog(@"%@\n", dataPackage.otherData.SID);
-     NSLog(@"%@\n", dataPackage.otherData.STAR);
-     */
     NSLog(@"\n\n");
     
     
-    //AlternateData
+    NSLog(@"AlternateData");
     properties = class_copyPropertyList([(dataPackage.alternateData) class], &outCount);
     for (int i = 0; i < outCount; i++) {
         objc_property_t property = properties[i];
@@ -640,17 +472,9 @@
         NSLog(@"%@:%@\n",propertyName, propertyValue);
     }
     free(properties);
+    NSLog(@"\n\n");
+
     
-    /*
-     NSLog(@"%@\n", dataPackage.alternateData.firstAPO3);
-     NSLog(@"%@\n", dataPackage.alternateData.firstAPO4);
-     NSLog(@"%@\n", dataPackage.alternateData.secondAPO3);
-     NSLog(@"%@\n", dataPackage.alternateData.secondAPO4);
-     NSLog(@"%@\n", dataPackage.alternateData.route);
-     NSLog(@"%@\n", dataPackage.alternateData.windFactorToFirstALTN);
-     NSLog(@"%@\n", dataPackage.alternateData.windFactorToSecondALTN);
-     NSLog(@"%@\n", dataPackage.alternateData.FL);
-     */
 }
 
 

@@ -13,6 +13,7 @@
 #import "DoubleLinePlanColumnView.h"
 #import "TimeEntryViewController.h"
 #import "FuelEntryViewController.h"
+#import "WindEntryViewController.h"
 #import "SaveDataPackage.h"
 
 @interface PlanViewController : UIViewController
